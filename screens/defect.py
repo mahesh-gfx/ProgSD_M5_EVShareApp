@@ -1,6 +1,4 @@
-import tkinter
 from tkinter import *
-from image_components import *
 
 
 defect_report_dict={
