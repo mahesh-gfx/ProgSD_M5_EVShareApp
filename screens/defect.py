@@ -88,28 +88,28 @@ defectScreen.title('Report Defect')
 defectScreen.configure(background='#F8F8F8')
 defectScreen.resizable(False,False)
 # profile button
-photoProf='../image_components/defect-profile.png'
+photoProf="../image_components/defect-profile.png"
 photoProf = PhotoImage(file=photoProf)
 buttonProf= Button(image=photoProf,compound=TOP,command=to_profile_page,borderwidth=0,background='#F8F8F8')
 buttonProf.place(x=10,y=20)
 
 
 # consult button
-photoConsult='../image_components/defect-consult.png'
+photoConsult="../image_components/defect-consult.png"
 photoConsult = PhotoImage(file=photoConsult)
 buttonConsult= Button(image=photoConsult,compound=TOP,command=to_consult_page,borderwidth=0,background='#F8F8F8')
 buttonConsult.place(x=440,y=20)
 
 # Report defect text
-photoReportDefect='../image_components/defect-reportDefect.png'
+photoReportDefect="../image_components/defect-reportDefect.png"
 photoReportDefect = PhotoImage(file=photoReportDefect)
 ReportDefectLabel = Label(image=photoReportDefect,background='#F8F8F8')
 ReportDefectLabel.place(x=89,y=64)
 
 
-photoSelect_T='../image_components/defect-choise-T.png'
+photoSelect_T="../image_components/defect-choise-T.png"
 photoSelect_T = PhotoImage(file=photoSelect_T)
-photoSelect_F='../image_components/defect-choise-F.png'
+photoSelect_F="../image_components/defect-choise-F.png"
 photoSelect_F = PhotoImage(file=photoSelect_F)
 
 # Quick report text
@@ -141,7 +141,7 @@ buttonReportLabel4 = Button(image=photoSelect_F,compound=TOP,command=press_bt4,b
 buttonReportLabel4.place(x=420,y=260)
 
 # description box
-photoRectangle='../image_components/defect-rectangle.png'
+photoRectangle="../image_components/defect-rectangle.png"
 photoRectangle = PhotoImage(file=photoRectangle)
 photoRectangleImg=Label(image=photoRectangle,background='#F8F8F8')
 photoRectangleImg.place(x=30,y=307)
@@ -154,7 +154,7 @@ descriptionLabel = Label(text='Describe the details...',font=(font_name,16),back
 descriptionLabel.place(x=40,y=330)
 
 # add image
-photoaddImage = '../image_components/defect-addImage-rectangle.png'
+photoaddImage = "../image_components/defect-addImage-rectangle.png"
 photoaddImage = PhotoImage(file=photoaddImage)
 imageLabel1 = Label(image=photoaddImage,background='#F8F8F8')
 imageLabel1.place(x=30,y=529)
@@ -163,19 +163,19 @@ imageLabel2.place(x=180,y=529)
 imageLabel3 = Label(image=photoaddImage,background='#F8F8F8')
 imageLabel3.place(x=331,y=529)
 
-photoaddPhoto = '../image_components/defect-addPhoto.png'
+photoaddPhoto = "../image_components/defect-addPhoto.png"
 photoaddPhoto = PhotoImage(file=photoaddPhoto)
 upload_but = Button(image=photoaddPhoto,background='#F8F8F8',borderwidth=0,compound=TOP,command=upload_photo)
 upload_but.place(x=200,y=549)
 
-photoaddChat = '../image_components/defect-addChat.png'
+photoaddChat = "../image_components/defect-addChat.png"
 photoaddChat = PhotoImage(file=photoaddChat)
 addChat_but = Button(image=photoaddChat,background='#F8F8F8',borderwidth=0,compound=TOP,command=add_chat)
 addChat_but.place(x=351,y=549)
 
 
 # submit button
-photoSubmit='../image_components/defect-submit.png'
+photoSubmit="../image_components/defect-submit.png"
 photoSubmit = PhotoImage(file=photoSubmit)
 submit_but = Button(image=photoSubmit,background='#F8F8F8',borderwidth=0,compound=TOP,command=jump_page)
 submit_but.place(x=21,y=672)
