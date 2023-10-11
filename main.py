@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import font
 from tkinter.ttk import *
+from screens.login import open_login_pg
 
 win = tk.Tk()
 win.geometry("480x800")
@@ -47,7 +48,7 @@ label4.pack()
 
 # Buttons
 letsGoButton = Button(welcomeScreen, text="Let's Go",
-                      command=lambda: loginScreen.tkraise())
+                      command=open_login_pg)
 letsGoButton.place(x=72, y=90, width=320, height=68)
 letsGoButton.pack()
 
