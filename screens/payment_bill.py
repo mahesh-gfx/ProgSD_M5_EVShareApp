@@ -27,7 +27,6 @@ def turnto_payaccess():
 
 def main():
     global pay_bill_Screen
-    print('sucess')
     # local variable
     font_name = 'Mako'
     pay_bill_Screen = Tk()

@@ -1,5 +1,7 @@
 from tkinter import *
 import tkinter.ttk
+import addcard
+
 def to_profile_page():
     print('to profile page')
 def to_consult_page():
@@ -102,9 +104,8 @@ def use_paypal():
         have_choose =4
 
 def turnto_addcard():
-    pay_access_Screen.update()
-    pay_access_Screen.decaded()
-    import addcard
+    pay_access_Screen.destroy()
+    addcard.main()
 
 
 def turnto_payresult():
@@ -114,12 +115,12 @@ def to_form_page():
     pay_access_Screen.destroy()
     import payment_bill
     payment_bill.main()
+
 def main():
 
     global pay_access_Screen
     # local variable
     font_name = 'Mako'
-    print('打开成功')
     pay_access_Screen = Tk()
     pay_access_Screen.geometry('480x800')
     pay_access_Screen.title('Payment Access')
