@@ -1,118 +1,115 @@
 from tkinter import *
 import tkinter.ttk
-import payment_access
+import payment_access as pa
 
-def to_consult_page():
-    print('to consult page')
-def to_form_page():
-    add_card_Screen.destroy()
-    payment_access.main()
+class add_card_Screen(Tk):
+    def to_consult_page(self):
+        print('to consult page')
+    def to_form_page(self):
+        self.destroy()
+        payment_access = pa.pay_access_Screen()
+        payment_access.mainloop()
 
-def save():
-    add_card_Screen.destroy()
-    payment_access.main()
+    def save(self):
+        self.destroy()
+        payment_access = pa.pay_access_Screen()
+        payment_access.mainloop()
 
-def numclear(event):
-    global enternumber,entername,enterend,entercvv
-    if enternumber.get() == "card number":
-        enternumber.delete(0,END)
-    if entername.get() == "":
-        entername.insert(0,"name on card")
-    if enterend.get() == "":
-        enterend.insert(0,"expires end: DD/MM/YYYY")
-    if entercvv.get() == "":
-        entercvv.insert(0,"cvv") 
-def nameclear(event):
-    global enternumber,entername,enterend,entercvv
-    if entername.get() == "name on card":
-        entername.delete(0,END)
-    if enternumber.get() == "":
-        enternumber.insert(0,"card number")
-    if enterend.get() == "":
-        enterend.insert(0,"expires end: DD/MM/YYYY")
-    if entercvv.get() == "":
-        entercvv.insert(0,"cvv") 
-def endclear(event):
-    global enternumber,entername,enterend,entercvv
-    if enterend.get() == "expires end: DD/MM/YYYY":
-        enterend.delete(0,END)
-    if enternumber.get() == "":
-        enternumber.insert(0,"card number")
-    if entername.get() == "":
-        entername.insert(0,"name on card")
-    if entercvv.get() == "":
-        entercvv.insert(0,"cvv") 
-def cvvclear(event):
-    global enternumber,entername,enterend,entercvv
-    if entercvv.get() == "CVV":
-        entercvv.delete(0,END)
-    if enternumber.get() == "":
-        enternumber.insert(0,"card number")
-    if entername.get() == "":
-        entername.insert(0,"name on card")
-    if enterend.get() == "":
-        enterend.insert(0,"expires end: DD/MM/YYYY")
+    def numclear(self,event):
+        if self.enternumber.get() == "card number":
+            self.enternumber.delete(0,END)
+        if self.entername.get() == "":
+            self.entername.insert(0,"name on card")
+        if self.enterend.get() == "":
+            self.enterend.insert(0,"expires end: DD/MM/YYYY")
+        if self.entercvv.get() == "":
+            self.entercvv.insert(0,"cvv") 
+    def nameclear(self,event):
+        if self.entername.get() == "name on card":
+            self.entername.delete(0,END)
+        if self.enternumber.get() == "":
+            self.enternumber.insert(0,"card number")
+        if self.enterend.get() == "":
+            self.enterend.insert(0,"expires end: DD/MM/YYYY")
+        if self.entercvv.get() == "":
+            self.entercvv.insert(0,"cvv") 
+    def endclear(self,event):
+        if self.enterend.get() == "expires end: DD/MM/YYYY":
+            self.enterend.delete(0,END)
+        if self.enternumber.get() == "":
+            self.enternumber.insert(0,"card number")
+        if self.entername.get() == "":
+            self.entername.insert(0,"name on card")
+        if self.entercvv.get() == "":
+            self.entercvv.insert(0,"cvv") 
+    def cvvclear(self,event):
+        if self.entercvv.get() == "CVV":
+            self.entercvv.delete(0,END)
+        if self.enternumber.get() == "":
+            self.enternumber.insert(0,"card number")
+        if self.entername.get() == "":
+            self.entername.insert(0,"name on card")
+        if self.enterend.get() == "":
+            self.enterend.insert(0,"expires end: DD/MM/YYYY")
 
-def main():
-    
-    global add_card_Screen
-    font_name = 'Mako'
+    def __init__(self):
+        super().__init__()
+        font_name = 'Mako'
+        self.geometry('480x800')
+        self.title('Add Card')
+        self.configure(background='#FFF')
+        self.resizable(False,False)
 
-    add_card_Screen= Tk()
-    add_card_Screen.geometry('480x800')
-    add_card_Screen.title('Add Card')
-    add_card_Screen.configure(background='#FFF')
-    add_card_Screen.resizable(False,False)
+        # consult button
+        self.photoConsult="../image_components/defect-consult.png"
+        self.photoConsult = PhotoImage(file=self.photoConsult)
+        self.buttonConsult= Button(image=self.photoConsult,compound=TOP,command=self.to_consult_page,borderwidth=0,background='#FFF')
+        self.buttonConsult.place(x=440,y=20)
+        # back button
+        self.photoForm= r"../image_components/pay_backarrow.png"
+        self.photoForm = PhotoImage(file=self.photoForm)
+        self.buttonForm= Button(image=self.photoForm,compound=TOP,command=self.to_form_page,borderwidth=0,background='#FFF')
+        self.buttonForm.place(x=8,y=20)
+        #Tittle
+        self.tittlefile = r"../image_components/Your Card Details.png"
+        self.tittlephoto = PhotoImage(file=self.tittlefile)
+        self.tittle = Label(image=self.tittlephoto,borderwidth=0,background="#FFF")
+        self.tittle.place(x=38,y=102)
+        #mainblock
+        self.mainblockfile = r"../image_components/addcard_main.png"
+        self.mainblock = PhotoImage(file=self.mainblockfile)
+        self.mainlabel =Label(image=self.mainblock,borderwidth=0,background="#FFF")
+        self.mainlabel.place(x=40,y=210)
+        #4 text for details
+        #card number
+        self.enternumber=Entry(font=(font_name,14),background="#E8E9E7",borderwidth=0)
+        self.enternumber.place(x=129,y=286,width=270)
+        self.enternumber.insert(0,"card number")
+        numclick =self.enternumber.bind('<Button-1>',self.numclear)
+        #host name
+        self.entername=Entry(font=(font_name,14),background="#E8E9E7",borderwidth=0)
+        self.entername.place(x=129,y=350,width=270)
+        self.entername.insert(0,"name on card")
+        nameclick =self.entername.bind('<Button-1>',self.nameclear)
+        #expires end
+        self.enterend=Entry(font=(font_name,14),background="#E8E9E7",borderwidth=0)
+        self.enterend.place(x=129,y=414,width=270)
+        self.enterend.insert(0,"expires end: DD/MM/YYYY")
+        endclick =self.enterend.bind('<Button-1>',self.endclear)
+        #cvv
+        self.entercvv=Entry(font=(font_name,14),background="#E8E9E7",borderwidth=0)
+        self.entercvv.place(x=129,y=486,width=270)
+        self.entercvv.insert(0,"CVV")
+        cvvclick =self.entercvv.bind('<Button-1>',self.cvvclear)
 
-    # consult button
-    photoConsult="../image_components/defect-consult.png"
-    photoConsult = PhotoImage(file=photoConsult)
-    buttonConsult= Button(image=photoConsult,compound=TOP,command=to_consult_page,borderwidth=0,background='#FFF')
-    buttonConsult.place(x=440,y=20)
-    # back button
-    photoForm= r"../image_components/pay_backarrow.png"
-    photoForm = PhotoImage(file=photoForm)
-    buttonForm= Button(image=photoForm,compound=TOP,command=to_form_page,borderwidth=0,background='#FFF')
-    buttonForm.place(x=8,y=20)
-    #Tittle
-    tittlefile = r"../image_components/Your Card Details.png"
-    tittlephoto = PhotoImage(file=tittlefile)
-    tittle = Label(image=tittlephoto,borderwidth=0,background="#FFF")
-    tittle.place(x=38,y=102)
-    #mainblock
-    mainblockfile = r"../image_components/addcard_main.png"
-    mainblock = PhotoImage(file=mainblockfile)
-    mainlabel =Label(image=mainblock,borderwidth=0,background="#FFF")
-    mainlabel.place(x=40,y=210)
-    #4 text for details
-    #card number
-    enternumber=Entry(font=(font_name,14),background="#E8E9E7",borderwidth=0)
-    enternumber.place(x=129,y=286,width=270)
-    enternumber.insert(0,"card number")
-    numclick =enternumber.bind('<Button-1>',numclear)
-    #host name
-    entername=Entry(font=(font_name,14),background="#E8E9E7",borderwidth=0)
-    entername.place(x=129,y=350,width=270)
-    entername.insert(0,"name on card")
-    nameclick =entername.bind('<Button-1>',nameclear)
-    #expires end
-    enterend=Entry(font=(font_name,14),background="#E8E9E7",borderwidth=0)
-    enterend.place(x=129,y=414,width=270)
-    enterend.insert(0,"expires end: DD/MM/YYYY")
-    endclick =enterend.bind('<Button-1>',endclear)
-    #cvv
-    entercvv=Entry(font=(font_name,14),background="#E8E9E7",borderwidth=0)
-    entercvv.place(x=129,y=486,width=270)
-    entercvv.insert(0,"CVV")
-    cvvclick =entercvv.bind('<Button-1>',cvvclear)
+        # save button
+        self.filesave=r"../image_components/cardsave.png"
+        self.photosave = PhotoImage(file=self.filesave)
+        self.save_button = Button(image=self.photosave,background='#FFF',borderwidth=0,compound=TOP,command=self.save)
+        self.save_button.place(x=20,y=720)
 
-    # save button
-    filesave=r"../image_components/cardsave.png"
-    photosave = PhotoImage(file=filesave)
-    save_button = Button(image=photosave,background='#FFF',borderwidth=0,compound=TOP,command=save)
-    save_button.place(x=20,y=720)
 
-    add_card_Screen.mainloop()
 
 if __name__ == '__main__':
-    main()
+    page = add_card_Screen()
+    page.mainloop()
