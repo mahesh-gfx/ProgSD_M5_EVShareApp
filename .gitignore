@@ -161,3 +161,6 @@ cython_debug/
 
 # Local Environment
 .idea
+%USERPROFILE%
+examples
+.vscode
