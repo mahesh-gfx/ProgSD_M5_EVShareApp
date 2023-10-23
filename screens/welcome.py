@@ -1,20 +1,44 @@
 import tkinter as tk
-from tkinter import *
-from tkinter import font
-from tkinter.ttk import *
-from window import win
-import sys
-from ..base import fonts
+from tkinter import PhotoImage
 
-welcomeScreen = Frame(win)
-welcomeScreen.grid(row=0, column=0)
 
-# Labels
-label1 = Label(welcomeScreen, text="Seamless",
-               font=fonts.title, justify="left")
-label1.pack(padx=20)
-label2 = Label(welcomeScreen, text="EV rental", font=fonts.title)
-label2.pack(padx=20)
-label3 = Label(welcomeScreen, text="a cleaner tomorrow...", font=fonts.title)
-label3.pack(padx=20)
-label3.place()
+class welcome():
+    # Attributes
+    vehicles = []
+
+    # Constructors
+    def __init__(self):
+        print("Constructing App...")
+
+        self.root = tk.Tk()
+        self.root.geometry("480x800")
+        self.root.title("Zevo | EV Rental")
+        self.root.resizable(False, True)
+
+        backgroundImageFile = PhotoImage(
+            file=r"./image_components/welcome-background.png")
+        original_width = backgroundImageFile.width()
+        original_height = backgroundImageFile.height()
+        aspect_ratio = original_width / original_height
+        new_width = int(800 * aspect_ratio)
+        new_height = 800
+
+        resizedImage = backgroundImageFile.subsample(
+            original_width // new_width, original_height // new_height)
+        backgroundImage = tk.Label(
+            self.root, image=resizedImage, bg="#000000")
+        backgroundImage.place(relheight=1, relwidth=1)
+        letsGoButtonImage = PhotoImage(
+            file=r"./image_components/lets-go-button.png")
+        letsGoButton = tk.Button(self.root, image=letsGoButtonImage,
+                                 command=lambda: print("Clicked Lets Go"))
+        letsGoButton.place(x=78, y=591, height=68, width=320)
+
+        knowMoreButtonImage = PhotoImage(
+            file=r"./image_components/know-more-button.png")
+        knowMoreButton = tk.Button(self.root, image=knowMoreButtonImage,
+                                   command=lambda: print("Clicked Lets Go"), default="normal", border=0)
+        knowMoreButton.place(x=78, y=678, height=68, width=320)
+        self.root.mainloop()
+
+    # Methods
