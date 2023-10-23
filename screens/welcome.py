@@ -1,5 +1,13 @@
 import tkinter as tk
-from tkinter import PhotoImage
+from tkinter import *
+from tkinter import font
+from tkinter.ttk import *
+from window import win
+import sys
+from ..base import fonts
+
+welcomeScreen = Frame(win)
+welcomeScreen.grid(row=0, column=0)
 
 
 class Welcome(tk.Frame):
