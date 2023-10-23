@@ -10,7 +10,7 @@ def open_login_pg():
     win.configure(bg="white")
 
     # Image at the top
-    image_poster = tk.PhotoImage(file="./image_components/poster.png")
+    # image_poster = tk.PhotoImage(file="./image_components/poster.png")
     image_label = tk.Label(win, width=480, height=320, bg="white")
     image_label.pack()
     image_label.place(relx=0.5, rely=0)
@@ -22,12 +22,13 @@ def open_login_pg():
 
     # Email input field
     email_icon = tk.PhotoImage(file="./image_components/email_icon.png")  # Replace with your email icon
-    email_label = tk.Label(win, bg="black")
+    email_label = tk.Label(win, image=email_icon, bg="black")
     email_label.pack()
     email_entry = tk.Entry(win, width=60)
     email_entry.insert(0, "Email")
     email_entry.pack()
     email_entry.place(relx=.1, rely=.5)
+
 
     # Password input field
     password_icon = tk.PhotoImage(file="./image_components/email_icon.png")  # Replace with your password icon
