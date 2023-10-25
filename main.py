@@ -3,6 +3,8 @@ from database import db
 from screens.welcome import Welcome
 from screens.vehiclesView import VehiclesView
 from screens.vehicleDetails import VehicleDetails
+from screens.payment_bill import pay_bill_Screen
+from screens.payment_access import pay_access_Screen
 
 
 class App(tk.Tk):
@@ -52,7 +54,10 @@ class App(tk.Tk):
         self.activeFrames = {}
         self.allFrames = {'welcome': Welcome,
                           'vehiclesView': VehiclesView,
-                          'vehicleDetails': VehicleDetails}
+                          'paymentAccess': pay_access_Screen,
+                          'paymentBill': pay_bill_Screen,
+                          'vehicleDetails': VehicleDetails,
+                          }
 
         for key in self.allFrames:
             print('Key: ', key)

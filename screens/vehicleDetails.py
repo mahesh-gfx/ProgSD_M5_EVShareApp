@@ -6,12 +6,13 @@ import tkinter.font as tkFont
 class VehicleDetails(ttk.Frame):
 
     def __init__(self, container, controller):
-        super().__init__(container)
+        super().__init__(container, style="Custom.TFrame")
         print("Constructing Vehicle Details frame...")
 
         self.style = ttk.Style()
         self.style.configure("TButton", font=("Helvetica", 16))
         self.style.configure('TMenu', anchor='w', justify='left')
+        self.style.configure("Custom.TFrame", background="#D9D9D9")
 
         self.backButtonArrow = tk.PhotoImage(
             file="./image_components/arrow_alt_left.png")
@@ -91,7 +92,8 @@ class VehicleDetails(ttk.Frame):
                 'Helvetica', 12), anchor='w', justify='left')
         label_seats.grid(row=0, column=0, sticky='nw', padx=275, pady=480)
 
-        self.letsGoButton = ttk.Button(self, text='Book now', compound="left")
+        self.letsGoButton = ttk.Button(
+            self, text='Book now', compound="left", command=lambda: controller.change_frame('paymentBill'))
         self.letsGoButton.place(x=310, y=250, height=52, width=150)
 
 

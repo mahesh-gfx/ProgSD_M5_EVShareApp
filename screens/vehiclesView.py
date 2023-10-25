@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-import tkinter.font as tkFont
 
 
 class VehiclesView(ttk.Frame):
@@ -339,12 +338,13 @@ class VehiclesView(ttk.Frame):
     ]
 
     def __init__(self, container, controller):
-        super().__init__(container)
+        super().__init__(container, style="Custom.TFrame")
         print("Constructing Vehicles View self.navigation...")
         # self.configure(bg="white")
         self.style = ttk.Style()
         self.style.configure("TButton", font=("Helvetica", 16))
         self.style.configure('TMenu', anchor='w', justify='left')
+        self.style.configure("Custom.TFrame", background="white")
 
         self.selected_vehicle = tk.StringVar()  # Create the StringVar here
         self.options = ['Sedan', 'Bike', 'Hatchback', 'Coupe', 'SUV']
