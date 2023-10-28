@@ -1,44 +1,67 @@
 import tkinter as tk
-from tkinter import PhotoImage
+from tkinter import *
+from tkinter.ttk import *
 
 
-class welcome():
-    # Attributes
-    vehicles = []
-
+class Welcome(tk.Frame):
     # Constructors
-    def __init__(self):
-        print("Constructing App...")
+    def __init__(self, container, controller):
+        tk.Frame.__init__(self, container)
+        print("Constructing Welcome frame...")
 
-        self.root = tk.Tk()
-        self.root.geometry("480x800")
-        self.root.title("Zevo | EV Rental")
-        self.root.resizable(False, True)
+        self.pageLabel = tk.Label(self, text='Welcome Page',
+                                  relief="raised")
+        self.pageLabel.place(x=10, y=10)
 
-        backgroundImageFile = PhotoImage(
+        self.backgroundImageFile = PhotoImage(
             file=r"./image_components/welcome-background.png")
-        original_width = backgroundImageFile.width()
-        original_height = backgroundImageFile.height()
-        aspect_ratio = original_width / original_height
-        new_width = int(800 * aspect_ratio)
-        new_height = 800
+        self.original_width = self.backgroundImageFile.width()
+        self.original_height = self.backgroundImageFile.height()
+        self.aspect_ratio = self.original_width / self.original_height
+        self.new_width = int(800 * self.aspect_ratio)
+        self.new_height = 800
 
-        resizedImage = backgroundImageFile.subsample(
-            original_width // new_width, original_height // new_height)
-        backgroundImage = tk.Label(
-            self.root, image=resizedImage, bg="#000000")
-        backgroundImage.place(relheight=1, relwidth=1)
-        letsGoButtonImage = PhotoImage(
+        self.resizedImage = self.backgroundImageFile.subsample(
+            self.original_width // self.new_width, self.original_height // self.new_height)
+        self.backgroundImage = tk.Label(
+            self, image=self.resizedImage, bg="#000000")
+        self.backgroundImage.place(relheight=1, relwidth=1)
+        self.letsGoButtonImage = PhotoImage(
             file=r"./image_components/lets-go-button.png")
-        letsGoButton = tk.Button(self.root, image=letsGoButtonImage,
-                                 command=lambda: print("Clicked Lets Go"))
-        letsGoButton.place(x=78, y=591, height=68, width=320)
+        self.letsGoButton = tk.Button(self, image=self.letsGoButtonImage, compound=TOP, borderwidth=0, background='#FFF',
+                                      command=lambda: controller.change_frame('vehiclesView'))
+        self.letsGoButton.place(x=78, y=591, height=68, width=320)
 
-        knowMoreButtonImage = PhotoImage(
+        self.knowMoreButtonImage = PhotoImage(
             file=r"./image_components/know-more-button.png")
-        knowMoreButton = tk.Button(self.root, image=knowMoreButtonImage,
-                                   command=lambda: print("Clicked Lets Go"), default="normal", border=0)
-        knowMoreButton.place(x=78, y=678, height=68, width=320)
-        self.root.mainloop()
+        self.knowMoreButton = tk.Button(self, image=self.knowMoreButtonImage,
+                                        command=lambda: controller.change_frame('vehiclesView'), default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
+        self.knowMoreButton.place(x=78, y=678, height=68, width=320)
 
-    # Methods
+
+# # single screen development
+# class App(tk.Tk):
+#     # Attributes
+#     vehicles = []
+#     db_name = 'zevo-dev.db'
+#     # Constructors
+
+#     def __init__(self):
+#         super().__init__()
+#         self.geometry("480x800")
+#         self.title("Zevo | EV Rental")
+#         self.resizable(False, True)
+#         print("Constructing App...")
+
+#         self.container = tk.Frame(self)
+#         self.container.pack(side="top", fill="both", expand=True)
+#         self.container.grid_rowconfigure(0, weight=1)
+#         self.container.grid_columnconfigure(0, weight=1)
+#         self.welcome = Welcome(self.container, controller=self)
+#         self.welcome.grid(row=0, column=0, sticky="nsew")
+#         self.welcome.tkraise()
+
+
+# if __name__ == "__main__":
+#     app = App()
+#     app.mainloop()

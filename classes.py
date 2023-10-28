@@ -77,6 +77,8 @@ class Vehicle:
 
     history = []
     defects = []
+    bg = ''
+    fg = ''
 
     def __init__(self, type, vehicleClass, make,
                  model,

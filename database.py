@@ -5,8 +5,8 @@ import pandas as pd
 class db():
     def __init__(self):
         print("Initializing database...")
-        conn = sqlite3.connect('zevo-dev.db')
-        self.c = conn.cursor()
+        self.conn = sqlite3.connect('zevo-dev.db')
+        self.c = self.conn.cursor()
 
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS vehicles
@@ -37,8 +37,7 @@ class db():
                 [email] TEXT,
                 [secret] TEXT)
                 ''')
-
-        conn.commit()
+        self.conn.commit()
         if self.validate_new_db() == True:
             print("Db is empty")
             self.populate_mock_data()
@@ -55,6 +54,7 @@ class db():
                     ('SUV', 'Honda', 'CR-V', 'XYZ789', 250, 50, 6, 70000, 400, 5, 5, 200, 140, 0, 1, 'History for CR-V', 'Minor scratches'),
                     ('Electric', 'Tesla', 'Model 3', 'EV456', 300, 60, 10, 80000, 300, 4, 5, 250, 150, 1, 0, 'History for Model 3', 'Battery issue');
         ''')
+        self.conn.commit()
 
     # check if there are tabled in the database and if they have data
     def validate_new_db(self):
