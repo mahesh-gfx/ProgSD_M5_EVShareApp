@@ -133,26 +133,28 @@ class pay_bill_Screen(ttk.Frame):
         self.membership_roller = tkinter.ttk.Combobox(self, textvariable=self.val, values=membership, state="readonly",
                                                       font=(font_name, 14), style="CustomStyles.TCombobox")
         self.option_add("*TCombobox*Listbox*Font", (font_name, 14))
-        self.option_add("*TCombobox*Listbox*Background", "#A3A3A3")
+        self.option_add("*TCombobox*Listbox*Background", "white")
         self.membership_roller.place(x=65, y=578, width=280, height=40)
-
+        '''
         self.styled.configure('CustomStyles.TCombobox',
                               foreground='black',
                               selectforeground='black',
-                              selectbackground='#D9D9D9',
-                              fieldbackground='#D9D9D9')
-
-        # self.styled.theme_create('combostyle', parent='alt',
-        #                         settings={'TCombobox':
-        #                                   {'configure':
-        #                                    {
-        #                                        'foreground': 'black',
-        #                                        'selectforeground': 'black',
-        #                                        'selectbackground': '#D9D9D9',
-        #                                        'fieldbackground': '#D9D9D9',
-        #                                    }}}
-        #                         )
-        # self.styled.theme_use('combostyle')
+                              selectbackground='white',
+                              fieldbackground='white')
+       
+        
+        self.styled.theme_create('combostyle', parent='alt',
+                                 settings={'TCombobox':
+                                           {'configure':
+                                            {
+                                                'foreground': 'black',
+                                                'selectforeground': 'black',
+                                                'selectbackground': 'white',
+                                                'fieldbackground': 'white',
+                                            }}}
+                                 )
+        '''
+        #self.styled.theme_use('combostyle')
         # enter membership button
         self.enter_membership_image = r"./image_components/paybill_enter.png"
         self.enter_membership = PhotoImage(file=self.enter_membership_image)
