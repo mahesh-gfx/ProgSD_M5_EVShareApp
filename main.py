@@ -7,6 +7,8 @@ from screens.payment_bill import pay_bill_Screen
 from screens.payment_access import pay_access_Screen
 from screens.defect import defect_page
 from screens.addcard import add_card_Screen
+from screens.login import login_page
+from screens.register import register_page
 
 class App(tk.Tk):
     # Attributes
@@ -60,6 +62,8 @@ class App(tk.Tk):
                           'reportDefect': defect_page,
                           'vehicleDetails': VehicleDetails,
                           'addCard': add_card_Screen,
+                          'login': login_page,
+                          'register':register_page
                           }
 
         for key in self.allFrames:
