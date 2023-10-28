@@ -5,7 +5,7 @@ from screens.vehiclesView import VehiclesView
 from screens.vehicleDetails import VehicleDetails
 from screens.payment_bill import pay_bill_Screen
 from screens.payment_access import pay_access_Screen
-
+from screens.defect import defect_page
 
 class App(tk.Tk):
     # Attributes
@@ -56,7 +56,9 @@ class App(tk.Tk):
                           'vehiclesView': VehiclesView,
                           'paymentAccess': pay_access_Screen,
                           'paymentBill': pay_bill_Screen,
+                          'reportDefect': defect_page,
                           'vehicleDetails': VehicleDetails,
+
                           }
 
         for key in self.allFrames:
