@@ -130,7 +130,7 @@ class pay_access_Screen(ttk.Frame):
         self.topblock.place(x=40, y=62)
         # text: bill
         self.bill_left = Label(self, text="amount:\nservice fee:\ndiscount:", font=(
-            font_name, 16), background='#F0F0F0', anchor="w")
+            font_name, 16), background='#D9D9D9', anchor="w")
         self.bill_left.place(x=60, y=83, width=180)
         self.bill_left["justify"] = "left"
         """
@@ -141,18 +141,18 @@ class pay_access_Screen(ttk.Frame):
         """
         str_fee = str("50\n3\n0")
         self.bill_right = Label(self, text=str_fee, font=(
-            font_name, 16), background='#F0F0F0', anchor="e")
+            font_name, 16), background='#D9D9D9', anchor="e")
         self.bill_right.place(x=240, y=83, width=180)
         self.bill_right["justify"] = "right"
         # total
         self.total_left = Label(self, text="Total:", font=(
-            font_name, 20, "bold"), background='#F0F0F0', anchor="w")
+            font_name, 20, "bold"), background='#D9D9D9', anchor="w")
         self.total_left.place(x=60, y=170, width=180)
         self.total_left["justify"] = "left"
         # total_bill = amount+service_fee-discount
         total_bill = 33.99
         self.total_right = Label(self, text=str(total_bill), font=(
-            font_name, 20, "bold"), background='#F0F0F0', anchor="e")
+            font_name, 20, "bold"), background='#D9D9D9', anchor="e")
         self.total_right.place(x=240, y=170, width=180)
         self.total_right["justify"] = "right"
 
@@ -244,15 +244,8 @@ class pay_access_Screen(ttk.Frame):
                                            image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
         self.button_paypal_choose.place(x=393, y=623)
 
-        # pay button
-        self.filepay = r"./image_components/pay_small.png"
+        self.filepay = r"./image_components/pay_big.png"
         self.photopay = PhotoImage(file=self.filepay)
         self.pay_button = Button(self, image=self.photopay, background='#F0F0F0',
                                  borderwidth=0, compound=TOP, command=self.turnto_payresult)
-        self.pay_button.place(x=40, y=720)
-        # back
-        self.fileback = r"./image_components/pay_back.png"
-        self.photoback = PhotoImage(file=self.fileback)
-        self.back_button = Button(self, image=self.photoback, background='#F0F0F0',
-                                  borderwidth=0, compound=TOP, command=lambda:controller.change_frame('paymentBill'))
-        self.back_button.place(x=279, y=720)
+        self.pay_button.place(x=20, y=720)
