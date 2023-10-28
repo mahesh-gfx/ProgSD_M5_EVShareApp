@@ -6,13 +6,14 @@ import tkinter.font as tkFont
 class VehicleDetails(ttk.Frame):
 
     def __init__(self, container, controller):
-        super().__init__(container, style="Custom.TFrame")
+        super().__init__(container)
         print("Constructing Vehicle Details frame...")
 
-        self.style = ttk.Style()
-        self.style.configure("TButton", font=("Helvetica", 16))
-        self.style.configure('TMenu', anchor='w', justify='left')
-        self.style.configure("Custom.TFrame", background="#D9D9D9")
+        self.styled = ttk.Style()
+        self.styled.configure("TButton", font=("Helvetica", 16))
+        self.styled.configure('TMenu', anchor='w', justify='left')
+        self.styled.configure("Custom.TFrame", background="white")
+        self.style = "Custom.TFrame"
 
         self.backButtonArrow = tk.PhotoImage(
             file="./image_components/arrow_alt_left.png")

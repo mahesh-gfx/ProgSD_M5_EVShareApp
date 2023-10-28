@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter.ttk
-# import payment_access as pa
 
 
 class pay_bill_Screen(ttk.Frame):
@@ -37,31 +36,39 @@ class pay_bill_Screen(ttk.Frame):
         super().__init__(container)
         # local variable
         font_name = 'Mako'
+        self.styled = tkinter.ttk.Style()
+        self.styled.configure("Custom.TFrame", background="white")
+        self.style = "Custom.TFrame"
+        self.backButtonArrow = PhotoImage(
+            file="./image_components/arrow_alt_left.png")
+        self.backButton = ttk.Button(self,
+                                     image=self.backButtonArrow, command=lambda: controller.change_frame('vehicleDetails'))
+        self.backButton.place(x=10, y=10)
 
         # profile button
-        self.photoProf = "./image_components/defect-profile.png"
-        self.photoProf = PhotoImage(file=self.photoProf)
-        self.buttonProf = Button(self, image=self.photoProf, compound=TOP,
-                                 command=self.to_profile_page, borderwidth=0, background='#FFF')
-        self.buttonProf.place(x=10, y=20)
+        # self.photoProf = "./image_components/defect-profile.png"
+        # self.photoProf = PhotoImage(file=self.photoProf)
+        # self.buttonProf = Button(self, image=self.photoProf, compound=TOP,
+        #                          command=self.to_profile_page, borderwidth=0, background='#FFF')
+        # self.buttonProf.place(x=10, y=20)
 
         # consult button
         self.photoConsult = "./image_components/defect-consult.png"
         self.photoConsult = PhotoImage(file=self.photoConsult)
         self.buttonConsult = Button(self, image=self.photoConsult, compound=TOP,
-                                    command=self.to_consult_page, borderwidth=0, background='#FFF')
+                                    command=self.to_consult_page, borderwidth=0, background='#F0F0F0')
         self.buttonConsult.place(x=440, y=20)
 
         # 4 block
         self.payblock1_file = r"./image_components/payblock1.png"
         self.payblock1 = PhotoImage(file=self.payblock1_file)
-        self.block1 = Label(self, image=self.payblock1, background='#FFF')
+        self.block1 = Label(self, image=self.payblock1, background='#F0F0F0')
         self.block1.place(x=40, y=139)
-        self.block2 = Label(self, image=self.payblock1, background='#FFF')
+        self.block2 = Label(self, image=self.payblock1, background='#F0F0F0')
         self.block2.place(x=40, y=271)
-        self.block3 = Label(self, image=self.payblock1, background='#FFF')
+        self.block3 = Label(self, image=self.payblock1, background='#F0F0F0')
         self.block3.place(x=40, y=403)
-        self.block4 = Label(self, image=self.payblock1, background='#FFF')
+        self.block4 = Label(self, image=self.payblock1, background='#F0F0F0')
         self.block4.place(x=40, y=535)
 
         # text 1: tatal time + distance
@@ -124,22 +131,28 @@ class pay_bill_Screen(ttk.Frame):
         self.val = StringVar()
         self.val.set(membership[0])
         self.membership_roller = tkinter.ttk.Combobox(self, textvariable=self.val, values=membership, state="readonly",
-                                                      font=(font_name, 14))
+                                                      font=(font_name, 14), style="CustomStyles.TCombobox")
         self.option_add("*TCombobox*Listbox*Font", (font_name, 14))
         self.option_add("*TCombobox*Listbox*Background", "#A3A3A3")
         self.membership_roller.place(x=65, y=578, width=280, height=40)
-        combostyle = tkinter.ttk.Style()
-        combostyle.theme_create('combostyle', parent='alt',
-                                settings={'TCombobox':
-                                          {'configure':
-                                           {
-                                               'foreground': 'black',
-                                               'selectforeground': 'black',
-                                               'selectbackground': '#D9D9D9',
-                                               'fieldbackground': '#D9D9D9',
-                                           }}}
-                                )
-        combostyle.theme_use('combostyle')
+
+        self.styled.configure('CustomStyles.TCombobox',
+                              foreground='black',
+                              selectforeground='black',
+                              selectbackground='#D9D9D9',
+                              fieldbackground='#D9D9D9')
+
+        # self.styled.theme_create('combostyle', parent='alt',
+        #                         settings={'TCombobox':
+        #                                   {'configure':
+        #                                    {
+        #                                        'foreground': 'black',
+        #                                        'selectforeground': 'black',
+        #                                        'selectbackground': '#D9D9D9',
+        #                                        'fieldbackground': '#D9D9D9',
+        #                                    }}}
+        #                         )
+        # self.styled.theme_use('combostyle')
         # enter membership button
         self.enter_membership_image = r"./image_components/paybill_enter.png"
         self.enter_membership = PhotoImage(file=self.enter_membership_image)
@@ -177,7 +190,8 @@ class pay_bill_Screen(ttk.Frame):
         # tophoto_file=r"../image_components/pay_car.png"
         self.tophoto_file = r"./image_components/pay_bike.png"
         self.tophoto = PhotoImage(file=self.tophoto_file)
-        self.toplabel = Label(self, image=self.tophoto, borderwidth=0)
+        self.toplabel = Label(self, image=self.tophoto,
+                              borderwidth=0, background='#F0F0F0')
         # toplabel.place(x=127,y=65,width=227,height=114)
         self.toplabel.place(x=130, y=57, width=220, height=118)
         # pay_bill_Screen.mainloop()

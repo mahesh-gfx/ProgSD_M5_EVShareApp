@@ -216,18 +216,18 @@ class pay_access_Screen(ttk.Frame):
         self.option_add("*TCombobox*Listbox*Font", (font_name, 14))
         self.option_add("*TCombobox*Listbox*Background", "#F2F2F2")
         self.card_roller.place(x=75, y=450, width=280, height=30)
-        combostyle2 = ttk.Style()
-        combostyle2.theme_create('combostyle2', parent='alt',
-                                 settings={'TCombobox':
-                                           {'configure':
-                                            {
-                                                'foreground': 'black',
-                                                'selectforeground': 'black',
-                                                'selectbackground': '#F2F2F2',
-                                                'fieldbackground': '#F2F2F2',
-                                            }}}
-                                 )
-        combostyle2.theme_use('combostyle2')
+        # combostyle2 = ttk.Style()
+        # combostyle2.theme_create('combostyle2', parent='alt',
+        #                          settings={'TCombobox':
+        #                                    {'configure':
+        #                                     {
+        #                                         'foreground': 'black',
+        #                                         'selectforeground': 'black',
+        #                                         'selectbackground': '#F2F2F2',
+        #                                         'fieldbackground': '#F2F2F2',
+        #                                     }}}
+        #                          )
+        # combostyle2.theme_use('combostyle2')
 
         self.button_card_choose = Button(self,
                                          image=self.photoSelect_F, compound=TOP, command=self.use_card, borderwidth=0, background='#F2F2F2')

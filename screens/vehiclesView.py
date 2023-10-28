@@ -338,13 +338,13 @@ class VehiclesView(ttk.Frame):
     ]
 
     def __init__(self, container, controller):
-        super().__init__(container, style="Custom.TFrame")
+        super().__init__(container)
         print("Constructing Vehicles View self.navigation...")
-        # self.configure(bg="white")
-        self.style = ttk.Style()
-        self.style.configure("TButton", font=("Helvetica", 16))
-        self.style.configure('TMenu', anchor='w', justify='left')
-        self.style.configure("Custom.TFrame", background="white")
+        self.styled = ttk.Style()
+        self.styled.configure("TButton", font=("Helvetica", 16))
+        self.styled.configure('TMenu', anchor='w', justify='left')
+        self.styled.configure("Custom.TFrame", background="white")
+        self.style = "Custom.TFrame"
 
         self.selected_vehicle = tk.StringVar()  # Create the StringVar here
         self.options = ['Sedan', 'Bike', 'Hatchback', 'Coupe', 'SUV']
@@ -368,8 +368,8 @@ class VehiclesView(ttk.Frame):
             self, self.selected_vehicle, *self.options)
         self.dropdown.place(x=35, y=164, height=40, width=150)
 
-        self.style = ttk.Style()
-        self.style.configure('TMenubutton', font=(
+        self.styled = ttk.Style()
+        self.styled.configure('TMenubutton', font=(
             'Helvetica', 18, "bold"), anchor='w', justify='left')
 
         self.label.lift()
@@ -472,13 +472,10 @@ class VehiclesView(ttk.Frame):
         canvas.config(scrollregion=canvas.bbox("all"))
 
     def getLocation(self):
-        self.after(4000, lambda: self.locationButton.config(
-            text='Getting Location...'))
-
-    def gotLocation(self):
-        self.locationButtonText = 'G4 0AS, Glasgow'
         self.locationButton.config(
-            text=self.locationButtonText)
+            text='Getting Location...')
+        self.after(4000, lambda: self.locationButton.config(
+            text='G4 0AS, Glasgow'))
 
     def handle_click_on_vehicle(self, controller, car):
         print("Clicked on label...")
