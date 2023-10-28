@@ -4,6 +4,7 @@ import tkinter.ttk
 
 
 class pay_bill_Screen(ttk.Frame):
+
     def to_profile_page(self):
         print('to profile page')
 
@@ -56,7 +57,7 @@ class pay_bill_Screen(ttk.Frame):
         self.photoConsult = "./image_components/defect-consult.png"
         self.photoConsult = PhotoImage(file=self.photoConsult)
         self.buttonConsult = Button(self, image=self.photoConsult, compound=TOP,
-                                    command=self.to_consult_page, borderwidth=0, background='#F0F0F0')
+                                    command=lambda: controller.change_frame('reportDefect'), borderwidth=0, background='#F0F0F0')
         self.buttonConsult.place(x=440, y=20)
 
         # 4 block
@@ -139,23 +140,22 @@ class pay_bill_Screen(ttk.Frame):
         self.styled.configure('CustomStyles.TCombobox',
                               foreground='black',
                               selectforeground='black',
-                              selectbackground='white',
-                              fieldbackground='white')
-       
-        
-        self.styled.theme_create('combostyle', parent='alt',
-                                 settings={'TCombobox':
-                                           {'configure':
-                                            {
-                                                'foreground': 'black',
-                                                'selectforeground': 'black',
-                                                'selectbackground': 'white',
-                                                'fieldbackground': 'white',
-                                            }}}
-                                 )
+                              selectbackground='#D9D9D9',
+                              fieldbackground='#D9D9D9')
         '''
-        #self.styled.theme_use('combostyle')
+        # self.styled.theme_create('combostyle', parent='alt',
+        #                         settings={'TCombobox':
+        #                                   {'configure':
+        #                                    {
+        #                                        'foreground': 'black',
+        #                                        'selectforeground': 'black',
+        #                                        'selectbackground': '#D9D9D9',
+        #                                        'fieldbackground': '#D9D9D9',
+        #                                    }}}
+        #                         )
+        # self.styled.theme_use('combostyle')
         # enter membership button
+
         self.enter_membership_image = r"./image_components/paybill_enter.png"
         self.enter_membership = PhotoImage(file=self.enter_membership_image)
         self.button_entermembership = Button(self,
@@ -184,7 +184,7 @@ class pay_bill_Screen(ttk.Frame):
         self.filepay = r"./image_components/pay_big.png"
         self.photopay = PhotoImage(file=self.filepay)
         self.pay_button = Button(self, image=self.photopay, background='#D9D9D9',
-                                 borderwidth=0, compound=TOP, command=controller.change_frame('paymentAccess'))
+                                 borderwidth=0, compound=TOP, command=lambda:controller.change_frame('paymentAccess'))
         self.pay_button.place(x=20, y=720)
 
         # top photo
