@@ -34,9 +34,9 @@ def register_page():
 
 
     # Signup Layout
-    layout = PhotoImage(file="../image_components/sign-up-layout.png")
-    layout_label = Label(image=layout)
-    layout_label.place(relx=0, rely=0)
+    # layout = PhotoImage(file=r"../image_components/sign-up-layout.png")
+    # layout_label = Label(image=layout)
+    # layout_label.place(relx=0, rely=0)
 
     email_entry = Entry(win, width=60, font=('Helvetica', 15), highlightthickness=0)
     email_entry.config(borderwidth=0)
@@ -68,11 +68,11 @@ def register_page():
     confirm_password_entry.pack()
     confirm_password_entry.place(relx=.16, rely=.685)
 
-    SignupBtnPath = r"../image_components/register-btn.png"
-    SignupBtnPath = PhotoImage(file=SignupBtnPath)
-    buttonSignup = Button(image=SignupBtnPath, compound=TOP, command=handle_signup, borderwidth=0, background='white',
-                         activebackground="#FFFFFF")
-    buttonSignup.place(x=29, y=655)
+    # SignupBtnPath = r"../image_components/register-btn.png"
+    # SignupBtnPath = PhotoImage(file=SignupBtnPath)
+    # buttonSignup = Button(image=SignupBtnPath, compound=TOP, command=handle_signup, borderwidth=0, background='white',
+    #                      activebackground="#FFFFFF")
+    # buttonSignup.place(x=29, y=655)
 
     win.mainloop()
 

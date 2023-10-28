@@ -27,7 +27,7 @@ def open_login_pg():
 
 
     # Login Layout
-    layout = PhotoImage(file="../image_components/login_layout.png")
+    layout = PhotoImage(file=r"../image_components/login_layout.png")
     layout_label = Label(image=layout)
     layout_label.place(relx=0, rely=0)
 
@@ -47,33 +47,33 @@ def open_login_pg():
     # email_label = tk.Label(win, bg="white")
     # email_label.pack()
     # email_label.place(x=0, y=.5)
-    email_entry = Entry(win, width=60, font=('Helvetica', 15), highlightthickness=0)
+    email_entry = Entry(win, font=('Helvetica', 15), highlightthickness=0,background='white')
     email_entry.config(borderwidth=0)
-    email_entry.insert(0, "Email")
     email_entry.pack()
-    email_entry.place(relx=.15, rely=.545)
+    email_entry.place(x = 170,y = 440, width=300)
     # email_entry.bind('<1>', handle_input_onclick)
 
     # Password input field
     # password_icon = tk.PhotoImage(file="./image_components/email_icon.png")  # Replace with your password icon
     # password_label = tk.Label(win, bg="black")
     # password_label.pack()
-    password_entry = Entry(win, width=60, font=('Helvetica', 15), highlightthickness=0, show="*")
+    password_entry = Entry(win, width=60, font=('Helvetica', 15), highlightthickness=0, show="*",background='white')
     password_entry.config(borderwidth=0)
     # password_entry.insert(0)
     password_entry.pack()
-    password_entry.place(relx=.15, rely=.66)
+    password_entry.place(x = 190,y = 530, width=270)
 
-    # "Sign up" text
-    # signup_label = tk.Label(win, text="Sign up", font=("Helvetica", 12), fg="black", bg="white")
-    # signup_label.pack()
-    # signup_label.place(relx=.7, rely=.63)
+    # Sign up button
+    SignBtnPath = r"../image_components/login-signup.png"
+    SignBtnPath = PhotoImage(file=SignBtnPath)
+    buttonSign = Button(image=SignBtnPath, compound=TOP, command=handle_login, borderwidth=0,background='white', activebackground="#FFFFFF")
+    buttonSign.place(x=380, y=570)
 
     # Login button
     LoginBtnPath = r"../image_components/button-grey.png"
     LoginBtnPath = PhotoImage(file=LoginBtnPath)
     buttonLogin = Button(image=LoginBtnPath, compound=TOP, command=handle_login, borderwidth=0,background='white', activebackground="#FFFFFF")
-    buttonLogin.place(x=29, y=655)
+    buttonLogin.place(x=79, y=673)
 
     win.mainloop()
 

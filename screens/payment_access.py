@@ -108,12 +108,13 @@ class pay_access_Screen(ttk.Frame):
         # local variable
         font_name = 'Mako'
 
-        # profile button
-        self.photoProf = r"./image_components/defect-profile.png"
-        self.photoProf = PhotoImage(file=self.photoProf)
-        self.buttonProf = Button(self, image=self.photoProf, compound=TOP,
-                                 command=self.to_profile_page, borderwidth=0, background='#F0F0F0')
-        self.buttonProf.place(x=10, y=20)
+        # back button
+        self.backButtonArrow = PhotoImage(
+            file="./image_components/arrow_alt_left.png")
+        self.backButton = ttk.Button(self,
+                                     image=self.backButtonArrow,
+                                     command=lambda: controller.change_frame('paymentBill'))
+        self.backButton.place(x=10, y=10)
 
         # consult button
         self.photoConsult = r"./image_components/defect-consult.png"
@@ -201,7 +202,7 @@ class pay_access_Screen(ttk.Frame):
         self.fileaddcard = r"./image_components/pay_addcard.png"
         self.addcard = PhotoImage(file=self.fileaddcard)
         self.addcard_button = Button(self, image=self.addcard, background='#F0F0F0',
-                                     borderwidth=0, compound=TOP, command=self.turnto_addcard)
+                                     borderwidth=0, compound=TOP, command=lambda:controller.change_frame('addCard'))
         self.addcard_button.place(x=235, y=417)
 
         # choose card
@@ -214,7 +215,7 @@ class pay_access_Screen(ttk.Frame):
         self.card_roller = ttk.Combobox(self,
                                         textvariable=val, values=card, state="readonly", font=(font_name, 14))
         self.option_add("*TCombobox*Listbox*Font", (font_name, 14))
-        self.option_add("*TCombobox*Listbox*Background", "#F0F0F0")
+        self.option_add("*TCombobox*Listbox*Background", "white")
         self.card_roller.place(x=75, y=450, width=280, height=30)
         # combostyle2 = ttk.Style()
         # combostyle2.theme_create('combostyle2', parent='alt',
