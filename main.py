@@ -35,6 +35,11 @@ class App(tk.Tk):
         "fg": "#FFFFFF",
         "distance": "0.2",
     }
+    database = db()
+    usertype = ''
+    username = ''
+    loggedInUserType = ''
+    userEmail = ''
     # Constructors
 
     def __init__(self):
@@ -80,6 +85,59 @@ class App(tk.Tk):
     def set_selected_vehicle_details(self, vehicle):
         print("Changing selected vehicle details...", vehicle)
         self.selectedVehicle = vehicle
+
+    def signUpAndLogin(self):
+        # get username and secret from login pageas paramaters for this method
+        username = "Taleh"
+        secret = "xyz123"
+        email = "taleh@zevo"
+
+        print("Signing up...")
+
+        response = self.database.run_query(
+            '''INSERT INTO users (username, email, secret, usertype)
+            VALUES
+            (?, ?, ?, 'user');
+            ''', username, secret, email)
+        self.database.conn.commit()
+
+        # self.login()
+
+    def login(self):
+        # get username and secret from login pageas paramaters for this method
+        username = "Mahesh"
+        secret = "xyz123"
+
+        print("Logging in...")
+
+        self.database.run_query(
+            '''SELECT * FROM users
+                WHERE username = ? AND secret = ?
+                LIMIT 1;
+            ''', (username, secret))
+        result = self.database.c.fetchone()
+
+        if (str(result) != 'none'):
+            if (str(result[5]) == 'user'):
+                self.username = str(result[2])
+                self.loggedInUserType = str(result[5])
+                self.userEmail = str(result[3])
+                self.change_frame('vehiclesView')
+                print("A User logged in..")
+            if (str(result[5]) == 'manager'):
+                self.username = str(result[2])
+                self.loggedInUserType = str(result[5])
+                self.userEmail = str(result[3])
+                # self.change_frame('manager')
+                # self.geometry("1080x1960")
+                print("A Manager logged in..")
+            if (str(result[5]) == 'operator'):
+                self.username = str(result[2])
+                self.loggedInUserType = str(result[5])
+                self.userEmail = str(result[3])
+                # self.geometry("1080x1960")
+                # self.change_frame('operator')
+                print("An Operator logged in..")
 
 
 if __name__ == "__main__":

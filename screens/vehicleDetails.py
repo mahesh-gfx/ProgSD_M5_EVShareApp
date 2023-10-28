@@ -97,7 +97,6 @@ class VehicleDetails(ttk.Frame):
             self, text='Book now', compound="left", command=lambda: controller.change_frame('paymentBill'))
         self.letsGoButton.place(x=310, y=250, height=52, width=150)
 
-
 # # single screen development
 # class App(tk.Tk):
 #     # Attributes
