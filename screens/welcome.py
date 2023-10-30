@@ -29,13 +29,13 @@ class Welcome(tk.Frame):
         self.letsGoButtonImage = PhotoImage(
             file=r"./image_components/lets-go-button.png")
         self.letsGoButton = tk.Button(self, image=self.letsGoButtonImage, compound=TOP, borderwidth=0, background='#FFF',
-                                      command=lambda: controller.change_frame('vehiclesView'))
+                                      command=lambda: controller.change_frame('login'))
         self.letsGoButton.place(x=78, y=591, height=68, width=320)
 
         self.knowMoreButtonImage = PhotoImage(
             file=r"./image_components/know-more-button.png")
         self.knowMoreButton = tk.Button(self, image=self.knowMoreButtonImage,
-                                        command=lambda: controller.change_frame('vehiclesView'), default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
+                                        command=controller.login, default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
         self.knowMoreButton.place(x=78, y=678, height=68, width=320)
 
 

@@ -1,207 +1,195 @@
 from tkinter import *
+import tkinter as tk
 
+class defect_page(tk.Frame):
+    def __init__(self, container, controller):
+            tk.Frame.__init__(self, container)
+            self.defect_report_dict = {
+                "can't connect bluetooth": False,
+                "wrong battery status": False,
+                "tyre problems": False,
+                "traffic accident": False
+            }
 
-class defect_page:
+            # local variable
+            font_name = 'Mako'
+            # profile button
+            self.photoProf = r"./image_components/arrow_alt_left.png"
+            self.photoProf = PhotoImage(file=self.photoProf)
+            self.buttonProf = Button(self,image=self.photoProf, compound=TOP,
+                                command=lambda:controller.change_frame('paymentBill'), borderwidth=0, background='#F0F0F0')
+            self.buttonProf.place(x=10, y=20)
 
-    def __init__(self):
-        defect_report_dict = {
-            "can't connect bluetooth": False,
-            "wrong battery status": False,
-            "tyre problems": False,
-            "traffic accident": False
-        }
+            # consult button
+            self.photoConsult = r"./image_components/defect-consult.png"
+            self.photoConsult = PhotoImage(file=self.photoConsult)
+            self.buttonConsult = Button(self,image=self.photoConsult, compound=TOP,
+                                   command=self.to_consult_page, borderwidth=0, background='#F0F0F0')
+            self.buttonConsult.place(x=440, y=20)
 
-        def jump_page():
-            print('jump')
+            # Report defect text
+            self.photoReportDefect = r"./image_components/defect-reportDefect.png"
+            self.photoReportDefect = PhotoImage(file=self.photoReportDefect)
+            self.ReportDefectLabel = Label(self,
+                image=self.photoReportDefect, background='#F0F0F0')
+            self.ReportDefectLabel.place(x=89, y=64)
 
-        def upload_photo():
-            print('upload photo')
+            self.photoSelect_T = r"./image_components/defect-choise-T.png"
+            self.photoSelect_T = PhotoImage(file=self.photoSelect_T)
+            self.photoSelect_F = r"./image_components/defect-choise-F.png"
+            self.photoSelect_F = PhotoImage(file=self.photoSelect_F)
 
-        def add_chat():
-            print('add chat')
+            # Quick report text
+            self.QuickReportLabel = Label(self,text='Quick report:', font=(
+                font_name, 20), background='#F0F0F0')
+            self.QuickReportLabel.place(x=20, y=131)
 
-        def to_profile_page():
-            print('to profile page')
-
-        def to_consult_page():
-            print('to consult page')
-
-        def press_bt1():
             global buttonReportLabel1
-            if defect_report_dict["can't connect bluetooth"] == False:
-                defect_report_dict["can't connect bluetooth"] = True
-                buttonReportLabel1.destroy()
-                buttonReportLabel1 = Button(
-                    image=photoSelect_T, compound=TOP, command=press_bt1, borderwidth=0, background='#F8F8F8')
-                buttonReportLabel1.place(x=420, y=170)
-            else:
-                defect_report_dict["can't connect bluetooth"] = False
-                buttonReportLabel1.destroy()
-                buttonReportLabel1 = Button(
-                    image=photoSelect_F, compound=TOP, command=press_bt1, borderwidth=0, background='#F8F8F8')
-                buttonReportLabel1.place(x=420, y=170)
+            self.QuickReportLabel1 = Label(self,text="can't connect bluetooth", font=(
+                font_name, 16), background='#F0F0F0')
+            self.QuickReportLabel1.place(x=50, y=170)
+            self.buttonReportLabel1 = Button(self,
+                image=self.photoSelect_F, compound=TOP, command=self.press_bt1, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel1.place(x=420, y=170)
 
-        def press_bt2():
             global buttonReportLabel2
-            if defect_report_dict["wrong battery status"] == False:
-                defect_report_dict["wrong battery status"] = True
-                buttonReportLabel2.destroy()
-                buttonReportLabel2 = Button(
-                    image=photoSelect_T, compound=TOP, command=press_bt2, borderwidth=0, background='#F8F8F8')
-                buttonReportLabel2.place(x=420, y=200)
-            else:
-                defect_report_dict["wrong battery status"] = False
-                buttonReportLabel2.destroy()
-                buttonReportLabel2 = Button(
-                    image=photoSelect_F, compound=TOP, command=press_bt2, borderwidth=0, background='#F8F8F8')
-                buttonReportLabel2.place(x=420, y=200)
+            self.QuickReportLabel2 = Label(self,text='wrong battery status', font=(
+                font_name, 16), background='#F0F0F0')
+            self.QuickReportLabel2.place(x=50, y=200)
+            self.buttonReportLabel2 = Button(self,
+                image=self.photoSelect_F, compound=TOP, command=self.press_bt2, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel2.place(x=420, y=200)
 
-        def press_bt3():
             global buttonReportLabel3
-            if defect_report_dict["tyre problems"] == False:
-                defect_report_dict["tyre problems"] = True
-                buttonReportLabel3.destroy()
-                buttonReportLabel3 = Button(
-                    image=photoSelect_T, compound=TOP, command=press_bt3, borderwidth=0, background='#F8F8F8')
-                buttonReportLabel3.place(x=420, y=230)
-            else:
-                defect_report_dict["tyre problems"] = False
-                buttonReportLabel3.destroy()
-                buttonReportLabel3 = Button(
-                    image=photoSelect_F, compound=TOP, command=press_bt3, borderwidth=0, background='#F8F8F8')
-                buttonReportLabel3.place(x=420, y=230)
+            self.QuickReportLabel3 = Label(self,text='tyre problems', font=(
+                font_name, 16), background='#F0F0F0')
+            self.QuickReportLabel3.place(x=50, y=230)
+            self.buttonReportLabel3 = Button(self,
+                image=self.photoSelect_F, compound=TOP, command=self.press_bt3, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel3.place(x=420, y=230)
 
-        def press_bt4():
             global buttonReportLabel4
-            if defect_report_dict["traffic accident"] == False:
-                defect_report_dict["traffic accident"] = True
-                buttonReportLabel4.destroy()
-                buttonReportLabel4 = Button(
-                    image=photoSelect_T, compound=TOP, command=press_bt4, borderwidth=0, background='#F8F8F8')
-                buttonReportLabel4.place(x=420, y=260)
-            else:
-                defect_report_dict["traffic accident"] = False
-                buttonReportLabel4.destroy()
-                buttonReportLabel4 = Button(
-                    image=photoSelect_F, compound=TOP, command=press_bt4, borderwidth=0, background='#F8F8F8')
-                buttonReportLabel4.place(x=420, y=260)
+            self.QuickReportLabel4 = Label(self,text='traffic accident', font=(
+                font_name, 16), background='#F0F0F0')
+            self.QuickReportLabel4.place(x=50, y=260)
+            self.buttonReportLabel4 = Button(self,
+                image=self.photoSelect_F, compound=TOP, command=self.press_bt4, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel4.place(x=420, y=260)
 
-        # local variable
-        font_name = 'Mako'
+            # description box
+            self.photoRectangle = r"./image_components/defect-rectangle.png"
+            self.photoRectangle = PhotoImage(file=self.photoRectangle)
+            self.photoRectangleImg = Label(self,image=self.photoRectangle, background='#F0F0F0')
+            self.photoRectangleImg.place(x=30, y=307)
 
-        defectScreen = Tk()
-        defectScreen.geometry('480x800')
-        defectScreen.title('Report Defect')
-        defectScreen.configure(background='#F8F8F8')
-        defectScreen.resizable(False, False)
-        # profile button
-        photoProf = r"../image_components/defect-profile.png"
-        photoProf = PhotoImage(file=photoProf)
-        buttonProf = Button(image=photoProf, compound=TOP,
-                            command=to_profile_page, borderwidth=0, background='#F8F8F8')
-        buttonProf.place(x=10, y=20)
+            self.description_box = Entry(self,background='#FFFFFF', borderwidth=0)
+            self.description_box.place(x=45, y=360, width=395)
+            self.description_box.focus()
 
-        # consult button
-        photoConsult = r"../image_components/defect-consult.png"
-        photoConsult = PhotoImage(file=photoConsult)
-        buttonConsult = Button(image=photoConsult, compound=TOP,
-                               command=to_consult_page, borderwidth=0, background='#F8F8F8')
-        buttonConsult.place(x=440, y=20)
+            self.descriptionLabel = Label(self,text='Describe the details...', font=(
+                font_name, 16), background='#FFFFFF')
+            self.descriptionLabel.place(x=40, y=330)
 
-        # Report defect text
-        photoReportDefect = r"../image_components/defect-reportDefect.png"
-        photoReportDefect = PhotoImage(file=photoReportDefect)
-        ReportDefectLabel = Label(
-            image=photoReportDefect, background='#F8F8F8')
-        ReportDefectLabel.place(x=89, y=64)
+            # add image
+            self.photoaddImage = r"./image_components/defect-addImage-rectangle.png"
+            self.photoaddImage = PhotoImage(file=self.photoaddImage)
+            self.imageLabel1 = Label(self,image=self.photoaddImage, background='#F0F0F0')
+            self.imageLabel1.place(x=30, y=529)
+            self.imageLabel2 = Label(self,image=self.photoaddImage, background='#F0F0F0')
+            self.imageLabel2.place(x=180, y=529)
+            self.imageLabel3 = Label(self,image=self.photoaddImage, background='#F0F0F0')
+            self.imageLabel3.place(x=331, y=529)
 
-        photoSelect_T = r"../image_components/defect-choise-T.png"
-        photoSelect_T = PhotoImage(file=photoSelect_T)
-        photoSelect_F = r"../image_components/defect-choise-F.png"
-        photoSelect_F = PhotoImage(file=photoSelect_F)
+            self.photoaddPhoto = r"./image_components/defect-addPhoto.png"
+            self.photoaddPhoto = PhotoImage(file=self.photoaddPhoto)
+            self.upload_but = Button(self,image=self.photoaddPhoto, background='#F0F0F0',
+                                borderwidth=0, compound=TOP, command=self.upload_photo)
+            self.upload_but.place(x=200, y=549)
 
-        # Quick report text
-        QuickReportLabel = Label(text='Quick report:', font=(
-            font_name, 20), background='#F8F8F8')
-        QuickReportLabel.place(x=20, y=131)
+            self.photoaddChat = r"./image_components/defect-addChat.png"
+            self.photoaddChat = PhotoImage(file=self.photoaddChat)
+            self.addChat_but = Button(self,image=self.photoaddChat, background='#F0F0F0',
+                                 borderwidth=0, compound=TOP, command=self.add_chat)
+            self.addChat_but.place(x=351, y=549)
 
+            # submit button
+            self.photoSubmit = r"./image_components/defect-submit.png"
+            self.photoSubmit = PhotoImage(file=self.photoSubmit)
+            self.submit_but = Button(self,image=self.photoSubmit, background='#F0F0F0',
+                                borderwidth=0, compound=TOP, command=self.jump_page)
+            self.submit_but.place(x=21, y=672)
+
+    def jump_page(self):
+        print('jump')
+
+    def upload_photo(self):
+        print('upload photo')
+
+    def add_chat(self):
+        print('add chat')
+
+    def to_profile_page(self):
+        print('to profile page')
+
+    def to_consult_page(self):
+        print('to consult page')
+
+    def press_bt1(self):
         global buttonReportLabel1
-        QuickReportLabel1 = Label(text="can't connect bluetooth", font=(
-            font_name, 16), background='#F8F8F8')
-        QuickReportLabel1.place(x=50, y=170)
-        buttonReportLabel1 = Button(
-            image=photoSelect_F, compound=TOP, command=press_bt1, borderwidth=0, background='#F8F8F8')
-        buttonReportLabel1.place(x=420, y=170)
+        if self.defect_report_dict["can't connect bluetooth"] == False:
+            self.defect_report_dict["can't connect bluetooth"] = True
+            self.buttonReportLabel1.destroy()
+            self.buttonReportLabel1 = Button(self,
+                image=self.photoSelect_T, compound=TOP, command=self.press_bt1, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel1.place(x=420, y=170)
+        else:
+            self.defect_report_dict["can't connect bluetooth"] = False
+            self.buttonReportLabel1.destroy()
+            self.buttonReportLabel1 = Button(self,
+                image=self.photoSelect_F, compound=TOP, command=self.press_bt1, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel1.place(x=420, y=170)
 
+    def press_bt2(self):
         global buttonReportLabel2
-        QuickReportLabel2 = Label(text='wrong battery status', font=(
-            font_name, 16), background='#F8F8F8')
-        QuickReportLabel2.place(x=50, y=200)
-        buttonReportLabel2 = Button(
-            image=photoSelect_F, compound=TOP, command=press_bt2, borderwidth=0, background='#F8F8F8')
-        buttonReportLabel2.place(x=420, y=200)
+        if self.defect_report_dict["wrong battery status"] == False:
+            self.defect_report_dict["wrong battery status"] = True
+            self.buttonReportLabel2.destroy()
+            self.buttonReportLabel2 = Button(self,
+                image=self.photoSelect_T, compound=TOP, command=self.press_bt2, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel2.place(x=420, y=200)
+        else:
+            self.defect_report_dict["wrong battery status"] = False
+            self.buttonReportLabel2.destroy()
+            self.buttonReportLabel2 = Button(self,
+                image=self.photoSelect_F, compound=TOP, command=self.press_bt2, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel2.place(x=420, y=200)
 
+    def press_bt3(self):
         global buttonReportLabel3
-        QuickReportLabel3 = Label(text='tyre problems', font=(
-            font_name, 16), background='#F8F8F8')
-        QuickReportLabel3.place(x=50, y=230)
-        buttonReportLabel3 = Button(
-            image=photoSelect_F, compound=TOP, command=press_bt3, borderwidth=0, background='#F8F8F8')
-        buttonReportLabel3.place(x=420, y=230)
+        if self.defect_report_dict["tyre problems"] == False:
+            self.defect_report_dict["tyre problems"] = True
+            self.buttonReportLabel3.destroy()
+            self.buttonReportLabel3 = Button(self,
+                image=self.photoSelect_T, compound=TOP, command=self.press_bt3, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel3.place(x=420, y=230)
+        else:
+            self.defect_report_dict["tyre problems"] = False
+            self.buttonReportLabel3.destroy()
+            self.buttonReportLabel3 = Button(self,
+                image=self.photoSelect_F, compound=TOP, command=self.press_bt3, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel3.place(x=420, y=230)
 
+    def press_bt4(self):
         global buttonReportLabel4
-        QuickReportLabel4 = Label(text='traffic accident', font=(
-            font_name, 16), background='#F8F8F8')
-        QuickReportLabel4.place(x=50, y=260)
-        buttonReportLabel4 = Button(
-            image=photoSelect_F, compound=TOP, command=press_bt4, borderwidth=0, background='#F8F8F8')
-        buttonReportLabel4.place(x=420, y=260)
-
-        # description box
-        photoRectangle = r"../image_components/defect-rectangle.png"
-        photoRectangle = PhotoImage(file=photoRectangle)
-        photoRectangleImg = Label(image=photoRectangle, background='#F8F8F8')
-        photoRectangleImg.place(x=30, y=307)
-
-        description_box = Entry(background='#FFFFFF', borderwidth=0)
-        description_box.place(x=45, y=360, width=395)
-        description_box.focus()
-
-        descriptionLabel = Label(text='Describe the details...', font=(
-            font_name, 16), background='#FFFFFF')
-        descriptionLabel.place(x=40, y=330)
-
-        # add image
-        photoaddImage = r"../image_components/defect-addImage-rectangle.png"
-        photoaddImage = PhotoImage(file=photoaddImage)
-        imageLabel1 = Label(image=photoaddImage, background='#F8F8F8')
-        imageLabel1.place(x=30, y=529)
-        imageLabel2 = Label(image=photoaddImage, background='#F8F8F8')
-        imageLabel2.place(x=180, y=529)
-        imageLabel3 = Label(image=photoaddImage, background='#F8F8F8')
-        imageLabel3.place(x=331, y=529)
-
-        photoaddPhoto = r"../image_components/defect-addPhoto.png"
-        photoaddPhoto = PhotoImage(file=photoaddPhoto)
-        upload_but = Button(image=photoaddPhoto, background='#F8F8F8',
-                            borderwidth=0, compound=TOP, command=upload_photo)
-        upload_but.place(x=200, y=549)
-
-        photoaddChat = r"../image_components/defect-addChat.png"
-        photoaddChat = PhotoImage(file=photoaddChat)
-        addChat_but = Button(image=photoaddChat, background='#F8F8F8',
-                             borderwidth=0, compound=TOP, command=add_chat)
-        addChat_but.place(x=351, y=549)
-
-        # submit button
-        photoSubmit = r"../image_components/defect-submit.png"
-        photoSubmit = PhotoImage(file=photoSubmit)
-        submit_but = Button(image=photoSubmit, background='#F8F8F8',
-                            borderwidth=0, compound=TOP, command=jump_page)
-        submit_but.place(x=21, y=672)
-
-        defectScreen.mainloop()
-
-
-if __name__ == '__main__':
-    defect_page()
+        if self.defect_report_dict["traffic accident"] == False:
+            self.defect_report_dict["traffic accident"] = True
+            self.buttonReportLabel4.destroy()
+            self.buttonReportLabel4 = Button(self,
+                image=self.photoSelect_T, compound=TOP, command=self.press_bt4, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel4.place(x=420, y=260)
+        else:
+            self.defect_report_dict["traffic accident"] = False
+            self.buttonReportLabel4.destroy()
+            self.buttonReportLabel4 = Button(self,
+                image=self.photoSelect_F, compound=TOP, command=self.press_bt4, borderwidth=0, background='#F0F0F0')
+            self.buttonReportLabel4.place(x=420, y=260)

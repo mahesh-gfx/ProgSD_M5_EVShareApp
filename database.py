@@ -33,9 +33,11 @@ class db():
 
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS users
-                ([username] TEXT PRIMARY KEY,
+                ([userid], integer PRIMARY KEY,
+                [username] TEXT,
                 [email] TEXT,
-                [secret] TEXT)
+                [secret] TEXT,
+                [usertype] TEXT)
                 ''')
         self.conn.commit()
         if self.validate_new_db() == True:
@@ -54,6 +56,20 @@ class db():
                     ('SUV', 'Honda', 'CR-V', 'XYZ789', 250, 50, 6, 70000, 400, 5, 5, 200, 140, 0, 1, 'History for CR-V', 'Minor scratches'),
                     ('Electric', 'Tesla', 'Model 3', 'EV456', 300, 60, 10, 80000, 300, 4, 5, 250, 150, 1, 0, 'History for Model 3', 'Battery issue');
         ''')
+
+        self.c.execute('''INSERT INTO users (username, email, secret, usertype)
+            VALUES
+            ('Mahesh', 'mahesh@zevo.com', 'xyz123', 'user');
+            ''')
+        self.c.execute('''INSERT INTO users (username, email, secret, usertype)
+            VALUES
+            ('Ju', 'ju@zevo.com', 'xyz123', 'operator');
+            ''')
+        self.c.execute('''INSERT INTO users (username, email, secret, usertype)
+            VALUES
+            ('Li', 'mahesh@zevo.com', 'xyz123', 'manager');
+            ''')
+
         self.conn.commit()
 
     # check if there are tabled in the database and if they have data
@@ -67,10 +83,8 @@ class db():
 
     # Function to Execute Database Queries
     def run_query(self, query, parameters=()):
-        with sqlite3.connect(self.db_name) as conn:
-            cursor = conn.cursor()
-            result = cursor.execute(query, parameters)
-            conn.commit()
+        result = self.c.execute(query, parameters)
+        self.conn.commit()
         return result
 
     # Get vehicles from Database
@@ -79,3 +93,4 @@ class db():
         vehicles = self.run_query(query)
         df = pd.DataFrame(vehicles.fetchall(), columns=[
                           'vehicle_id', 'type'])
+        print("All vehicles: ", df)
