@@ -7,6 +7,8 @@ from screens.payment_bill import pay_bill_Screen
 from screens.payment_access import pay_access_Screen
 from screens.defect import defect_page
 from screens.addcard import add_card_Screen
+from screens.login import login_page
+from screens.register import register_page
 
 class App(tk.Tk):
     # Attributes
@@ -60,6 +62,8 @@ class App(tk.Tk):
                           'reportDefect': defect_page,
                           'vehicleDetails': VehicleDetails,
                           'addCard': add_card_Screen,
+                          'login': login_page,
+                          'register':register_page
                           }
 
         for key in self.allFrames:
@@ -76,8 +80,8 @@ class App(tk.Tk):
         print('Changed Frame to ', pageName)
 
     # Getters
-    def get_selected_car_details():
-        return ""
+    # def get_selected_car_details():
+    #     return ""
 
     # Setters
     def set_selected_vehicle_details(self, vehicle):
