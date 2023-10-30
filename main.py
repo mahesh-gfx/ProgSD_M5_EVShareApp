@@ -11,30 +11,7 @@ class App(tk.Tk):
     # Attributes
     vehicles = []
     db_name = 'zevo-dev.db'
-    selectedVehicle = {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects": [],
-        "image": "blue-tesla",
-        "bg": "#04317D",
-        "fg": "#FFFFFF",
-        "distance": "0.2",
-    }
+    _selectedVehicle = ""
     database = db()
     usertype = ''
     username = ''
@@ -55,7 +32,30 @@ class App(tk.Tk):
         self.container.grid_columnconfigure(0, weight=1)
 
         print("Constructing App...")
-
+        self._selectedVehicle = {
+            "type": "Car",
+            "vehicleClass": "SUV",
+            "make": "Tesla",
+            "model": "Model S",
+            "licensePlateNumber": "XYZ 123",
+            "ratePerWeek": "20",
+            "ratePerDay": "4",
+            "ratePerHour": "0.2",
+            "batteryCapacity": "64kWh",
+            "range": "550",
+            "doors": "5",
+            "seatingCapacity": "7",
+            "horsepower": "200",
+            "maxSpeed": "310",
+            "inUse": False,
+            "atSite": True,
+            "history": [],
+            "defects": [],
+            "image": "blue-tesla",
+            "bg": "#04317D",
+            "fg": "#FFFFFF",
+            "distance": "0.2",
+        }
         self.activeFrames = {}
         self.allFrames = {'welcome': Welcome,
                           'vehiclesView': VehiclesView,
@@ -78,13 +78,13 @@ class App(tk.Tk):
         print('Changed Frame to ', pageName)
 
     # Getters
-    def get_selected_car_details():
-        return ""
+    def get_selected_vehicle(self):
+        return self._selectedVehicle
 
     # Setters
-    def set_selected_vehicle_details(self, vehicle):
+    def set_selected_vehicle(self, vehicle):
         print("Changing selected vehicle details...", vehicle)
-        self.selectedVehicle = vehicle
+        self._selectedVehicle = vehicle
 
     def signUpAndLogin(self):
         # get username and secret from login pageas paramaters for this method

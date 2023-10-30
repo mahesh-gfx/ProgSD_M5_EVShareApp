@@ -479,7 +479,7 @@ class VehiclesView(ttk.Frame):
 
     def handle_click_on_vehicle(self, controller, car):
         print("Clicked on label...")
-        controller.set_selected_vehicle_details(car)
+        controller.set_selected_vehicle(car)
         controller.change_frame('vehicleDetails')
 
 
