@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 # import addcard as ac
 # import payment_bill as pb
 
@@ -16,19 +17,19 @@ class pay_access_Screen(ttk.Frame):
 
         if self.have_choose != 1:
             self.button_credit_choose = Button(self,
-                image=self.photoSelect_T, compound=TOP, command=self.use_credits, borderwidth=0, background='#F2F2F2')
+                                               image=self.photoSelect_T, compound=TOP, command=self.use_credits, borderwidth=0, background='#F2F2F2')
             self.button_credit_choose.place(x=393, y=318)
             if self.have_choose == 2:
                 self.button_card_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')
+                                                 image=self.photoSelect_F, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')
                 self.button_card_choose.place(x=393, y=441)
             elif self.have_choose == 3:
                 self.button_apple_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_apple, borderwidth=0, background='#F0F0F0')
+                                                  image=self.photoSelect_F, compound=TOP, command=self.use_apple, borderwidth=0, background='#F0F0F0')
                 self.button_apple_choose.place(x=393, y=543)
             else:
                 self.button_paypal_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
+                                                   image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
                 self.button_paypal_choose.place(x=393, y=623)
             self.have_choose = 1
 
@@ -36,57 +37,57 @@ class pay_access_Screen(ttk.Frame):
         # choose button image
         if self.have_choose != 2:
             self.button_card_choose = Button(self,
-                image=self.photoSelect_T, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')
+                                             image=self.photoSelect_T, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')
             self.button_card_choose.place(x=393, y=441)
             if self.have_choose == 1:
                 self.button_credit_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_credits, borderwidth=0, background='#F0F0F0')
+                                                   image=self.photoSelect_F, compound=TOP, command=self.use_credits, borderwidth=0, background='#F0F0F0')
                 self.button_credit_choose.place(x=393, y=318)
             elif self.have_choose == 3:
                 self.button_apple_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_apple, borderwidth=0, background='#F0F0F0')
+                                                  image=self.photoSelect_F, compound=TOP, command=self.use_apple, borderwidth=0, background='#F0F0F0')
                 self.button_apple_choose.place(x=393, y=543)
             else:
                 self.button_paypal_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
+                                                   image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
                 self.button_paypal_choose.place(x=393, y=623)
             self.have_choose = 2
 
     def use_apple(self):
         if self.have_choose != 3:
             self.button_apple_choose = Button(self,
-                image=self.photoSelect_T, compound=TOP, command=self.use_apple, borderwidth=0, background='#F0F0F0')
+                                              image=self.photoSelect_T, compound=TOP, command=self.use_apple, borderwidth=0, background='#F0F0F0')
             self.button_apple_choose.place(x=393, y=543)
             if self.have_choose == 1:
                 self.button_credit_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_credits, borderwidth=0, background='#F0F0F0')
+                                                   image=self.photoSelect_F, compound=TOP, command=self.use_credits, borderwidth=0, background='#F0F0F0')
                 self.button_credit_choose.place(x=393, y=318)
             elif self.have_choose == 2:
                 self.button_card_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')
+                                                 image=self.photoSelect_F, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')
                 self.button_card_choose.place(x=393, y=441)
             else:
                 self.button_paypal_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
+                                                   image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
                 self.button_paypal_choose.place(x=393, y=623)
             self.have_choose = 3
 
     def use_paypal(self):
         if self.have_choose != 4:
             self.button_paypal_choose = Button(self,
-                image=self.photoSelect_T, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
+                                               image=self.photoSelect_T, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
             self.button_paypal_choose.place(x=393, y=623)
             if self.have_choose == 1:
                 self.button_credit_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_credits, borderwidth=0, background='#F0F0F0')
+                                                   image=self.photoSelect_F, compound=TOP, command=self.use_credits, borderwidth=0, background='#F0F0F0')
                 self.button_credit_choose.place(x=393, y=318)
             elif self.have_choose == 2:
                 self.button_card_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')
+                                                 image=self.photoSelect_F, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')
                 self.button_card_choose.place(x=393, y=441)
             else:
                 self.button_apple_choose = Button(self,
-                    image=self.photoSelect_F, compound=TOP, command=self.use_apple, borderwidth=0, background='#F0F0F0')
+                                                  image=self.photoSelect_F, compound=TOP, command=self.use_apple, borderwidth=0, background='#F0F0F0')
                 self.button_apple_choose.place(x=393, y=543)
             self.have_choose = 4
 
@@ -94,14 +95,6 @@ class pay_access_Screen(ttk.Frame):
         self.destroy()
         # addcard = ac.add_card_Screen()
         # addcard.mainloop()
-
-    def turnto_payresult(self):
-        print('to pay ending')
-
-    def to_form_page(self):
-        self.destroy()
-        # pay_bill = pb.pay_bill_Screen()
-        # pay_bill.mainloop()
 
     def __init__(self, container, controller):
         super().__init__(container)
@@ -160,7 +153,8 @@ class pay_access_Screen(ttk.Frame):
         # bg
         self.payblock3_file = r"./image_components/payblock3.png"
         self.payblock3 = PhotoImage(file=self.payblock3_file)
-        self.mainblock = Label(self, image=self.payblock3, background='#F0F0F0')
+        self.mainblock = Label(
+            self, image=self.payblock3, background='#F0F0F0')
         self.mainblock.place(x=40, y=256)
         # choose button image
         self.photoSelect_T = r"./image_components/defect-choise-T.png"
@@ -202,7 +196,7 @@ class pay_access_Screen(ttk.Frame):
         self.fileaddcard = r"./image_components/pay_addcard.png"
         self.addcard = PhotoImage(file=self.fileaddcard)
         self.addcard_button = Button(self, image=self.addcard, background='#F0F0F0',
-                                     borderwidth=0, compound=TOP, command=lambda:controller.change_frame('addCard'))
+                                     borderwidth=0, compound=TOP, command=lambda: controller.change_frame('addCard'))
         self.addcard_button.place(x=235, y=417)
 
         # choose card
@@ -244,8 +238,12 @@ class pay_access_Screen(ttk.Frame):
                                            image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
         self.button_paypal_choose.place(x=393, y=623)
 
+        def turnto_payresult():
+            messagebox.showinfo("Zevo | EV Rental", "Pay Successfully")
+            controller.change_frame('vehiclesView')
+
         self.filepay = r"./image_components/pay_big.png"
         self.photopay = PhotoImage(file=self.filepay)
         self.pay_button = Button(self, image=self.photopay, background='#F0F0F0',
-                                 borderwidth=0, compound=TOP, command=self.turnto_payresult)
+                                 borderwidth=0, compound=TOP, command=turnto_payresult)
         self.pay_button.place(x=20, y=720)
