@@ -11,7 +11,7 @@ class db():
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS vehicles
                 ([vehicle_id] INTEGER PRIMARY KEY,
-                [type] TEXT,
+                [vehicleClass] TEXT,
                 [make] TEXT,
                 [model] TEXT,
                 [licensePlateNumber] TEXT,
@@ -27,8 +27,13 @@ class db():
                 [inUse] BOOLEAN,
                 [atSite] BOOLEAN,
                 [history] TEXT,
-                [defects] TEXT
-                  )
+                [defects] TEXT,
+                [image] TEXT,
+                [bg] TEXT,
+                [fg] TEXT,
+                [location] TEXT,
+                [hasDefects] BOOLEAN       
+                       );
                 ''')
 
         self.c.execute('''
@@ -44,32 +49,111 @@ class db():
         if self.validate_new_db() == True:
             print("Db is empty")
             self.populate_mock_data()
-        # self.root.mainloop()
-        # self.welcomeScreen = welcome()
 
     # Methods
     def populate_mock_data(self):
         print("populating mock data in the database...")
-        self.c.execute('''
-                    INSERT INTO vehicles (type, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects)
-                    VALUES
-                    ('Sedan', 'Toyota', 'Camry', 'ABC123', 200, 40, 5, 60000, 450, 4, 5, 180, 130, 0, 1, 'History for Camry', 'No defects'),
-                    ('SUV', 'Honda', 'CR-V', 'XYZ789', 250, 50, 6, 70000, 400, 5, 5, 200, 140, 0, 1, 'History for CR-V', 'Minor scratches'),
-                    ('Electric', 'Tesla', 'Model 3', 'EV456', 300, 60, 10, 80000, 300, 4, 5, 250, 150, 1, 0, 'History for Model 3', 'Battery issue');
-        ''')
 
-        self.c.execute('''INSERT INTO users (username, email, secret, usertype)
-            VALUES
-            ('Mahesh', 'mahesh@zevo.com', 'xyz123', 'user');
-            ''')
-        self.c.execute('''INSERT INTO users (username, email, secret, usertype)
-            VALUES
-            ('Ju', 'ju@zevo.com', 'xyz123', 'operator');
-            ''')
-        self.c.execute('''INSERT INTO users (username, email, secret, usertype)
-            VALUES
-            ('Li', 'mahesh@zevo.com', 'xyz123', 'manager');
-            ''')
+        vehicles = [
+            {
+                "type": "Car",
+                "vehicleClass": "SUV",
+                "make": "Tesla",
+                "model": "Model S",
+                "licensePlateNumber": "XYZ 123",
+                "ratePerWeek": 20,
+                "ratePerDay": 4,
+                "ratePerHour": 0.2,
+                "batteryCapacity": "64kWh",
+                "range": 550,
+                "doors": 5,
+                "seatingCapacity": 7,
+                "horsePower": 200,
+                "maxSpeed": 310,
+                "inUse": 0,  # False is represented as 0 in SQLite
+                "atSite": 1,  # True is represented as 1 in SQLite
+                "history": '[]',  # Convert to string
+                "defects": '[]',  # Convert to string
+                "image": "blue-tesla",
+                "bg": "#04317D",
+                "fg": "#FFFFFF",
+                "location": "0.2",
+                "hasDefects": 0
+            },
+            {
+                "type": "Car",
+                "vehicleClass": "SUV",
+                "make": "Tesla",
+                "model": "Model S",
+                "licensePlateNumber": "XYZ 123",
+                "ratePerWeek": 20,
+                "ratePerDay": 4,
+                "ratePerHour": 0.2,
+                "batteryCapacity": "64kWh",
+                "range": 550,
+                "doors": 5,
+                "seatingCapacity": 7,
+                "horsePower": 200,
+                "maxSpeed": 310,
+                "inUse": 0,
+                "atSite": 1,
+                "history": '[]',
+                "defects": '[]',
+                "image": "red-tesla",
+                "bg": "#D22739",
+                "fg": "#FFFFFF",
+                "location": "0.8",
+                "hasDefects": 0
+            },
+            {
+                "type": "Car",
+                "vehicleClass": "SUV",
+                "make": "Tesla",
+                "model": "Model S",
+                "licensePlateNumber": "XYZ 123",
+                "ratePerWeek": 20,
+                "ratePerDay": 4,
+                "ratePerHour": 0.2,
+                "batteryCapacity": "64kWh",
+                "range": 550,
+                "doors": 5,
+                "seatingCapacity": 7,
+                "horsePower": 200,
+                "maxSpeed": 310,
+                "inUse": 0,
+                "atSite": 1,
+                "history": '[]',
+                "defects": '[]',
+                "image": "white-tesla",
+                "bg": "#ECEDED",
+                "fg": "#000000",
+                "location": "0.7",
+                "hasDefects": 0
+            },
+        ]
+
+        # Insert vehicles
+        for item in vehicles:
+            self.c.execute('''INSERT INTO vehicles
+                    (vehicleClass, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour,
+                    batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects, image, bg, fg, location)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                           (item["vehicleClass"], item["make"], item["model"], item["licensePlateNumber"],
+                            item["ratePerWeek"], item["ratePerDay"], item["ratePerHour"],
+                               item["batteryCapacity"], item["range"], item["doors"], item["seatingCapacity"],
+                               item["horsePower"], item["maxSpeed"], item["inUse"], item["atSite"],
+                               item["history"], item["defects"], item["image"], item["bg"], item["fg"], item["location"]))
+
+        user_data = [
+            ('Mahesh', 'mahesh@zevo.com', 'xyz123', 'user'),
+            ('Ju', 'ju@zevo.com', 'xyz123', 'operator'),
+            ('Li', 'mahesh@zevo.com', 'xyz123', 'manager')
+        ]
+
+        # Insert users
+        for data in user_data:
+            self.c.execute('''INSERT INTO users (username, email, secret, usertype)
+                             VALUES (?, ?, ?, ?)''', data)
 
         self.conn.commit()
 

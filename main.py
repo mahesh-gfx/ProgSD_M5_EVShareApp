@@ -1,4 +1,5 @@
 import tkinter as tk
+import pandas as pd
 from database import db
 from screens.welcome import Welcome
 from screens.vehiclesView import VehiclesView
@@ -77,7 +78,7 @@ class App(tk.Tk):
             frame = self.allFrames[key](self.container, controller=self)
             self.activeFrames[key] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-
+        self.get_all_vehicles()
         self.change_frame('welcome')
 
     def change_frame(self, pageName):
@@ -94,7 +95,7 @@ class App(tk.Tk):
         print("Changing selected vehicle details...", vehicle)
         self._selectedVehicle = vehicle
 
-    def signUpAndLogin(self,username,secret,email):
+    def signUpAndLogin(self, username, secret, email):
         # get username and secret from login pageas paramaters for this method
         print("Signing up...")
         print(username)
@@ -109,7 +110,7 @@ class App(tk.Tk):
 
         # self.login()
 
-    def login(self,username,secret):
+    def login(self, username, secret):
         # get username and secret from login pageas paramaters for this method
         print("Logging in...")
         print(username)
@@ -143,6 +144,17 @@ class App(tk.Tk):
                 # self.geometry("1080x1960")
                 # self.change_frame('operator')
                 print("An Operator logged in..")
+
+    def get_all_vehicles(self):
+        self.database.run_query(
+            '''SELECT * FROM vehicles''')
+        response = self.database.c.fetchall()
+        response = pd.DataFrame(response, columns=["type", "vehicleClass", "make", "model", "licensePlateNumber", "ratePerWeek", "ratePerDay",
+                                                   "ratePerHour", "batteryCapacity", "range", "doors", "seatingCapacity", "horsePower", "maxSpeed",
+                                                   "inUse", "atSite", "history", "defects", "image", "bg", "fg", "location"])
+
+        self.vehicles = response.to_dict(orient='records')
+        return self.vehicles
 
 
 if __name__ == "__main__":
