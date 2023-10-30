@@ -35,7 +35,7 @@ class Welcome(tk.Frame):
         self.knowMoreButtonImage = PhotoImage(
             file=r"./image_components/know-more-button.png")
         self.knowMoreButton = tk.Button(self, image=self.knowMoreButtonImage,
-                                        command=lambda: controller.change_frame('login'), default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
+                                        command=controller.login, default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
         self.knowMoreButton.place(x=78, y=678, height=68, width=320)
 
 

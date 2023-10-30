@@ -10,34 +10,17 @@ from screens.addcard import add_card_Screen
 from screens.login import login_page
 from screens.register import register_page
 
+
 class App(tk.Tk):
     # Attributes
     vehicles = []
     db_name = 'zevo-dev.db'
-    selectedVehicle = {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects": [],
-        "image": "blue-tesla",
-        "bg": "#04317D",
-        "fg": "#FFFFFF",
-        "distance": "0.2",
-    }
+    _selectedVehicle = ""
+    database = db()
+    usertype = ''
+    username = ''
+    loggedInUserType = ''
+    userEmail = ''
     # Constructors
 
     def __init__(self):
@@ -53,7 +36,30 @@ class App(tk.Tk):
         self.container.grid_columnconfigure(0, weight=1)
 
         print("Constructing App...")
-
+        self._selectedVehicle = {
+            "type": "Car",
+            "vehicleClass": "SUV",
+            "make": "Tesla",
+            "model": "Model S",
+            "licensePlateNumber": "XYZ 123",
+            "ratePerWeek": "20",
+            "ratePerDay": "4",
+            "ratePerHour": "0.2",
+            "batteryCapacity": "64kWh",
+            "range": "550",
+            "doors": "5",
+            "seatingCapacity": "7",
+            "horsepower": "200",
+            "maxSpeed": "310",
+            "inUse": False,
+            "atSite": True,
+            "history": [],
+            "defects": [],
+            "image": "blue-tesla",
+            "bg": "#04317D",
+            "fg": "#FFFFFF",
+            "distance": "0.2",
+        }
         self.activeFrames = {}
         self.allFrames = {'welcome': Welcome,
                           'vehiclesView': VehiclesView,
@@ -63,7 +69,7 @@ class App(tk.Tk):
                           'vehicleDetails': VehicleDetails,
                           'addCard': add_card_Screen,
                           'login': login_page,
-                          'register':register_page
+                          'register': register_page
                           }
 
         for key in self.allFrames:
@@ -80,13 +86,66 @@ class App(tk.Tk):
         print('Changed Frame to ', pageName)
 
     # Getters
-    # def get_selected_car_details():
-    #     return ""
+    def get_selected_vehicle(self):
+        return self._selectedVehicle
 
     # Setters
-    def set_selected_vehicle_details(self, vehicle):
+    def set_selected_vehicle(self, vehicle):
         print("Changing selected vehicle details...", vehicle)
-        self.selectedVehicle = vehicle
+        self._selectedVehicle = vehicle
+
+    def signUpAndLogin(self):
+        # get username and secret from login pageas paramaters for this method
+        username = "Taleh"
+        secret = "xyz123"
+        email = "taleh@zevo"
+
+        print("Signing up...")
+
+        response = self.database.run_query(
+            '''INSERT INTO users (username, email, secret, usertype)
+            VALUES
+            (?, ?, ?, 'user');
+            ''', username, secret, email)
+        self.database.conn.commit()
+
+        # self.login()
+
+    def login(self):
+        # get username and secret from login pageas paramaters for this method
+        username = "Mahesh"
+        secret = "xyz123"
+
+        print("Logging in...")
+
+        self.database.run_query(
+            '''SELECT * FROM users
+                WHERE username = ? AND secret = ?
+                LIMIT 1;
+            ''', (username, secret))
+        result = self.database.c.fetchone()
+
+        if (str(result) != 'none'):
+            if (str(result[5]) == 'user'):
+                self.username = str(result[2])
+                self.loggedInUserType = str(result[5])
+                self.userEmail = str(result[3])
+                self.change_frame('vehiclesView')
+                print("A User logged in..")
+            if (str(result[5]) == 'manager'):
+                self.username = str(result[2])
+                self.loggedInUserType = str(result[5])
+                self.userEmail = str(result[3])
+                # self.change_frame('manager')
+                # self.geometry("1080x1960")
+                print("A Manager logged in..")
+            if (str(result[5]) == 'operator'):
+                self.username = str(result[2])
+                self.loggedInUserType = str(result[5])
+                self.userEmail = str(result[3])
+                # self.geometry("1080x1960")
+                # self.change_frame('operator')
+                print("An Operator logged in..")
 
 
 if __name__ == "__main__":
