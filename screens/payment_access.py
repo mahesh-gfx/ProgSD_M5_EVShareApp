@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 # import addcard as ac
 # import payment_bill as pb
 
@@ -95,13 +96,7 @@ class pay_access_Screen(ttk.Frame):
         # addcard = ac.add_card_Screen()
         # addcard.mainloop()
 
-    def turnto_payresult(self):
-        print('to pay ending')
-
-    def to_form_page(self):
-        self.destroy()
-        # pay_bill = pb.pay_bill_Screen()
-        # pay_bill.mainloop()
+    
 
     def __init__(self, container, controller):
         super().__init__(container)
@@ -244,8 +239,12 @@ class pay_access_Screen(ttk.Frame):
                                            image=self.photoSelect_F, compound=TOP, command=self.use_paypal, borderwidth=0, background='#F0F0F0')
         self.button_paypal_choose.place(x=393, y=623)
 
+        def turnto_payresult():
+            messagebox.showinfo("Zevo | EV Rental", "Pay Successfully")
+            controller.change_frame('vehiclesView')
+
         self.filepay = r"./image_components/pay_big.png"
         self.photopay = PhotoImage(file=self.filepay)
         self.pay_button = Button(self, image=self.photopay, background='#F0F0F0',
-                                 borderwidth=0, compound=TOP, command=self.turnto_payresult)
+                                 borderwidth=0, compound=TOP, command=turnto_payresult)
         self.pay_button.place(x=20, y=720)
