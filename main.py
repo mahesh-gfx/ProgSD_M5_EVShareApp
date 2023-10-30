@@ -104,7 +104,7 @@ class App(tk.Tk):
             '''INSERT INTO users (username, email, secret, usertype)
             VALUES
             (?, ?, ?, 'user');
-            ''', parameters=(username, secret, email))
+            ''', parameters=(username, email, secret))
         self.database.conn.commit()
 
         # self.login()
