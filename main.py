@@ -134,7 +134,7 @@ class App(tk.Tk):
                 self.loggedInUserType = str(result[5])
                 self.userEmail = str(result[3])
                 # self.change_frame('manager')
-                # self.geometry("1080x1960")
+                # self.geometry("1600x976")
                 print("A Manager logged in..")
             if (str(result[5]) == 'operator'):
                 self.username = str(result[2])

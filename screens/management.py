@@ -1,8 +1,61 @@
 from tkinter import *
-
+import sqlite3
+import matplotlib.pyplot as plt
+from collections import Counter
+from matplotlib.lines import Line2D
+import datetime
 
 class management:
+
+    def create_pie_chart(self, data, filename):
+        count = Counter(data)
+        # 获取字符串类型和它们的数量
+        labels, values = zip(*count.items())
+        plt.figure(figsize=(3, 2.25), dpi=80)  # 180像素对应dpi为80
+        plt.pie(values, labels=None, autopct='%1.1f%%', startangle=140)
+        plt.axis('off')
+        plt.axis('equal')
+        legend_elements = [Line2D([0], [0], marker='o', color='w', label=label, markersize=10, markerfacecolor=color)
+                           for label, color in zip(labels, plt.cm.tab20.colors)]
+
+        legend = plt.gca().add_artist(plt.legend(handles=legend_elements, loc="upper left", bbox_to_anchor=(1, 1)))
+        legend.set_title("String Types", prop={'size': 0.00000001})  # 调整字体大小
+        plt.savefig(filename, format='png')
+
+    def get_fleet(self):
+        # 连接到数据库
+        conn = sqlite3.connect(r'../zevo-dev.db')
+        c = conn.cursor()
+
+        # 查询数据库以获取符合条件的数据
+        defect_data = c.execute("SELECT defects FROM vehicles ").fetchall()
+        # 关闭数据库连接
+        conn.close()
+        months = []
+        weeks = []
+        days = []
+
+        for row in defect_data:
+            parts = row[0].split(',')
+            timestamp = parts[1].strip()
+            info = parts[0].strip()
+            # 假设时间戳的格式是'YYYY-MM-DD HH:MM:SS'
+            date = timestamp.split(' ')[0]
+            year, month, day = map(int, date.split('-'))
+            if day == 1:
+                days.append(info)
+            if day>1 and day<=7:
+                weeks.append(info)
+            if day >7:
+                months.append(info)
+        self.create_pie_chart(days,'days.png')
+        self.create_pie_chart(weeks, 'weeks.png')
+        self.create_pie_chart(months,'months.png')
+
+
+        # 创建并保存饼图
     def __init__(self):
+        self.get_fleet()
         def download_as_PDF():
             print('download as PDF')
 
@@ -90,22 +143,22 @@ class management:
         buttonProfile.place(x=1400, y=20)
 
         # Fleet day
-        FleetdayPath = r"../image_components/manager-test-piechart.png"
+        FleetdayPath = r"days.png"
         FleetdayPath = PhotoImage(file=FleetdayPath)
         FleetdayPathLabel = Label(image=FleetdayPath, background='#FFFFFF')
-        FleetdayPathLabel.place(x=224, y=140)
+        FleetdayPathLabel.place(x=224, y=135)
 
         # Fleet Week
-        FleetWeekPath = r"../image_components/manager-test-piechart.png"
+        FleetWeekPath = r"weeks.png"
         FleetWeekPath = PhotoImage(file=FleetWeekPath)
         FleetWeekPathLabel = Label(image=FleetWeekPath, background='#FFFFFF')
-        FleetWeekPathLabel.place(x=711, y=140)
+        FleetWeekPathLabel.place(x=711, y=135)
 
         # Fleet Month
-        FleetMonthPath = r"../image_components/manager-test-piechart.png"
+        FleetMonthPath = r"months.png"
         FleetMonthPath = PhotoImage(file=FleetMonthPath)
         FleetMonthPathLabel = Label(image=FleetMonthPath, background='#FFFFFF')
-        FleetMonthPathLabel.place(x=1193, y=140)
+        FleetMonthPathLabel.place(x=1193, y=135)
 
         # Total car info
         CarNumber = Label(text='30,200', font=('inter', 25, 'bold'),
