@@ -126,23 +126,23 @@ class App(tk.Tk):
         result = self.database.c.fetchone()
 
         if (str(result) != 'none'):
-            if (str(result[5]) == 'user'):
-                self.username = str(result[2])
-                self.loggedInUserType = str(result[5])
-                self.userEmail = str(result[3])
+            if (str(result[4]) == 'user'):
+                self.username = str(result[1])
+                self.loggedInUserType = str(result[4])
+                self.userEmail = str(result[2])
                 self.change_frame('vehiclesView')
                 print("A User logged in..")
-            if (str(result[5]) == 'manager'):
-                self.username = str(result[2])
-                self.loggedInUserType = str(result[5])
-                self.userEmail = str(result[3])
+            if (str(result[4]) == 'manager'):
+                self.username = str(result[1])
+                self.loggedInUserType = str(result[4])
+                self.userEmail = str(result[2])
                 # self.change_frame('manager')
                 # self.geometry("1080x1960")
                 print("A Manager logged in..")
-            if (str(result[5]) == 'operator'):
-                self.username = str(result[2])
-                self.loggedInUserType = str(result[5])
-                self.userEmail = str(result[3])
+            if (str(result[4]) == 'operator'):
+                self.username = str(result[1])
+                self.loggedInUserType = str(result[4])
+                self.userEmail = str(result[2])
                 # self.geometry("1080x1960")
                 # self.change_frame('operator')
                 print("An Operator logged in..")

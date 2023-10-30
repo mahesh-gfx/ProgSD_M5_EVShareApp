@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class VehiclesView(ttk.Frame):
+class VehiclesHistory(ttk.Frame):
 
     locationButtonText = 'G4 0AS, Glasgow'
     cars = [{

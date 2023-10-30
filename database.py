@@ -33,11 +33,12 @@ class db():
 
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS users
-                ([userid], integer PRIMARY KEY,
+                ([userid] INTEGER PRIMARY KEY,
                 [username] TEXT,
                 [email] TEXT,
                 [secret] TEXT,
-                [usertype] TEXT)
+                [usertype] TEXT,
+                [purchase] TEXT);
                 ''')
         self.conn.commit()
         if self.validate_new_db() == True:
