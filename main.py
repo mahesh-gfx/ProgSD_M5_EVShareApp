@@ -94,36 +94,33 @@ class App(tk.Tk):
         print("Changing selected vehicle details...", vehicle)
         self._selectedVehicle = vehicle
 
-    def signUpAndLogin(self):
+    def signUpAndLogin(self,username,secret,email):
         # get username and secret from login pageas paramaters for this method
-        username = "Taleh"
-        secret = "xyz123"
-        email = "taleh@zevo"
-
         print("Signing up...")
-
+        print(username)
+        print(secret)
+        print(email)
         response = self.database.run_query(
             '''INSERT INTO users (username, email, secret, usertype)
             VALUES
             (?, ?, ?, 'user');
-            ''', username, secret, email)
+            ''', parameters=(username, secret, email))
         self.database.conn.commit()
 
         # self.login()
 
-    def login(self):
+    def login(self,username,secret):
         # get username and secret from login pageas paramaters for this method
-        username = "Mahesh"
-        secret = "xyz123"
-
         print("Logging in...")
-
+        print(username)
+        print(secret)
         self.database.run_query(
             '''SELECT * FROM users
                 WHERE username = ? AND secret = ?
                 LIMIT 1;
-            ''', (username, secret))
+            ''', parameters=(username, secret))
         result = self.database.c.fetchone()
+        print(result)
 
         if (str(result) != 'none'):
             if (str(result[4]) == 'user'):
