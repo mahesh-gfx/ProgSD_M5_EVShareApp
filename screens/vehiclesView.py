@@ -20,7 +20,7 @@ class VehiclesView(ttk.Frame):
         self.style = "Custom.TFrame"
 
         self.selected_vehicle = tk.StringVar()  # Create the StringVar here
-        self.options = ['Car', 'Bike']
+        self.options = ['Car', 'Bike', 'Car']
         self.selected_vehicle.set(self.options[0])
 
         self.locationIcon = tk.PhotoImage(
@@ -95,7 +95,6 @@ class VehiclesView(ttk.Frame):
         self.index = 1
         for car in self.cars:
             scrollable_frame = tk.Frame(self.carsContainer, )
-            print("Card index:  " + str(self.index))
             car_image = tk.PhotoImage(
                 file=f"./image_components/{car['image']}.png")
             label_image = tk.Label(
@@ -137,7 +136,7 @@ class VehiclesView(ttk.Frame):
             label_rate.grid(row=0, column=0, sticky='sw', padx=30, pady=50)
 
             label_image.bind(
-                "<Button-1>", lambda event: self.handle_click_on_vehicle(self.controller, car, self.index))
+                "<Button-1>", lambda event, car=car, index=self.index: self.handle_click_on_vehicle(self.controller, car, index))
             scrollable_frame.pack()
             self.index += 1
 
@@ -151,7 +150,7 @@ class VehiclesView(ttk.Frame):
             text='G4 0AS, Glasgow'))
 
     def handle_click_on_vehicle(self, controller, car, index):
-        print("Clicked on label..." + str(index))
+        # print("Clicked on label..." + str(index), car)
         controller.set_selected_vehicle(car)
         controller.change_frame('vehicleDetails')
 

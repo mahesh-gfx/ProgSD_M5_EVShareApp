@@ -50,7 +50,7 @@ class App(tk.Tk):
             "range": "550",
             "doors": "5",
             "seatingCapacity": "7",
-            "horsepower": "200",
+            "horsePower": "200",
             "maxSpeed": "310",
             "inUse": False,
             "atSite": True,
@@ -84,6 +84,9 @@ class App(tk.Tk):
     def change_frame(self, pageName):
         frame = self.activeFrames[pageName]
         frame.tkraise()
+        # frame.update()
+        if (pageName == 'vehicleDetails'):
+            frame.refresh_data()
         print('Changed Frame to ', pageName)
 
     # Getters
@@ -92,15 +95,15 @@ class App(tk.Tk):
 
     # Setters
     def set_selected_vehicle(self, vehicle):
-        print("Changing selected vehicle details...", vehicle)
+        # print("Changing selected vehicle details...", vehicle)
         self._selectedVehicle = vehicle
 
     def signUpAndLogin(self, username, secret, email):
-        # get username and secret from login pageas paramaters for this method
+        # get username and secret from login page as paramaters for this method
         print("Signing up...")
-        print(username)
-        print(secret)
-        print(email)
+        # print(username)
+        # print(secret)
+        # print(email)
         response = self.database.run_query(
             '''INSERT INTO users (username, email, secret, usertype)
             VALUES
@@ -113,8 +116,8 @@ class App(tk.Tk):
     def login(self, username, secret):
         # get username and secret from login pageas paramaters for this method
         print("Logging in...")
-        print(username)
-        print(secret)
+        # print(username)
+        # print(secret)
         self.database.run_query(
             '''SELECT * FROM users
                 WHERE username = ? AND secret = ?
@@ -123,7 +126,7 @@ class App(tk.Tk):
         result = self.database.c.fetchone()
         print(result)
 
-        if (str(result) != 'none'):
+        if (result != None):
             if (str(result[4]) == 'user'):
                 self.username = str(result[1])
                 self.loggedInUserType = str(result[4])
@@ -144,14 +147,17 @@ class App(tk.Tk):
                 # self.geometry("1080x1960")
                 # self.change_frame('operator')
                 print("An Operator logged in..")
+        else:
+            tk.messagebox.showinfo("Zevo | EV Rental", "Invalid Credentials!")
 
     def get_all_vehicles(self):
         self.database.run_query(
             '''SELECT * FROM vehicles''')
         response = self.database.c.fetchall()
+        # print("response: ", response)
         response = pd.DataFrame(response, columns=["type", "vehicleClass", "make", "model", "licensePlateNumber", "ratePerWeek", "ratePerDay",
                                                    "ratePerHour", "batteryCapacity", "range", "doors", "seatingCapacity", "horsePower", "maxSpeed",
-                                                   "inUse", "atSite", "history", "defects", "image", "bg", "fg", "location"])
+                                                   "inUse", "atSite", "history", "defects", "image", "bg", "fg", "location", "hasDefects"])
 
         self.vehicles = response.to_dict(orient='records')
         return self.vehicles

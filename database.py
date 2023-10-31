@@ -178,4 +178,4 @@ class db():
         vehicles = self.run_query(query)
         df = pd.DataFrame(vehicles.fetchall(), columns=[
                           'vehicle_id', 'type'])
-        print("All vehicles: ", df)
+        # print("All vehicles: ", df)
