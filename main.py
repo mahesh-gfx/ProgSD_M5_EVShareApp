@@ -11,6 +11,7 @@ from screens.addcard import add_card_Screen
 from screens.login import login_page
 from screens.register import register_page
 from screens.management import management
+from screens.operator import Operator
 
 
 class App(tk.Tk):
@@ -72,7 +73,8 @@ class App(tk.Tk):
                           'addCard': add_card_Screen,
                           'login': login_page,
                           'register': register_page,
-                          'manager': management
+                          'manager': management,
+                          'operator': Operator
                           }
 
         for key in self.allFrames:
@@ -171,8 +173,8 @@ class App(tk.Tk):
                 self.username = str(result[1])
                 self.loggedInUserType = str(result[4])
                 self.userEmail = str(result[2])
-                # self.geometry("1080x1960")
-                # self.change_frame('operator')
+                self.geometry("1536x864")
+                self.change_frame('operator')
                 print("An Operator logged in..")
         else:
 

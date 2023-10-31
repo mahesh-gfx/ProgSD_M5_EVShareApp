@@ -35,8 +35,12 @@ class Welcome(tk.Frame):
         self.knowMoreButtonImage = PhotoImage(
             file=r"./image_components/know-more-button.png")
         self.knowMoreButton = tk.Button(self, image=self.knowMoreButtonImage,
-                                        command=controller.login, default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
+                                        command=lambda: self.operator(controller), default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
         self.knowMoreButton.place(x=78, y=678, height=68, width=320)
+
+    def operator(self, controller):
+        controller.geometry("1536x864")
+        controller.change_frame('operator')
 
 
 # # single screen development
