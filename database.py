@@ -117,13 +117,13 @@ class db():
     # Methods
     def populate_mock_data(self):
         print("populating mock data in the database...")
-        self.c.execute('''
-                    INSERT INTO vehicles (type, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects)
-                    VALUES
-                    ('Sedan', 'Toyota', 'Camry', 'ABC123', 200, 40, 5, 60000, 450, 4, 5, 180, 130, 0, 1, 'History for Camry', 'No defects'),
-                    ('SUV', 'Honda', 'CR-V', 'XYZ789', 250, 50, 6, 70000, 400, 5, 5, 200, 140, 0, 1, 'History for CR-V', 'Minor scratches'),
-                    ('Electric', 'Tesla', 'Model 3', 'EV456', 300, 60, 10, 80000, 300, 4, 5, 250, 150, 1, 0, 'History for Model 3', 'Battery issue');
-        ''')
+        # self.c.execute('''
+        #             INSERT INTO vehicles (type, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects)
+        #             VALUES
+        #             ('Sedan', 'Toyota', 'Camry', 'ABC123', 200, 40, 5, 60000, 450, 4, 5, 180, 130, 0, 1, 'History for Camry', 'No defects'),
+        #             ('SUV', 'Honda', 'CR-V', 'XYZ789', 250, 50, 6, 70000, 400, 5, 5, 200, 140, 0, 1, 'History for CR-V', 'Minor scratches'),
+        #             ('Electric', 'Tesla', 'Model 3', 'EV456', 300, 60, 10, 80000, 300, 4, 5, 250, 150, 1, 0, 'History for Model 3', 'Battery issue');
+        # ''')
 
         self.c.execute('''INSERT INTO users (username, email, secret, usertype)
             VALUES
@@ -164,6 +164,6 @@ class db():
 
 
 
-if __name__ == '__main__':
-    db = db()
-    db.get_all_vehicles()
+# if __name__ == '__main__':
+#     db = db()
+#     db.populate_mock_data()

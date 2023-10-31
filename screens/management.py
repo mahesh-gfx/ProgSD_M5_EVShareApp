@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 from collections import Counter
 from matplotlib.lines import Line2D
 from datetime import datetime
-
-class management:
+from PIL import Image, ImageTk
+import tkinter.ttk
+from tkinter import ttk
+class management(ttk.Frame):
     def get_incomefig(self):
 
         # 连接到数据库
-        conn = sqlite3.connect(r'../zevo-dev.db')
+        conn = sqlite3.connect('zevo-dev.db')
         cursor = conn.cursor()
 
         # 执行 SQL 查询以检索所有 income 和 startTime 数据
@@ -42,14 +44,14 @@ class management:
         plt.plot(total_incomes, marker='o', markersize=2, linestyle='-')
         plt.xticks([])
         # 保存图表为PNG文件
-        plt.savefig('income_trend.png', dpi=100)  # 设置dpi以控制输出图像的分辨率
+        plt.savefig('image_components/income_trend.png', dpi=100)  # 设置dpi以控制输出图像的分辨率
 
         # 关闭连接
         conn.close()
 
     def get_activefig(self):
         # 连接到数据库
-        conn = sqlite3.connect(r'../zevo-dev.db')
+        conn = sqlite3.connect('zevo-dev.db')
         cursor = conn.cursor()
 
         # 执行 SQL 查询以检索所有 startTime 列的数据
@@ -80,29 +82,39 @@ class management:
         plt.xticks([])
 
         # 保存图表为PNG文件
-        plt.savefig('active_month.png', dpi=100)  # 设置dpi以控制输出图像的分辨率
+        plt.savefig('image_components/active_month.png', dpi=100)  # 设置dpi以控制输出图像的分辨率
 
         # 关闭连接
         conn.close()
 
     def create_pie_chart(self, data, filename):
         count = Counter(data)
-        # 获取字符串类型和它们的数量
         labels, values = zip(*count.items())
-        plt.figure(figsize=(3, 2.25), dpi=80)  # 180像素对应dpi为80
-        plt.pie(values, labels=None, autopct='%1.1f%%', startangle=140)
-        plt.axis('off')
-        plt.axis('equal')
-        legend_elements = [Line2D([0], [0], marker='o', color='w', label=label, markersize=10, markerfacecolor=color)
-                           for label, color in zip(labels, plt.cm.tab20.colors)]
 
-        legend = plt.gca().add_artist(plt.legend(handles=legend_elements, loc="upper left", bbox_to_anchor=(1, 1)))
-        legend.set_title("String Types", prop={'size': 0.00000001})  # 调整字体大小
+        # 创建饼图
+        fig, ax = plt.subplots(figsize=(8, 6), dpi=80)
+        [wedges, texts, autotexts] = ax.pie(values, autopct='%1.1f%%', startangle=140)
+        for autotext in autotexts:
+            autotext.set_fontsize(20)
+
+        # 设置饼图部分的颜色
+        colors = plt.cm.tab20.colors
+        for i, (label, color) in enumerate(zip(labels, colors)):
+            wedges[i].set_facecolor(color)
+        # 设置标签
+        legend_elements = [Line2D([0], [0], marker='o', color='w', label=label, markersize=10, markerfacecolor=color)
+                           for label, color in zip(labels, colors)]
+        legend = ax.legend(handles=legend_elements, loc="upper left", bbox_to_anchor=(0.9, 1, 0.01, 0.01),
+                           prop={'size': 16})
+        legend.get_frame().set_alpha(0)
+        ax.axis('equal')
+        ax.set_position([0.15, 0.15, 0.7, 0.7])
+        plt.subplots_adjust(left=0.05, right=0.6)
         plt.savefig(filename, format='png')
 
     def get_fleet(self):
         # 连接到数据库
-        conn = sqlite3.connect(r'../zevo-dev.db')
+        conn = sqlite3.connect('zevo-dev.db')
         c = conn.cursor()
 
         # 查询数据库以获取符合条件的数据
@@ -128,13 +140,13 @@ class management:
                 months.append(info)
             if info!='fine':
                 defect = defect+1
-        self.create_pie_chart(days,'days.png')
-        self.create_pie_chart(weeks, 'weeks.png')
-        self.create_pie_chart(months,'months.png')
+        self.create_pie_chart(days,'image_components/days.png')
+        self.create_pie_chart(weeks, 'image_components/weeks.png')
+        self.create_pie_chart(months,'image_components/months.png')
         return len(defect_data), defect
     def get_income(self):
         # 连接到数据库
-        conn = sqlite3.connect(r'../zevo-dev.db')
+        conn = sqlite3.connect('zevo-dev.db')
         cursor = conn.cursor()
 
         # 使用 SQL 查询来计算 income 列的总和
@@ -145,157 +157,149 @@ class management:
         return total_income
 
     def get_Userinfo(self):
-        conn = sqlite3.connect(r'../zevo-dev.db')
+        conn = sqlite3.connect('zevo-dev.db')
         c = conn.cursor()
         # 查询数据库以获取符合条件的数据
         User_data = c.execute("SELECT * FROM users ").fetchall()
         return len(User_data)
+    def download_as_PDF(self):
+        print('download as PDF')
+
+    def to_profile_page(self):
+        print('to profile page')
+
+    def show_data(self):
+        print('')
 
         # 创建并保存饼图
-    def __init__(self):
+    def __init__(self, container, controller):
+        super().__init__(container)
         self.get_incomefig()
         self.get_activefig()
-        carNumber , defect = self.get_fleet()
-        UserNumber = self.get_Userinfo()
-        income = self.get_income()
-        def download_as_PDF():
-            print('download as PDF')
-
-        def to_profile_page():
-            print('to profile page')
-
-        def show_data():
-            print('')
-        managePage = Tk()
-        managePage.geometry('1600x976')
-        managePage.title('Management')
-        # managePage.resizable(False,False)
-        managePage.configure(background='#F8F8F8')
+        self.carNumber , self.defect = self.get_fleet()
+        self.UserNumber = self.get_Userinfo()
+        self.income = self.get_income()
 
         # baseUI
-        BlueBarPath = r"../image_components/manager-bluebar.png"
-        BlueBarPath = PhotoImage(file=BlueBarPath)
-        BlueBarLabel = Label(image=BlueBarPath)
-        BlueBarLabel.place(x=0, y=0)
+        self.BlueBarPath = r"image_components/manager-bluebar.png"
+        self.BlueBarPath = PhotoImage(file=self.BlueBarPath)
+        self.BlueBarLabel = Label(self,image=self.BlueBarPath)
+        self.BlueBarLabel.place(x=0, y=0)
 
-        FleetStateDayPath = r"../image_components/manager-Feetstate-Day.png"
-        FleetStateDayPath = PhotoImage(file=FleetStateDayPath)
-        FleetStateDayPathLabel = Label(
-            image=FleetStateDayPath, background='#F8F8F8')
-        FleetStateDayPathLabel.place(x=138, y=70)
+        self.FleetStateDayPath = r"image_components/manager-Feetstate-Day.png"
+        self.FleetStateDayPath = PhotoImage(file=self.FleetStateDayPath)
+        self.FleetStateDayPathLabel = Label(self,
+            image=self.FleetStateDayPath, background='#F0F0F0')
+        self.FleetStateDayPathLabel.place(x=138, y=70)
 
-        FleetStateWeekPath = r"../image_components/manager-Fleet-Week.png"
-        FleetStateWeekPath = PhotoImage(file=FleetStateWeekPath)
-        FleetStateWeekPathLabel = Label(
-            image=FleetStateWeekPath, background='#F8F8F8')
-        FleetStateWeekPathLabel.place(x=625, y=70)
+        self.FleetStateWeekPath = r"image_components/manager-Fleet-Week.png"
+        self.FleetStateWeekPath = PhotoImage(file=self.FleetStateWeekPath)
+        self.FleetStateWeekPathLabel = Label(self,
+            image=self.FleetStateWeekPath, background='#F0F0F0')
+        self.FleetStateWeekPathLabel.place(x=625, y=70)
 
-        FleetStateMonthPath = r"../image_components/manager-Fleet-Month.png"
-        FleetStateMonthPath = PhotoImage(file=FleetStateMonthPath)
-        FleetStateMonthPathLabel = Label(
-            image=FleetStateMonthPath, background='#F8F8F8')
-        FleetStateMonthPathLabel.place(x=1096, y=70)
+        self.FleetStateMonthPath = r"image_components/manager-Fleet-Month.png"
+        self.FleetStateMonthPath = PhotoImage(file=self.FleetStateMonthPath)
+        self.FleetStateMonthPathLabel = Label(self,
+            image=self.FleetStateMonthPath, background='#F0F0F0')
+        self.FleetStateMonthPathLabel.place(x=1096, y=70)
 
-        TotalCarPath = r"../image_components/manager-Total-Cars.png"
-        TotalCarPath = PhotoImage(file=TotalCarPath)
-        TotalCarPathLabel = Label(image=TotalCarPath, background='#F8F8F8')
-        TotalCarPathLabel.place(x=140, y=330)
+        self.TotalCarPath = r"image_components/manager-Total-Cars.png"
+        self.TotalCarPath = PhotoImage(file=self.TotalCarPath)
+        self.TotalCarPathLabel = Label(self,image=self.TotalCarPath, background='#F0F0F0')
+        self.TotalCarPathLabel.place(x=140, y=330)
 
-        TotalCustomerPath = r"../image_components/manager-Total-customer.png"
-        TotalCustomerPath = PhotoImage(file=TotalCustomerPath)
-        TotalCustomerPathLabel = Label(
-            image=TotalCustomerPath, background='#F8F8F8')
-        TotalCustomerPathLabel.place(x=493, y=330)
+        self.TotalCustomerPath = r"image_components/manager-Total-customer.png"
+        self.TotalCustomerPath = PhotoImage(file=self.TotalCustomerPath)
+        self. TotalCustomerPathLabel = Label(self,
+            image=self.TotalCustomerPath, background='#F0F0F0')
+        self.TotalCustomerPathLabel.place(x=493, y=330)
 
-        DailyIncomePath = r"../image_components/manager-Daily-income.png"
-        DailyIncomePath = PhotoImage(file=DailyIncomePath)
-        DailyIncomePathLabel = Label(
-            image=DailyIncomePath, background='#F8F8F8')
-        DailyIncomePathLabel.place(x=875, y=330)
+        self.DailyIncomePath = r"image_components/manager-Daily-income.png"
+        self.DailyIncomePath = PhotoImage(file=self.DailyIncomePath)
+        self.DailyIncomePathLabel = Label(self,
+            image=self.DailyIncomePath, background='#F0F0F0')
+        self.DailyIncomePathLabel.place(x=875, y=330)
 
-        RecentDefectPath = r"../image_components/manager-recent-defect.png"
-        RecentDefectPath = PhotoImage(file=RecentDefectPath)
-        RecentDefectPathLabel = Label(
-            image=RecentDefectPath, background='#F8F8F8')
-        RecentDefectPathLabel.place(x=1257, y=330)
+        self.RecentDefectPath = r"image_components/manager-recent-defect.png"
+        self.RecentDefectPath = PhotoImage(file=self.RecentDefectPath)
+        self.RecentDefectPathLabel = Label(self,
+            image=self.RecentDefectPath, background='#F0F0F0')
+        self.RecentDefectPathLabel.place(x=1257, y=330)
 
-        ActiveCustomerPath = r"../image_components/manager-Active-customer.png"
-        ActiveCustomerPath = PhotoImage(file=ActiveCustomerPath)
-        ActiveCustomerPathLabel = Label(
-            image=ActiveCustomerPath, background='#F8F8F8')
-        ActiveCustomerPathLabel.place(x=138, y=540)
+        self.ActiveCustomerPath = r"image_components/manager-Active-customer.png"
+        self.ActiveCustomerPath = PhotoImage(file=self.ActiveCustomerPath)
+        self.ActiveCustomerPathLabel = Label(self,
+            image=self.ActiveCustomerPath, background='#F0F0F0')
+        self.ActiveCustomerPathLabel.place(x=138, y=540)
 
-        IncomePath = r"../image_components/manager-income.png"
-        IncomePath = PhotoImage(file=IncomePath)
-        IncomePathLabel = Label(image=IncomePath, background='#F8F8F8')
-        IncomePathLabel.place(x=807, y=540)
+        self.IncomePath = r"image_components/manager-income.png"
+        self.IncomePath = PhotoImage(file=self.IncomePath)
+        self.IncomePathLabel = Label(self,image=self.IncomePath, background='#F0F0F0')
+        self.IncomePathLabel.place(x=807, y=540)
 
         # DownloadButton
-        DownloadButPath = r"../image_components/manager-downloadBut.png"
-        DownloadButPath = PhotoImage(file=DownloadButPath)
-        buttonDownload = Button(image=DownloadButPath, compound=TOP, command=download_as_PDF,
+        self.DownloadButPath = r"image_components/manager-downloadBut.png"
+        self.DownloadButPath = PhotoImage(file=self.DownloadButPath)
+        self.buttonDownload = Button(self,image=self.DownloadButPath, compound=TOP, command=self.download_as_PDF,
                                 borderwidth=0, background='#44AEEA', activebackground="#44AEEA")
-        buttonDownload.place(x=30, y=3)
+        self.buttonDownload.place(x=30, y=3)
 
         # ProfileButton
-        ProfileButPath = r"../image_components/defect-profile.png"
-        ProfileButPath = PhotoImage(file=ProfileButPath)
-        buttonProfile = Button(image=ProfileButPath, compound=TOP, command=to_profile_page,
+        self.ProfileButPath = r"image_components/defect-profile.png"
+        self.ProfileButPath = PhotoImage(file=self.ProfileButPath)
+        self.buttonProfile = Button(self,image=self.ProfileButPath, compound=TOP, command=self.to_profile_page,
                                borderwidth=0, background='#44AEEA', activebackground="#44AEEA")
-        buttonProfile.place(x=1400, y=20)
+        self.buttonProfile.place(x=1400, y=20)
 
         # Fleet day
-        FleetdayPath = r"days.png"
-        FleetdayPath = PhotoImage(file=FleetdayPath)
-        FleetdayPathLabel = Label(image=FleetdayPath, background='#FFFFFF')
-        FleetdayPathLabel.place(x=224, y=135)
-
+        self.image1 = Image.open("image_components/days.png")
+        self.image1 = self.image1.resize((240, 180))
+        self.FleetdayPath = ImageTk.PhotoImage(self.image1)
+        self.FleetdayPathLabel = Label(self,image=self.FleetdayPath, background='#FFFFFF')
+        self.FleetdayPathLabel.place(x=180, y=135)
         # Fleet Week
-        FleetWeekPath = r"weeks.png"
-        FleetWeekPath = PhotoImage(file=FleetWeekPath)
-        FleetWeekPathLabel = Label(image=FleetWeekPath, background='#FFFFFF')
-        FleetWeekPathLabel.place(x=711, y=135)
+        self.image2 = Image.open("image_components/weeks.png")
+        self.image2 = self.image2.resize((240, 180))
+        self.FleetWeekPath = ImageTk.PhotoImage(self.image2)
+        self.FleetWeekPathLabel = Label(self,image=self.FleetWeekPath, background='#FFFFFF')
+        self.FleetWeekPathLabel.place(x=667, y=135)
 
         # Fleet Month
-        FleetMonthPath = r"months.png"
-        FleetMonthPath = PhotoImage(file=FleetMonthPath)
-        FleetMonthPathLabel = Label(image=FleetMonthPath, background='#FFFFFF')
-        FleetMonthPathLabel.place(x=1193, y=135)
+        self.image3 = Image.open("image_components/months.png")
+        self.image3 = self.image3.resize((240, 180))
+        self.FleetMonthPath = ImageTk.PhotoImage(self.image3)
+        self.FleetMonthPathLabel = Label(self,image=self.FleetMonthPath, background='#FFFFFF')
+        self.FleetMonthPathLabel.place(x=1138, y=135)
 
         # Total car info
-        CarNumber = Label(text=str(carNumber), font=('inter', 25, 'bold'),
+        self.CarNumber = Label(self,text=str(self.carNumber), font=('inter', 25, 'bold'),
                           background='#FFFFFF', foreground='#504F4F')
-        CarNumber.place(x=191, y=460)
+        self.CarNumber.place(x=191, y=460)
 
         # Total customers info
-        customersNumber = Label(text=str(UserNumber), font=(
+        self.customersNumber = Label(self,text=str(self.UserNumber), font=(
             'inter', 25, 'bold'), background='#FFFFFF', foreground='#504F4F')
-        customersNumber.place(x=541, y=460)
+        self.customersNumber.place(x=541, y=460)
 
         # Daily income info
-        incomeNumber = Label(text='￡'+str(income), font=(
+        self.incomeNumber = Label(self,text='￡'+str(self.income), font=(
             'inter', 25, 'bold'), background='#FFFFFF', foreground='#504F4F')
-        incomeNumber.place(x=910, y=460)
+        self.incomeNumber.place(x=910, y=460)
 
         # Defect info
-        DefectNumber = Label(text=str(defect), font=(
+        self.DefectNumber = Label(self,text=str(self.defect), font=(
             'inter', 25, 'bold'), background='#FFFFFF', foreground='#504F4F')
-        DefectNumber.place(x=1330, y=460)
+        self.DefectNumber.place(x=1330, y=460)
 
         # Active customers info
-        customersInfo = r"active_month.png"
-        customersInfo = PhotoImage(file=customersInfo)
-        customersInfoLabel = Label(image=customersInfo, background='#FFFFFF')
-        customersInfoLabel.place(x=200, y=600)
+        self.customersInfo = r"image_components/active_month.png"
+        self.customersInfo = PhotoImage(file=self.customersInfo)
+        self.customersInfoLabel = Label(self,image=self.customersInfo, background='#FFFFFF')
+        self.customersInfoLabel.place(x=200, y=600)
 
         # income trend info
-        incomeInfo = r"income_trend.png"
-        incomeInfo = PhotoImage(file=incomeInfo)
-        incomeInfoLabel = Label(image=incomeInfo, background='#FFFFFF')
-        incomeInfoLabel.place(x=900, y=600)
-
-        managePage.mainloop()
-
-
-if __name__ == '__main__':
-    management()
+        self.incomeInfo = r"image_components/income_trend.png"
+        self.incomeInfo = PhotoImage(file=self.incomeInfo)
+        self.incomeInfoLabel = Label(self,image=self.incomeInfo, background='#FFFFFF')
+        self.incomeInfoLabel.place(x=900, y=600)

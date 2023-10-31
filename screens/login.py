@@ -1,13 +1,16 @@
-import tkinter.messagebox
 import tkinter as tk
 from tkinter import *
-# Create the main window
+from tkinter import messagebox
 class login_page(tk.Frame):
 
     def handle_login(self):
         self.email = self.email_entry.get()
         self.password = self.password_entry.get()
-        controller1.login(username=self.email,secret=self.password)
+        if self.email == '' or self.password == '':
+            from tkinter import messagebox
+            messagebox.showinfo("Tips", "Please enter your Name and password")
+        else:
+            controller1.login(username=self.email,secret=self.password)
 
 
 
@@ -24,6 +27,7 @@ class login_page(tk.Frame):
         self.email_entry.config(borderwidth=0)
         self.email_entry.pack()
         self.email_entry.place(x = 170,y = 440, width=300)
+        self.email_entry.focus()
 
         self.password_entry = Entry(self,width=60, font=('Helvetica', 15), highlightthickness=0, show="*",background='white')
         self.password_entry.config(borderwidth=0)

@@ -9,7 +9,7 @@ from screens.defect import defect_page
 from screens.addcard import add_card_Screen
 from screens.login import login_page
 from screens.register import register_page
-
+from screens.management import management
 
 class App(tk.Tk):
     # Attributes
@@ -69,7 +69,8 @@ class App(tk.Tk):
                           'vehicleDetails': VehicleDetails,
                           'addCard': add_card_Screen,
                           'login': login_page,
-                          'register': register_page
+                          'register': register_page,
+                          'manager':management
                           }
 
         for key in self.allFrames:
@@ -127,7 +128,7 @@ class App(tk.Tk):
         result = self.database.c.fetchone()
         print(result)
 
-        if (str(result) != 'none'):
+        if (str(result) != 'None'):
             if (str(result[5]) == 'user'):
                 self.username = str(result[2])
                 self.loggedInUserType = str(result[5])
@@ -138,8 +139,8 @@ class App(tk.Tk):
                 self.username = str(result[2])
                 self.loggedInUserType = str(result[5])
                 self.userEmail = str(result[3])
-                # self.change_frame('manager')
-                # self.geometry("1600x976")
+                self.change_frame('manager')
+                self.geometry("1600x976")
                 print("A Manager logged in..")
             if (str(result[5]) == 'operator'):
                 self.username = str(result[2])
@@ -148,6 +149,9 @@ class App(tk.Tk):
                 # self.geometry("1080x1960")
                 # self.change_frame('operator')
                 print("An Operator logged in..")
+        else:
+            from tkinter import messagebox
+            messagebox.showinfo("Tips", "Please sign up your information")
 
 
 if __name__ == "__main__":
