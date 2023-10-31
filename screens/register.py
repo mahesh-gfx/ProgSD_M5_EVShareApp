@@ -23,10 +23,10 @@ class register_page(tk.Frame):
         elif(self.email=='' or self.phone=='' or self.name==''):
             messagebox.showerror("All fields should be filled")
             return
-        else:
-            print()
-            controller1.signUpAndLogin(username=self.name,secret=self.password,email=self.email)
-            controller1.change_frame('login')
+
+        print("Hey, Man: ", self.email)
+        user = controller1.signUpAndLogin(name=self.name, secret=self.password, email=self.email, phone=self.phone)
+        if user: controller1.change_frame('login')  # check if user is created
 
 
     def __init__(self, container, controller):

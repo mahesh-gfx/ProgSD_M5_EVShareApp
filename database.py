@@ -39,9 +39,10 @@ class db():
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS users
                 ([userid] INTEGER PRIMARY KEY,
-                [username] TEXT,
+                [name] TEXT,
                 [email] TEXT,
                 [secret] TEXT,
+                [phone] TEXT,
                 [usertype] TEXT,
                 [purchase] TEXT);
                 ''')
@@ -49,7 +50,7 @@ class db():
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS orders
                 ([orderid] integer PRIMARY KEY,
-                [username] TEXT,
+                [email] TEXT,
                 [startTime] TEXT,
                 [endTime] TEXT,
                 [income] TEXT)
@@ -216,15 +217,15 @@ class db():
                                item["history"], item["defects"], item["image"], item["bg"], item["fg"], item["location"]))
 
         user_data = [
-            ('Mahesh', 'mahesh@zevo.com', 'xyz123', 'user'),
-            ('Ju', 'ju@zevo.com', 'xyz123', 'operator'),
-            ('Li', 'mahesh@zevo.com', 'xyz123', 'manager')
+            ('Mahesh', 'mahesh@zevo.com', 'xyz123', '+44 7879 46249', 'user'),
+            ('Ju', 'ju@zevo.com', 'xyz123', '+44 7819 46249', 'operator'),
+            ('Li', 'mahesh@zevo.com', 'xyz123', '+44 7876 46249', 'manager')
         ]
 
         # Insert users
         for data in user_data:
-            self.c.execute('''INSERT INTO users (username, email, secret, usertype)
-                             VALUES (?, ?, ?, ?)''', data)
+            self.c.execute('''INSERT INTO users (name, email, secret, phone, usertype)
+                             VALUES (?, ?, ?, ?, ?)''', data)
 
         self.conn.commit()
 

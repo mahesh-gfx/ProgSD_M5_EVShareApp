@@ -7,7 +7,7 @@ class login_page(tk.Frame):
     def handle_login(self):
         self.email = self.email_entry.get()
         self.password = self.password_entry.get()
-        controller1.login(username=self.email,secret=self.password)
+        controller1.login(email=self.email,secret=self.password)
 
 
 

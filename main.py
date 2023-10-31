@@ -107,49 +107,63 @@ class App(tk.Tk):
         # print("Changing selected vehicle details...", vehicle)
         self._selectedVehicle = vehicle
 
-    def signUpAndLogin(self, username, secret, email):
+    def signUpAndLogin(self, name, secret, email, phone):
         # get username and secret from login page as paramaters for this method
         print("Signing up...")
         # print(username)
         # print(secret)
         # print(email)
-        response = self.database.run_query(
-            '''INSERT INTO users (username, email, secret, usertype)
-            VALUES
-            (?, ?, ?, 'user');
-            ''', parameters=(username, email, secret))
-        self.database.conn.commit()
 
+        # check is email is used before to create an account.
+        self.database.run_query(
+            '''SELECT * FROM users
+                WHERE email = ?
+                LIMIT 1;
+            ''', parameters=[email])
+        user = self.database.c.fetchone()
+
+        print("User is ", user)
+        if(user != None):
+            tk.messagebox.showerror("This email is already assigned to existing account")
+            return
+        print("Must be error here")
+        response = self.database.run_query(
+            '''INSERT INTO users (name, email, secret, phone, usertype)
+            VALUES
+            (?, ?, ?, ?, 'user');
+            ''', parameters=(name, email, secret, phone))
+        self.database.conn.commit()
+        return response
         # self.login()
 
-    def login(self, username, secret):
+    def login(self, email, secret):
         # get username and secret from login pageas paramaters for this method
         print("Logging in...")
         # print(username)
         # print(secret)
         self.database.run_query(
             '''SELECT * FROM users
-                WHERE username = ? AND secret = ?
+                WHERE email = ? AND secret = ?
                 LIMIT 1;
-            ''', parameters=(username, secret))
+            ''', parameters=(email, secret))
         result = self.database.c.fetchone()
         print(result)
 
         if (result != None):
-            if (str(result[4]) == 'user'):
+            if (str(result[5]) == 'user'):
                 self.username = str(result[1])
                 self.loggedInUserType = str(result[4])
                 self.userEmail = str(result[2])
                 self.change_frame('vehiclesView')
                 print("A User logged in..")
-            if (str(result[4]) == 'manager'):
+            if (str(result[5]) == 'manager'):
                 self.username = str(result[1])
                 self.loggedInUserType = str(result[4])
                 self.userEmail = str(result[2])
                 # self.change_frame('manager')
                 # self.geometry("1600x976")
                 print("A Manager logged in..")
-            if (str(result[4]) == 'operator'):
+            if (str(result[5]) == 'operator'):
                 self.username = str(result[1])
                 self.loggedInUserType = str(result[4])
                 self.userEmail = str(result[2])
@@ -158,6 +172,9 @@ class App(tk.Tk):
                 print("An Operator logged in..")
         else:
             tk.messagebox.showinfo("Zevo | EV Rental", "Invalid Credentials!")
+
+    def log_out(self):
+        self.change_frame('welcome')
 
     def get_all_vehicles(self):
         self.database.run_query(
