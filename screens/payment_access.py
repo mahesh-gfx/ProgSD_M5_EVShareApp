@@ -109,12 +109,12 @@ class pay_access_Screen(ttk.Frame):
                                      command=lambda: controller.change_frame('paymentBill'))
         self.backButton.place(x=10, y=10)
 
-        # consult button
-        self.photoConsult = r"./image_components/defect-consult.png"
-        self.photoConsult = PhotoImage(file=self.photoConsult)
-        self.buttonConsult = Button(self, image=self.photoConsult, compound=TOP,
-                                    command=self.to_consult_page, borderwidth=0, background='#F0F0F0')
-        self.buttonConsult.place(x=440, y=20)
+        # report button
+        self.photoDefect = r"./image_components/report_defect.png"
+        self.photoDefect = PhotoImage(file=self.photoDefect)
+        self.buttonDefect = Button(self, image=self.photoDefect, compound=TOP,
+                                    command=lambda: controller.change_frame('reportDefect'), borderwidth=0, background='#F0F0F0')
+        self.buttonDefect.place(x=440, y=20)
 
         # show bill
         self.payblock2_file = r"./image_components/payblock2.png"

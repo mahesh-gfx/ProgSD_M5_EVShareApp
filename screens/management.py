@@ -47,6 +47,7 @@ class management:
         days = []
 
         for row in defect_data:
+ 
             parts = row[0].split(',')
             timestamp = parts[1].strip()
             info = parts[0].strip()
@@ -59,6 +60,7 @@ class management:
                 weeks.append(info)
             if day >7:
                 months.append(info)
+    
         self.create_pie_chart(days,'days.png')
         self.create_pie_chart(weeks, 'weeks.png')
         self.create_pie_chart(months,'months.png')

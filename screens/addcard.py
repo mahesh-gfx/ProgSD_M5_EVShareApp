@@ -58,12 +58,6 @@ class add_card_Screen(ttk.Frame):
     def __init__(self, container, controller):
         super().__init__(container)
         font_name = 'Mako'
-
-        self.photoConsult = r"./image_components/defect-consult.png"
-        self.photoConsult = PhotoImage(file=self.photoConsult)
-        self.buttonConsult = Button(self, image=self.photoConsult, compound=TOP,
-                                    command=self.to_consult_page, borderwidth=0, background='#F0F0F0')
-        self.buttonConsult.place(x=440, y=20)
         # back button
         self.backButtonArrow = PhotoImage(
             file="./image_components/arrow_alt_left.png")

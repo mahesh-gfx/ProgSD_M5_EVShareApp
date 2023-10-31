@@ -42,12 +42,12 @@ class pay_bill_Screen(ttk.Frame):
                                      image=self.backButtonArrow, command=lambda: controller.change_frame('vehicleDetails'))
         self.backButton.place(x=10, y=10)
 
-        
-        self.photoConsult = "./image_components/defect-consult.png"
-        self.photoConsult = PhotoImage(file=self.photoConsult)
-        self.buttonConsult = Button(self, image=self.photoConsult, compound=TOP,
+        #reportdefect
+        self.photoDefect = "./image_components/report_defect.png"
+        self.photoDefect = PhotoImage(file=self.photoDefect)
+        self.buttonDefect = Button(self, image=self.photoDefect, compound=TOP,
                                     command=lambda: controller.change_frame('reportDefect'), borderwidth=0, background='#F0F0F0')
-        self.buttonConsult.place(x=440, y=20)
+        self.buttonDefect.place(x=440, y=20)
 
         # 4 block
         self.payblock1_file = r"./image_components/payblock1.png"

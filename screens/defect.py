@@ -20,12 +20,6 @@ class defect_page(tk.Frame):
                                 command=lambda:controller.change_frame('paymentBill'), borderwidth=0, background='#F0F0F0')
             self.buttonProf.place(x=10, y=20)
 
-            # consult button
-            self.photoConsult = r"./image_components/defect-consult.png"
-            self.photoConsult = PhotoImage(file=self.photoConsult)
-            self.buttonConsult = Button(self,image=self.photoConsult, compound=TOP,
-                                   command=self.to_consult_page, borderwidth=0, background='#F0F0F0')
-            self.buttonConsult.place(x=440, y=20)
 
             # Report defect text
             self.photoReportDefect = r"./image_components/defect-reportDefect.png"
