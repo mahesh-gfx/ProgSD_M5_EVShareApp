@@ -11,7 +11,7 @@ class VehiclesView(ttk.Frame):
         super().__init__(container)
         self.controller = controller
         print("Constructing Vehicles View self.navigation...")
-#        self.cars = controller.get_all_vehicles()
+        self.cars = controller.get_all_vehicles()
 
         self.styled = ttk.Style()
         self.styled.configure("TButton", font=("Helvetica", 16))

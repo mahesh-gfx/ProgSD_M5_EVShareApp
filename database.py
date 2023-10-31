@@ -49,7 +49,8 @@ class db():
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS orders
                 ([orderid] integer PRIMARY KEY,
-                [username] TEXT,
+                [email] TEXT,
+                [carID] TEST,
                 [startTime] TEXT,
                 [endTime] TEXT,
                 [income] TEXT)
@@ -59,25 +60,72 @@ class db():
         if self.validate_new_db() == True:
             print("Db is empty")
             self.populate_mock_data()
+            self.insert_vehicles()
+            self.creat_history()
 
-    def insert_tesla_vehicles(self, num_vehicles=3100):
+
+    def creat_history(self):
+        print('insert_history')
+        import sqlite3
         import random
         import datetime
-        defects = ['Can\'t connect bluetooth', 'Wrong battery status',
-                   'Type problems', 'Traffic accident', 'fine']
+        conn = sqlite3.connect('zevo-dev.db')
+        cursor = conn.cursor()
+        for i in range(30):
+            cursor.execute("SELECT email FROM users ORDER BY RANDOM() LIMIT 1")
+            email = cursor.fetchone()[0]
+            cursor.execute("SELECT vehicle_id FROM vehicles ORDER BY RANDOM() LIMIT 1")
+            vehicle_id = cursor.fetchone()[0]
+
+            # 生成随机的startTime和endTime
+            current_time = datetime.datetime.now()
+            one_year_ago = current_time - datetime.timedelta(days=365)
+            start_time = one_year_ago + datetime.timedelta(seconds=random.randint(0, 31536000))
+            end_time = start_time + datetime.timedelta(seconds=random.randint(1, 86400))
+
+            # 生成随机的income
+            income = str(random.randint(10, 100))
+
+            # 插入数据到orders表
+            cursor.execute("INSERT INTO orders (email, carID, startTime, endTime, income) VALUES (?, ?, ?, ?, ?)",
+                           (email, vehicle_id, start_time.strftime('%Y-%m-%d %H:%M:%S'),
+                            end_time.strftime('%Y-%m-%d %H:%M:%S'), income))
+
+            # 提交更改并关闭连接
+            conn.commit()
+
+    def get_colors(self,item):
+        switch = {
+            'blue-tesla': {'bg': '#04317D', 'fg': '#FFFFFF'},
+            'red-tesla': {'bg': '#D22739', 'fg': '#FFFFFF'},
+            'white-tesla': {'bg': '#ECEDED', 'fg': '#000000'}
+        }
+
+        return switch.get(item, {'bg': 'default_bg_color', 'fg': 'default_fg_color'})
+
+    def insert_vehicles(self, num_vehicles=300):
+        print('insert_fake_vehicles')
+        import random
+        import datetime
+        defects = ['Bluetooth', 'Battery status',
+                   'Tyre problems', 'Traffic accident', 'fine']
+
         one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
 
         # 车辆类型选择列表，包括电动车和电动自行车
-        vehicle_types = ['Electric', 'Electric Bike']
+        vehicleClass = ['Car']
 
         for _ in range(num_vehicles):
             # 随机生成一些示例数据，可以根据需要进行修改
-            type = random.choice(vehicle_types)  # 随机选择车辆类型
-            make = 'Tesla'  # 制造商
-            if type == 'Electric':
+            vehicleClass = 'Car'  # 随机选择车辆类型
+            if vehicleClass == 'Car':
+                make = 'Tesla'  # 制造商
                 model = random.choice(
                     ['Model 3', 'Model S', 'Model X', 'Model Y'])  # 随机选择特斯拉的车型
-                # 针对电动车类型进行特殊处理
+                image = random.choice(['blue-tesla','red-tesla','white-tesla'])
+                colors = self.get_colors(image)
+                bg = colors['bg']
+                fg = colors['fg']
                 ratePerWeek = random.randint(100, 300)  # 随机生成每周租金费用
                 ratePerDay = random.randint(20, 60)  # 随机生成每日租金费用
                 ratePerHour = random.randint(5, 20)  # 随机生成每小时租金费用
@@ -87,7 +135,10 @@ class db():
                 seatingCapacity = random.randint(2, 7)  # 随机生成座位容量
                 horsePower = random.randint(100, 400)  # 随机生成马力
                 maxSpeed = random.randint(100, 200)  # 随机生成最高速度
+                location = random.choice(['Havannah St.', 'Bath St.', 'Hannover St.', 'Argyle St.','Helen St.','Govan Road','5 Morefield Rd'])
+                hasDefects = random.randint(0, 1)
             else:
+                make = 'Gient'  # 制造商
                 model = random.choice(
                     ['E-Bike Model A', 'E-Bike Model B', 'E-Bike Model C'])  # 电动自行车的车型
                 # 电动自行车特殊处理
@@ -100,6 +151,11 @@ class db():
                 seatingCapacity = 1  # 电动自行车的座位容量
                 horsePower = 0  # 电动自行车没有马力
                 maxSpeed = random.randint(10, 15)  # 1 到 15 最高速度
+                image = 'bike'
+                bg = random.choice(["#04317D","#D22739","#ECEDED"])
+                fg = bg
+                location = random.randint(1, 4)
+                hasDefects = random.randint(0, 1)
 
             licensePlateNumber = ''.join(random.choices(
                 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', k=7))  # 随机生成车牌号
@@ -112,118 +168,18 @@ class db():
             defect = random.choice(defects) + ',' + defect_time
 
             # 使用参数化查询将数据插入到数据库中
-            self.c.execute('''
-                    INSERT INTO vehicles (type, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects)
+            self.c.execute("""
+                    INSERT INTO vehicles (vehicleClass, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects, image, bg, fg, location, hasDefects)
                     VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (
-                type, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range1,
-                doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defect))
+                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """, (
+                vehicleClass, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range1, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defect, image, bg, fg, location, hasDefects))
             self.conn.commit()
+
     # Methods
 
     def populate_mock_data(self):
         print("populating mock data in the database...")
-
-        # self.c.execute('''
-        #             INSERT INTO vehicles (type, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects)
-        #             VALUES
-        #             ('Sedan', 'Toyota', 'Camry', 'ABC123', 200, 40, 5, 60000, 450, 4, 5, 180, 130, 0, 1, 'History for Camry', 'No defects'),
-        #             ('SUV', 'Honda', 'CR-V', 'XYZ789', 250, 50, 6, 70000, 400, 5, 5, 200, 140, 0, 1, 'History for CR-V', 'Minor scratches'),
-        #             ('Electric', 'Tesla', 'Model 3', 'EV456', 300, 60, 10, 80000, 300, 4, 5, 250, 150, 1, 0, 'History for Model 3', 'Battery issue');
-        # ''')
-
-
-        vehicles = [
-            {
-                "type": "Car",
-                "vehicleClass": "SUV",
-                "make": "Tesla",
-                "model": "Model S",
-                "licensePlateNumber": "XYZ 123",
-                "ratePerWeek": 20,
-                "ratePerDay": 4,
-                "ratePerHour": 0.2,
-                "batteryCapacity": "64kWh",
-                "range": 550,
-                "doors": 5,
-                "seatingCapacity": 7,
-                "horsePower": 200,
-                "maxSpeed": 310,
-                "inUse": 0,  # False is represented as 0 in SQLite
-                "atSite": 1,  # True is represented as 1 in SQLite
-                "history": '[]',  # Convert to string
-                "defects": '[]',  # Convert to string
-                "image": "blue-tesla",
-                "bg": "#04317D",
-                "fg": "#FFFFFF",
-                "location": "0.2",
-                "hasDefects": 0
-            },
-            {
-                "type": "Car",
-                "vehicleClass": "SUV",
-                "make": "Tesla",
-                "model": "Model S",
-                "licensePlateNumber": "XYZ 123",
-                "ratePerWeek": 20,
-                "ratePerDay": 4,
-                "ratePerHour": 0.2,
-                "batteryCapacity": "64kWh",
-                "range": 550,
-                "doors": 5,
-                "seatingCapacity": 7,
-                "horsePower": 200,
-                "maxSpeed": 310,
-                "inUse": 0,
-                "atSite": 1,
-                "history": '[]',
-                "defects": '[]',
-                "image": "red-tesla",
-                "bg": "#D22739",
-                "fg": "#FFFFFF",
-                "location": "0.8",
-                "hasDefects": 0
-            },
-            {
-                "type": "Car",
-                "vehicleClass": "SUV",
-                "make": "Tesla",
-                "model": "Model S",
-                "licensePlateNumber": "XYZ 123",
-                "ratePerWeek": 20,
-                "ratePerDay": 4,
-                "ratePerHour": 0.2,
-                "batteryCapacity": "64kWh",
-                "range": 550,
-                "doors": 5,
-                "seatingCapacity": 7,
-                "horsePower": 200,
-                "maxSpeed": 310,
-                "inUse": 0,
-                "atSite": 1,
-                "history": '[]',
-                "defects": '[]',
-                "image": "white-tesla",
-                "bg": "#ECEDED",
-                "fg": "#000000",
-                "location": "0.7",
-                "hasDefects": 0
-            },
-        ]
-
-        # Insert vehicles
-        for item in vehicles:
-            self.c.execute('''INSERT INTO vehicles
-                    (vehicleClass, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour,
-                    batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects, image, bg, fg, location)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                           (item["vehicleClass"], item["make"], item["model"], item["licensePlateNumber"],
-                            item["ratePerWeek"], item["ratePerDay"], item["ratePerHour"],
-                               item["batteryCapacity"], item["range"], item["doors"], item["seatingCapacity"],
-                               item["horsePower"], item["maxSpeed"], item["inUse"], item["atSite"],
-                               item["history"], item["defects"], item["image"], item["bg"], item["fg"], item["location"]))
-
         user_data = [
             ('Mahesh', 'mahesh@zevo.com', 'xyz123', 'user'),
             ('Ju', 'ju@zevo.com', 'xyz123', 'operator'),
@@ -258,15 +214,5 @@ class db():
         vehicles = self.run_query(query)
 
         df = vehicles.fetchall()
-        print(len(df))
-
-
-
-# if __name__ == '__main__':
-#     db = db()
-#     db.populate_mock_data()
-
-        df = pd.DataFrame(vehicles.fetchall(), columns=[
-                          'vehicle_id', 'type'])
-        # print("All vehicles: ", df)
+        print(df)
 

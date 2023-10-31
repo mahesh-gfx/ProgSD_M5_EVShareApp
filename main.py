@@ -79,10 +79,10 @@ class App(tk.Tk):
             frame = self.allFrames[key](self.container, controller=self)
             self.activeFrames[key] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-#        self.get_all_vehicles()
+        self.get_all_vehicles()
         self.change_frame('welcome')
 
-        # ini Users
+        # #ini Users
         # import random
         # import string
         # for i in range(100):
@@ -110,10 +110,6 @@ class App(tk.Tk):
 
     def signUpAndLogin(self, username, secret, email):
         # get username and secret from login page as paramaters for this method
-        print("Signing up...")
-        # print(username)
-        # print(secret)
-        # print(email)
         response = self.database.run_query(
             '''INSERT INTO users (username, email, secret, usertype)
             VALUES
@@ -136,21 +132,6 @@ class App(tk.Tk):
         result = self.database.c.fetchone()
         print(result)
 
-
-        if (str(result) != 'None'):
-            if (str(result[5]) == 'user'):
-                self.username = str(result[2])
-                self.loggedInUserType = str(result[5])
-                self.userEmail = str(result[3])
-                self.change_frame('vehiclesView')
-                print("A User logged in..")
-            if (str(result[5]) == 'manager'):
-                self.username = str(result[2])
-                self.loggedInUserType = str(result[5])
-                self.userEmail = str(result[3])
-                self.change_frame('manager')
-                self.geometry("1600x976")
-
         if (result != None):
             if (str(result[4]) == 'user'):
                 self.username = str(result[1])
@@ -159,11 +140,12 @@ class App(tk.Tk):
                 self.change_frame('vehiclesView')
                 print("A User logged in..")
             if (str(result[4]) == 'manager'):
+                print(147)
                 self.username = str(result[1])
                 self.loggedInUserType = str(result[4])
                 self.userEmail = str(result[2])
-                # self.change_frame('manager')
-                # self.geometry("1600x976")
+                self.change_frame('manager')
+                self.geometry("1600x976")
 
                 print("A Manager logged in..")
             if (str(result[4]) == 'operator'):
@@ -180,17 +162,16 @@ class App(tk.Tk):
 
             tk.messagebox.showinfo("Zevo | EV Rental", "Invalid Credentials!")
 
-    # def get_all_vehicles(self):
-    #     self.database.run_query(
-    #         '''SELECT * FROM vehicles''')
-    #     response = self.database.c.fetchall()
-    #     print("response: ", response)
-    #     response = pd.DataFrame(response, columns=["type", "vehicleClass", "make", "model", "licensePlateNumber", "ratePerWeek", "ratePerDay",
-    #                                                "ratePerHour", "batteryCapacity", "range", "doors", "seatingCapacity", "horsePower", "maxSpeed",
-    #                                                "inUse", "atSite", "history", "defects", "image", "bg", "fg", "location", "hasDefects"])
-    #
-    #     self.vehicles = response.to_dict(orient='records')
-    #     return self.vehicles
+    def get_all_vehicles(self):
+        self.database.run_query(
+            '''SELECT * FROM vehicles''')
+        response = self.database.c.fetchall()
+        response = pd.DataFrame(response, columns=["vehicle_id","vehicleClass", "make", "model", "licensePlateNumber", "ratePerWeek", "ratePerDay",
+                                                   "ratePerHour", "batteryCapacity", "range", "doors", "seatingCapacity", "horsePower", "maxSpeed",
+                                                   "inUse", "atSite", "history", "defects", "image", "bg", "fg", "location", "hasDefects"])
+
+        self.vehicles = response.to_dict(orient='records')
+        return self.vehicles
 
 
 

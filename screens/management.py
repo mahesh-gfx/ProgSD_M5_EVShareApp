@@ -126,20 +126,23 @@ class management(ttk.Frame):
         days = []
         defect = 0
         for row in defect_data:
-            parts = row[0].split(',')
-            timestamp = parts[1].strip()
-            info = parts[0].strip()
-            # 假设时间戳的格式是'YYYY-MM-DD HH:MM:SS'
-            date = timestamp.split(' ')[0]
-            year, month, day = map(int, date.split('-'))
-            if day == 1:
-                days.append(info)
-            if day>1 and day<=7:
-                weeks.append(info)
-            if day >7:
-                months.append(info)
-            if info!='fine':
-                defect = defect+1
+            try:
+                parts = row[0].split(',')
+                timestamp = parts[1].strip()
+                info = parts[0].strip()
+                # 假设时间戳的格式是'YYYY-MM-DD HH:MM:SS'
+                date = timestamp.split(' ')[0]
+                year, month, day = map(int, date.split('-'))
+                if day <= 2:
+                    days.append(info)
+                if day>2 and day<=7:
+                    weeks.append(info)
+                if day >7:
+                    months.append(info)
+                if info!='fine':
+                    defect = defect+1
+            except:
+                pass
         self.create_pie_chart(days,'image_components/days.png')
         self.create_pie_chart(weeks, 'image_components/weeks.png')
         self.create_pie_chart(months,'image_components/months.png')
