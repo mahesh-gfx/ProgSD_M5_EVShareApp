@@ -5,341 +5,14 @@ from tkinter import ttk
 class VehiclesView(ttk.Frame):
 
     locationButtonText = 'G4 0AS, Glasgow'
-    cars = [{
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"blue-tesla",
-        "bg":"#04317D",
-        "fg":"#FFFFFF",
-        "distance":"0.2",
-    },
-        {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"red-tesla",
-        "bg":"#D22739",
-        "fg":"#FFFFFF",
-        "distance":"0.8",
-
-    },
-        {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.7",
-
-    },
-        {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.7",
-
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    }, {
-        "type": "Car",
-        "vehicleClass": "SUV",
-        "make": "Tesla",
-        "model": "Model S",
-        "licensePlateNumber": "XYZ 123",
-        "ratePerWeek": "20",
-        "ratePerDay": "4",
-        "ratePerHour": "0.2",
-        "batteryCapacity": "64kWh",
-        "range": "550",
-        "doors": "5",
-        "seatingCapacity": "7",
-        "horsepower": "200",
-        "maxSpeed": "310",
-        "inUse": False,
-        "atSite": True,
-        "history": [],
-        "defects":[],
-        "image":"white-tesla",
-        "bg":"#ECEDED",
-        "fg":"#000000",
-        "distance":"0.2",
-    },
-    ]
+    cars = []
 
     def __init__(self, container, controller):
         super().__init__(container)
+        self.controller = controller
         print("Constructing Vehicles View self.navigation...")
+#        self.cars = controller.get_all_vehicles()
+
         self.styled = ttk.Style()
         self.styled.configure("TButton", font=("Helvetica", 16))
         self.styled.configure('TMenu', anchor='w', justify='left')
@@ -347,7 +20,7 @@ class VehiclesView(ttk.Frame):
         self.style = "Custom.TFrame"
 
         self.selected_vehicle = tk.StringVar()  # Create the StringVar here
-        self.options = ['Sedan', 'Bike', 'Hatchback', 'Coupe', 'SUV']
+        self.options = ['Car', 'Bike', 'Car']
         self.selected_vehicle.set(self.options[0])
 
         self.locationIcon = tk.PhotoImage(
@@ -374,19 +47,9 @@ class VehiclesView(ttk.Frame):
 
         self.label.lift()
         self.dropdown.lift()
+        self.render_view(container)
 
-        sortLabel = tk.Label(self, text='Sort vehicles')
-        sortLabel.place(x=341, y=140)
-
-        self.selectedSortOption = tk.StringVar()
-        self.sortMenuOptions = ['Default', 'Rate: High to Low', 'Rate: Low to High',
-                                'Range: High to Low', 'Range: Low to High']
-        self.selectedSortOption.set(self.sortMenuOptions[0])
-        self.sortMenu = tk.OptionMenu(
-            self, self.selectedSortOption, *self.sortMenuOptions)
-
-        self.sortMenu.place(x=341, y=155, height=42, width=108)
-
+    def render_view(self, controller):
         canvas = tk.Canvas(self)
         canvas.place(x=25, y=230, height=480, width=480)
 
@@ -404,13 +67,20 @@ class VehiclesView(ttk.Frame):
             file="./image_components/map_duotone_light.png")
 
         # Navigation bar
+        self.homeIcon = tk.PhotoImage(
+            file="./image_components/home_light.png")
+        self.historyIcon = tk.PhotoImage(
+            file="./image_components/time_progress_light.png")
+        self.signOutIcon = tk.PhotoImage(
+            file="./image_components/sign_out_circle_light.png")
+
         self.navigation = tk.Frame(self)
-        button1 = tk.Button(
-            self.navigation, text="Home", width=10, height=2)
-        button2 = tk.Button(
-            self.navigation, text="History", width=10, height=2)
-        button3 = tk.Button(
-            self.navigation, text="Log Out", width=10, height=2)
+        button1 = ttk.Button(
+            self.navigation, image=self.homeIcon)
+        button2 = ttk.Button(
+            self.navigation, image=self.historyIcon)
+        button3 = ttk.Button(
+            self.navigation, image=self.signOutIcon)
 
         self.navigation.grid_columnconfigure(0, weight=1)
         self.navigation.grid_columnconfigure(1, weight=1)
@@ -422,9 +92,9 @@ class VehiclesView(ttk.Frame):
 
         self.navigation.place(x=0, y=700, height=100, width=480)
 
+        self.index = 1
         for car in self.cars:
             scrollable_frame = tk.Frame(self.carsContainer, )
-
             car_image = tk.PhotoImage(
                 file=f"./image_components/{car['image']}.png")
             label_image = tk.Label(
@@ -449,24 +119,26 @@ class VehiclesView(ttk.Frame):
             self.label_distance_icon.grid(
                 row=0, column=0, sticky='nw', padx=30, pady=60)
 
+            # car["distance"]
             label_distance = tk.Label(
-                scrollable_frame, text=car["distance"]+" miles away", bg=car["bg"], fg=car["fg"], font=(
+                scrollable_frame, text='10'+" miles away", bg=car["bg"], fg=car["fg"], font=(
                     'Helvetica', 12), anchor='w', justify='left')
             label_distance.grid(row=0, column=0, sticky='nw', padx=62, pady=62)
 
             label_seats = tk.Label(
-                scrollable_frame, text="Seats "+car["seatingCapacity"], bg=car["bg"], fg=car["fg"], font=(
+                scrollable_frame, text="Seats "+str(car["seatingCapacity"]), bg=car["bg"], fg=car["fg"], font=(
                     'Helvetica', 12), anchor='w', justify='left')
             label_seats.grid(row=0, column=0, sticky='nw', padx=30, pady=88)
 
             label_rate = tk.Label(
-                scrollable_frame, text="£"+car["ratePerWeek"] + "/week", bg=car["bg"], fg=car["fg"], font=(
+                scrollable_frame, text="£"+str(car["ratePerWeek"]) + "/week", bg=car["bg"], fg=car["fg"], font=(
                     'Helvetica', 14, 'bold'), anchor='w', justify='left')
             label_rate.grid(row=0, column=0, sticky='sw', padx=30, pady=50)
 
             label_image.bind(
-                "<Button-1>", lambda event: self.handle_click_on_vehicle(controller, car))
+                "<Button-1>", lambda event, car=car, index=self.index: self.handle_click_on_vehicle(self.controller, car, index))
             scrollable_frame.pack()
+            self.index += 1
 
         self.carsContainer.update_idletasks()
         canvas.config(scrollregion=canvas.bbox("all"))
@@ -477,8 +149,8 @@ class VehiclesView(ttk.Frame):
         self.after(4000, lambda: self.locationButton.config(
             text='G4 0AS, Glasgow'))
 
-    def handle_click_on_vehicle(self, controller, car):
-        print("Clicked on label...")
+    def handle_click_on_vehicle(self, controller, car, index):
+        # print("Clicked on label..." + str(index), car)
         controller.set_selected_vehicle(car)
         controller.change_frame('vehicleDetails')
 

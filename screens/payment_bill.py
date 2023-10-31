@@ -1,7 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter.ttk
-
+from classes import vehicleHistory
+#from classes import Vehicle
 
 class pay_bill_Screen(ttk.Frame):
 
@@ -46,14 +47,7 @@ class pay_bill_Screen(ttk.Frame):
                                      image=self.backButtonArrow, command=lambda: controller.change_frame('vehicleDetails'))
         self.backButton.place(x=10, y=10)
 
-        # profile button
-        # self.photoProf = "./image_components/defect-profile.png"
-        # self.photoProf = PhotoImage(file=self.photoProf)
-        # self.buttonProf = Button(self, image=self.photoProf, compound=TOP,
-        #                          command=self.to_profile_page, borderwidth=0, background='#FFF')
-        # self.buttonProf.place(x=10, y=20)
-
-        # consult button
+        
         self.photoConsult = "./image_components/defect-consult.png"
         self.photoConsult = PhotoImage(file=self.photoConsult)
         self.buttonConsult = Button(self, image=self.photoConsult, compound=TOP,
@@ -77,12 +71,15 @@ class pay_bill_Screen(ttk.Frame):
             font_name, 14), background='#D9D9D9', anchor="w")
         self.label1_left.place(x=60, y=177, width=180)
         self.label1_left["justify"] = "left"
-        '''
-        #from database get using time and distance
-        clue=str(get_total_time()+"\n"+get_total_distance)
-        '''
-        clue = str("12:00-3:00(+1)" + "\n" + "9999km")
-        self.label1_right = Label(self, text=clue, font=(
+
+        #from classes get using time and distance
+
+        startTime = vehicleHistory.startTime
+        endTime = vehicleHistory.endTime
+        distance = vehicleHistory.distance
+        string = str(startTime) + " - " +str(endTime) + "\n" + str(distance)
+        
+        self.label1_right = Label(self, text=string, font=(
             font_name, 14), background='#D9D9D9', anchor="e")
         self.label1_right.place(x=240, y=177, width=180)
         self.label1_right["justify"] = "right"
@@ -92,6 +89,9 @@ class pay_bill_Screen(ttk.Frame):
             font_name, 14), background='#D9D9D9', anchor="w")
         self.label2_left.place(x=60, y=290, width=180)
         self.label2_left["justify"] = "left"
+        # if startTime[0:2] == endTime[0:2]:
+        #     time_amount = int(endTime[:-2])-int(startTime[-2])
+       
         """
         amount = get_amount()
         servicefee=get_service_fee()

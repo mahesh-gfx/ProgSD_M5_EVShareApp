@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-# import addcard as ac
-# import payment_bill as pb
+
+
 
 
 class pay_access_Screen(ttk.Frame):
