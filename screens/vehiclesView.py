@@ -1,10 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-
 class VehiclesView(ttk.Frame):
 
-    locationButtonText = 'G4 0AS, Glasgow'
     cars = []
 
     def __init__(self, container, controller):
@@ -23,11 +21,14 @@ class VehiclesView(ttk.Frame):
         self.options = ['Car', 'Bike', 'Car']
         self.selected_vehicle.set(self.options[0])
 
-        self.locationIcon = tk.PhotoImage(
-            file="./image_components/pin_duotone.png")
-        self.locationButton = ttk.Button(self, text=self.locationButtonText, image=self.locationIcon, compound="left",
-                                         command=lambda: self.getLocation())
-        self.locationButton.place(x=200, y=45, height=42, width=260)
+        # locations drop down
+        self.locations = ["Bath St.", "Havannah St.", "Hannover St."]
+        self.val = tk.StringVar()
+        self.val.set(self.locations[0])
+        self.locations_drop_down = ttk.Combobox(self, textvariable=self.val, values=self.locations, state="readonly",
+                                                      font=('Mako', 14), style="CustomStyles.TCombobox")
+        self.locations_drop_down.place(x=200, y=45, height=42, width=260)
+
 
         self.label = tk.Label(self, text="I want to rent a",
                               font=("Helvetica", 20))
