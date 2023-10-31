@@ -10,6 +10,7 @@ from screens.defect import defect_page
 from screens.addcard import add_card_Screen
 from screens.login import login_page
 from screens.register import register_page
+from screens.operator import Operator
 
 
 class App(tk.Tk):
@@ -70,7 +71,8 @@ class App(tk.Tk):
                           'vehicleDetails': VehicleDetails,
                           'addCard': add_card_Screen,
                           'login': login_page,
-                          'register': register_page
+                          'register': register_page,
+                          'operator': Operator,
                           }
 
         for key in self.allFrames:
@@ -153,8 +155,8 @@ class App(tk.Tk):
                 self.username = str(result[1])
                 self.loggedInUserType = str(result[4])
                 self.userEmail = str(result[2])
-                # self.geometry("1080x1960")
-                # self.change_frame('operator')
+                self.geometry("1536x864")
+                self.change_frame('operator')
                 print("An Operator logged in..")
         else:
             tk.messagebox.showinfo("Zevo | EV Rental", "Invalid Credentials!")
