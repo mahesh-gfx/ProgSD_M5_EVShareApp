@@ -1,13 +1,37 @@
 import tkinter as tk
 from tkinter import ttk
+import datetime
 
 class Return_and_pay(ttk.Frame):
 
     def return_and_pay(self):
-        print("pay")
+        print("PAY")
+    def on_select(self, event):
+        print("Hey Man: ", self.val.get())
 
     def __init__(self, container, controller):
         tk.Frame.__init__(self, container)
+
+        global globalController
+        globalController = controller
+
+        # mock car data
+        self.past = datetime.datetime.now() - datetime.timedelta(days=30)
+        self.car = {
+            "name": "Tesla Model S",
+            "ratePerDay": 20,
+            "rentedOn": self.past,
+            "isAvailable": False,
+            "isReturned": False,
+            "returnedOn": None,
+            "location": None
+        }
+
+        # print()
+        # print()
+        self.duration = int((datetime.datetime.now() - self.past).days)
+        self.amount = self.duration * self.car["ratePerDay"]
+        print(self.amount)
 
         self.layout = tk.PhotoImage(file=r"../image_components/return_and_pay_layout.png")
         self.layout_label = tk.Label(self,image=self.layout)
@@ -15,7 +39,7 @@ class Return_and_pay(ttk.Frame):
 
         self.time_label = tk.Label(self, text="Total Time in hours: ", bg="#D9D9D9", font=('Helvetica', 15))
         self.time_label.place(relx=0.15, rely=0.21)
-        self.time = tk.Label(self, text="4 Hours", bg="#D9D9D9", font=('Helvetica', 15))
+        self.time = tk.Label(self, text=str(self.duration) + " Days", bg="#D9D9D9", font=('Helvetica', 15))
         self.time.place(relx=0.6, rely=0.21)
 
         self.name_label = tk.Label(self, text="Vehicle Name: ", bg="#D9D9D9", font=('Helvetica', 15))
@@ -29,11 +53,13 @@ class Return_and_pay(ttk.Frame):
         self.locations_drop_down = ttk.Combobox(self, textvariable=self.val, values=self.locations, state="readonly",
                                                       font=('Mako', 15), style="CustomStyles.TCombobox")
         self.locations_drop_down.place(relx=0.15, rely=0.32, height=42, width=360)
+        self.locations_drop_down.bind("<<ComboboxSelected>>", self.on_select)
 
-        self.amount_label = tk.Label(self, text="Amount: ", bg="#D9D9D9", font=('Helvetica', 15))
-        self.amount_label.place(relx=0.15, rely=0.4)
-        self.amount = tk.Label(self, text="£400", bg="#D9D9D9", font=('Helvetica', 15))
-        self.amount.place(relx=0.6, rely=0.4)
+
+        self.total_amount_label = tk.Label(self, text="Amount: ", bg="#D9D9D9", font=('Helvetica', 15))
+        self.total_amount_label.place(relx=0.15, rely=0.4)
+        self.total_amount = tk.Label(self, text="£" + str(self.amount), bg="#D9D9D9", font=('Helvetica', 15))
+        self.total_amount.place(relx=0.6, rely=0.4)
 
         self.btnImage = tk.PhotoImage(file=r"../image_components/return_and_pay_btn.png")
         self.btn = tk.Button(self, image=self.btnImage, compound=tk.TOP, command=self.return_and_pay, borderwidth=0,
