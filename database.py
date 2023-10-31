@@ -39,6 +39,16 @@ class db():
                 [secret] TEXT,
                 [usertype] TEXT)
                 ''')
+
+        self.c.execute('''
+                CREATE TABLE IF NOT EXISTS orders
+                ([orderid] integer PRIMARY KEY,
+                [username] TEXT,
+                [startTime] TEXT,
+                [endTime] TEXT,
+                [income] TEXT)
+                ''')
+
         self.conn.commit()
         if self.validate_new_db() == True:
             print("Db is empty")

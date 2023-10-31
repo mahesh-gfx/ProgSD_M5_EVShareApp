@@ -80,6 +80,15 @@ class App(tk.Tk):
 
         self.change_frame('welcome')
 
+        # ini Users
+        # import random
+        # import string
+        # for i in range(100):
+        #     name = ''.join(random.choice(string.ascii_letters) for _ in range(8))  # 生成随机名字
+        #     email = f"{name}@example.com"  # 生成随机邮箱
+        #     password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))  # 生成随机密码
+        #     self.signUpAndLogin(username=name,secret=password,email=email)
+
     def change_frame(self, pageName):
         frame = self.activeFrames[pageName]
         frame.tkraise()
@@ -96,10 +105,6 @@ class App(tk.Tk):
 
     def signUpAndLogin(self,username,secret,email):
         # get username and secret from login pageas paramaters for this method
-        print("Signing up...")
-        print(username)
-        print(secret)
-        print(email)
         response = self.database.run_query(
             '''INSERT INTO users (username, email, secret, usertype)
             VALUES

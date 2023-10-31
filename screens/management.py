@@ -3,9 +3,87 @@ import sqlite3
 import matplotlib.pyplot as plt
 from collections import Counter
 from matplotlib.lines import Line2D
-import datetime
+from datetime import datetime
 
 class management:
+    def get_incomefig(self):
+
+        # 连接到数据库
+        conn = sqlite3.connect(r'../zevo-dev.db')
+        cursor = conn.cursor()
+
+        # 执行 SQL 查询以检索所有 income 和 startTime 数据
+        cursor.execute("SELECT income, startTime FROM orders")
+
+        # 获取所有 income 和 startTime 数据
+        data = cursor.fetchall()
+
+        # 初始化一个字典来存储每个月份的总和
+        monthly_income = {}
+
+        # 遍历数据并按月份进行求和
+        for item in data:
+            income = int(item[0])
+            start_time = datetime.strptime(item[1], '%Y-%m-%d %H:%M:%S')
+            month_key = start_time.strftime('%Y-%m')
+            if month_key in monthly_income:
+                monthly_income[month_key] += income
+            else:
+                monthly_income[month_key] = income
+
+        # 提取月份和总和数据
+        months = list(monthly_income.keys())
+        total_incomes = list(monthly_income.values())
+
+        # 转换月份字符串为日期格式
+        months = [datetime.strptime(month, '%Y-%m') for month in months]
+        # 绘制折线图
+        plt.figure(figsize=(431 / 100, 155 / 100))  # 设置图表大小为431x155像素
+        plt.plot(total_incomes, marker='o', markersize=2, linestyle='-')
+        plt.xticks([])
+        # 保存图表为PNG文件
+        plt.savefig('income_trend.png', dpi=100)  # 设置dpi以控制输出图像的分辨率
+
+        # 关闭连接
+        conn.close()
+
+    def get_activefig(self):
+        # 连接到数据库
+        conn = sqlite3.connect(r'../zevo-dev.db')
+        cursor = conn.cursor()
+
+        # 执行 SQL 查询以检索所有 startTime 列的数据
+        cursor.execute("SELECT startTime FROM orders")
+
+        # 获取所有 startTime 数据
+        start_times = cursor.fetchall()
+
+        # 初始化一个字典来存储每个月份的总和
+        monthly_sum = {}
+
+        # 遍历 startTime 数据并按月份进行求和
+        for start_time in start_times:
+            start_time = datetime.strptime(start_time[0], '%Y-%m-%d %H:%M:%S')
+            month_key = start_time.strftime('%Y-%m')
+            if month_key in monthly_sum:
+                monthly_sum[month_key] += 1
+            else:
+                monthly_sum[month_key] = 1
+
+        # 提取月份和总和数据
+        months = list(monthly_sum.keys())
+        totals = list(monthly_sum.values())
+
+        # 绘制柱状统计图
+        plt.figure(figsize=(5, 1.4))  # 设置图表大小为500x140像素
+        plt.bar(months, totals)
+        plt.xticks([])
+
+        # 保存图表为PNG文件
+        plt.savefig('active_month.png', dpi=100)  # 设置dpi以控制输出图像的分辨率
+
+        # 关闭连接
+        conn.close()
 
     def create_pie_chart(self, data, filename):
         count = Counter(data)
@@ -34,7 +112,7 @@ class management:
         months = []
         weeks = []
         days = []
-
+        defect = 0
         for row in defect_data:
             parts = row[0].split(',')
             timestamp = parts[1].strip()
@@ -48,14 +126,38 @@ class management:
                 weeks.append(info)
             if day >7:
                 months.append(info)
+            if info!='fine':
+                defect = defect+1
         self.create_pie_chart(days,'days.png')
         self.create_pie_chart(weeks, 'weeks.png')
         self.create_pie_chart(months,'months.png')
+        return len(defect_data), defect
+    def get_income(self):
+        # 连接到数据库
+        conn = sqlite3.connect(r'../zevo-dev.db')
+        cursor = conn.cursor()
 
+        # 使用 SQL 查询来计算 income 列的总和
+        cursor.execute("SELECT SUM(income) FROM orders")
+
+        # 获取总和值
+        total_income = cursor.fetchone()[0]
+        return total_income
+
+    def get_Userinfo(self):
+        conn = sqlite3.connect(r'../zevo-dev.db')
+        c = conn.cursor()
+        # 查询数据库以获取符合条件的数据
+        User_data = c.execute("SELECT * FROM users ").fetchall()
+        return len(User_data)
 
         # 创建并保存饼图
     def __init__(self):
-        self.get_fleet()
+        self.get_incomefig()
+        self.get_activefig()
+        carNumber , defect = self.get_fleet()
+        UserNumber = self.get_Userinfo()
+        income = self.get_income()
         def download_as_PDF():
             print('download as PDF')
 
@@ -161,38 +263,33 @@ class management:
         FleetMonthPathLabel.place(x=1193, y=135)
 
         # Total car info
-        CarNumber = Label(text='30,200', font=('inter', 25, 'bold'),
+        CarNumber = Label(text=str(carNumber), font=('inter', 25, 'bold'),
                           background='#FFFFFF', foreground='#504F4F')
         CarNumber.place(x=191, y=460)
 
         # Total customers info
-        customersNumber = Label(text='50,270', font=(
+        customersNumber = Label(text=str(UserNumber), font=(
             'inter', 25, 'bold'), background='#FFFFFF', foreground='#504F4F')
         customersNumber.place(x=541, y=460)
 
         # Daily income info
-        incomeNumber = Label(text='￡7,270', font=(
-            'inter', 25, 'bold'), background='#FFFFFF', foreground='#504F4F')
-        incomeNumber.place(x=910, y=460)
-
-        # Daily income info
-        incomeNumber = Label(text='￡7,270', font=(
+        incomeNumber = Label(text='￡'+str(income), font=(
             'inter', 25, 'bold'), background='#FFFFFF', foreground='#504F4F')
         incomeNumber.place(x=910, y=460)
 
         # Defect info
-        DefectNumber = Label(text='100', font=(
+        DefectNumber = Label(text=str(defect), font=(
             'inter', 25, 'bold'), background='#FFFFFF', foreground='#504F4F')
         DefectNumber.place(x=1330, y=460)
 
         # Active customers info
-        customersInfo = r"../image_components/manager-customer-test.png"
+        customersInfo = r"active_month.png"
         customersInfo = PhotoImage(file=customersInfo)
         customersInfoLabel = Label(image=customersInfo, background='#FFFFFF')
         customersInfoLabel.place(x=200, y=600)
 
         # income trend info
-        incomeInfo = r"../image_components/manager-customer-income-test.png"
+        incomeInfo = r"income_trend.png"
         incomeInfo = PhotoImage(file=incomeInfo)
         incomeInfoLabel = Label(image=incomeInfo, background='#FFFFFF')
         incomeInfoLabel.place(x=900, y=600)
