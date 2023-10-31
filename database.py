@@ -39,9 +39,10 @@ class db():
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS users
                 ([userid] INTEGER PRIMARY KEY,
-                [username] TEXT,
+                [name] TEXT,
                 [email] TEXT,
                 [secret] TEXT,
+                [phone] TEXT,
                 [usertype] TEXT,
                 [purchase] TEXT);
                 ''')
@@ -50,7 +51,7 @@ class db():
                 CREATE TABLE IF NOT EXISTS orders
                 ([orderid] integer PRIMARY KEY,
                 [email] TEXT,
-                [carID] TEST,
+                [carID] TEXT,
                 [startTime] TEXT,
                 [endTime] TEXT,
                 [income] TEXT)
@@ -63,7 +64,6 @@ class db():
             self.insert_vehicles()
             self.creat_history()
 
-
     def creat_history(self):
         print('insert_history')
         import sqlite3
@@ -74,14 +74,17 @@ class db():
         for i in range(30):
             cursor.execute("SELECT email FROM users ORDER BY RANDOM() LIMIT 1")
             email = cursor.fetchone()[0]
-            cursor.execute("SELECT vehicle_id FROM vehicles ORDER BY RANDOM() LIMIT 1")
+            cursor.execute(
+                "SELECT vehicle_id FROM vehicles ORDER BY RANDOM() LIMIT 1")
             vehicle_id = cursor.fetchone()[0]
 
             # 生成随机的startTime和endTime
             current_time = datetime.datetime.now()
             one_year_ago = current_time - datetime.timedelta(days=365)
-            start_time = one_year_ago + datetime.timedelta(seconds=random.randint(0, 31536000))
-            end_time = start_time + datetime.timedelta(seconds=random.randint(1, 86400))
+            start_time = one_year_ago + \
+                datetime.timedelta(seconds=random.randint(0, 31536000))
+            end_time = start_time + \
+                datetime.timedelta(seconds=random.randint(1, 86400))
 
             # 生成随机的income
             income = str(random.randint(10, 100))
@@ -94,7 +97,7 @@ class db():
             # 提交更改并关闭连接
             conn.commit()
 
-    def get_colors(self,item):
+    def get_colors(self, item):
         switch = {
             'blue-tesla': {'bg': '#04317D', 'fg': '#FFFFFF'},
             'red-tesla': {'bg': '#D22739', 'fg': '#FFFFFF'},
@@ -122,7 +125,8 @@ class db():
                 make = 'Tesla'  # 制造商
                 model = random.choice(
                     ['Model 3', 'Model S', 'Model X', 'Model Y'])  # 随机选择特斯拉的车型
-                image = random.choice(['blue-tesla','red-tesla','white-tesla'])
+                image = random.choice(
+                    ['blue-tesla', 'red-tesla', 'white-tesla'])
                 colors = self.get_colors(image)
                 bg = colors['bg']
                 fg = colors['fg']
@@ -135,7 +139,8 @@ class db():
                 seatingCapacity = random.randint(2, 7)  # 随机生成座位容量
                 horsePower = random.randint(100, 400)  # 随机生成马力
                 maxSpeed = random.randint(100, 200)  # 随机生成最高速度
-                location = random.choice(['Havannah St.', 'Bath St.', 'Hannover St.', 'Argyle St.','Helen St.','Govan Road','5 Morefield Rd'])
+                location = random.choice(
+                    ['Havannah St.', 'Bath St.', 'Hannover St.', 'Argyle St.', 'Helen St.', 'Govan Road', '5 Morefield Rd'])
                 hasDefects = random.randint(0, 1)
             else:
                 make = 'Gient'  # 制造商
@@ -152,7 +157,7 @@ class db():
                 horsePower = 0  # 电动自行车没有马力
                 maxSpeed = random.randint(10, 15)  # 1 到 15 最高速度
                 image = 'bike'
-                bg = random.choice(["#04317D","#D22739","#ECEDED"])
+                bg = random.choice(["#04317D", "#D22739", "#ECEDED"])
                 fg = bg
                 location = random.randint(1, 4)
                 hasDefects = random.randint(0, 1)
@@ -181,15 +186,15 @@ class db():
     def populate_mock_data(self):
         print("populating mock data in the database...")
         user_data = [
-            ('Mahesh', 'mahesh@zevo.com', 'xyz123', 'user'),
-            ('Ju', 'ju@zevo.com', 'xyz123', 'operator'),
-            ('Li', 'mahesh@zevo.com', 'xyz123', 'manager')
+            ('Mahesh', 'mahesh@zevo.com', 'xyz123', '+44 7879 46249', 'user'),
+            ('Ju', 'ju@zevo.com', 'xyz123', '+44 7819 46249', 'operator'),
+            ('Li', 'mahesh@zevo.com', 'xyz123', '+44 7876 46249', 'manager')
         ]
 
         # Insert users
         for data in user_data:
-            self.c.execute('''INSERT INTO users (username, email, secret, usertype)
-                             VALUES (?, ?, ?, ?)''', data)
+            self.c.execute('''INSERT INTO users (name, email, secret, phone, usertype)
+                             VALUES (?, ?, ?, ?, ?)''', data)
 
         self.conn.commit()
 
@@ -215,4 +220,3 @@ class db():
 
         df = vehicles.fetchall()
         print(df)
-
