@@ -122,7 +122,7 @@ class pay_access_Screen(ttk.Frame):
         self.topblock = Label(self, image=self.payblock2, background='#F0F0F0')
         self.topblock.place(x=40, y=62)
         # text: bill
-        self.bill_left = Label(self, text="amount:\nservice fee:\ndiscount:", font=(
+        self.bill_left = Label(self, text="Vehicle fee:\nDiscount:", font=(
             font_name, 16), background='#D9D9D9', anchor="w")
         self.bill_left.place(x=60, y=83, width=180)
         self.bill_left["justify"] = "left"
@@ -132,7 +132,7 @@ class pay_access_Screen(ttk.Frame):
         discount=get_discount()
         str_fee=str(a+"\n"+s+"\n"+d)
         """
-        str_fee = str("50\n3\n0")
+        str_fee = str("50\n3")
         self.bill_right = Label(self, text=str_fee, font=(
             font_name, 16), background='#D9D9D9', anchor="e")
         self.bill_right.place(x=240, y=83, width=180)
@@ -140,14 +140,20 @@ class pay_access_Screen(ttk.Frame):
         # total
         self.total_left = Label(self, text="Total:", font=(
             font_name, 20, "bold"), background='#D9D9D9', anchor="w")
-        self.total_left.place(x=60, y=170, width=180)
+        self.total_left.place(x=60, y=160, width=180)
         self.total_left["justify"] = "left"
         # total_bill = amount+service_fee-discount
-        total_bill = 33.99
+        total_bill = 47
         self.total_right = Label(self, text=str(total_bill), font=(
             font_name, 20, "bold"), background='#D9D9D9', anchor="e")
-        self.total_right.place(x=240, y=170, width=180)
+        self.total_right.place(x=240, y=160, width=180)
         self.total_right["justify"] = "right"
+        #gain credits mention
+        gain_credits = str(total_bill)+" credits"
+        self.credit_mention = Label(self, text = "you can gain "+gain_credits, font=(
+        font_name, 10, "bold"),background='#D9D9D9', anchor="e")
+        self.credit_mention["justify"] = "right"
+        self.credit_mention.place(x=65, y=200)
 
         # payment choice
         # bg
@@ -211,18 +217,7 @@ class pay_access_Screen(ttk.Frame):
         self.option_add("*TCombobox*Listbox*Font", (font_name, 14))
         self.option_add("*TCombobox*Listbox*Background", "white")
         self.card_roller.place(x=75, y=450, width=280, height=30)
-        # combostyle2 = ttk.Style()
-        # combostyle2.theme_create('combostyle2', parent='alt',
-        #                          settings={'TCombobox':
-        #                                    {'configure':
-        #                                     {
-        #                                         'foreground': 'black',
-        #                                         'selectforeground': 'black',
-        #                                         'selectbackground': '#F2F2F2',
-        #                                         'fieldbackground': '#F2F2F2',
-        #                                     }}}
-        #                          )
-        # combostyle2.theme_use('combostyle2')
+        
 
         self.button_card_choose = Button(self,
                                          image=self.photoSelect_F, compound=TOP, command=self.use_card, borderwidth=0, background='#F0F0F0')

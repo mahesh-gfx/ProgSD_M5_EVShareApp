@@ -1,8 +1,72 @@
 from tkinter import *
-
+import sqlite3
+import matplotlib.pyplot as plt
+from collections import Counter
+from matplotlib.lines import Line2D
+import datetime
+from PIL import Image, ImageTk
 
 class management:
+
+    def create_pie_chart(self, data, filename):
+        count = Counter(data)
+        labels, values = zip(*count.items())
+
+        # 创建饼图
+        fig, ax = plt.subplots(figsize=(8, 6), dpi=80)
+        [wedges, texts, autotexts] = ax.pie(values, autopct='%1.1f%%', startangle=140)
+        for autotext in autotexts:
+            autotext.set_fontsize(20)
+
+        # 设置饼图部分的颜色
+        colors = plt.cm.tab20.colors
+        for i, (label, color) in enumerate(zip(labels, colors)):
+            wedges[i].set_facecolor(color)
+        # 设置标签
+        legend_elements = [Line2D([0], [0], marker='o', color='w', label=label, markersize=10, markerfacecolor=color)
+                        for label, color in zip(labels, colors)]
+        legend = ax.legend(handles=legend_elements, loc="upper left", bbox_to_anchor=(0.9, 1, 0.01, 0.01),prop={'size': 16})
+        #legend.set_title("String Types", prop={'size': 20})
+        legend.get_frame().set_alpha(0)
+        ax.axis('equal')
+        ax.set_position([0.15, 0.15, 0.7, 0.7])
+        plt.subplots_adjust(left=0.05, right=0.6)
+        plt.savefig(filename, format='png')
+
+    def get_fleet(self):
+        # 连接到数据库
+        conn = sqlite3.connect(r'../zevo-dev.db')
+        c = conn.cursor()
+
+        # 查询数据库以获取符合条件的数据
+        defect_data = c.execute("SELECT defects FROM vehicles ").fetchall()
+        # 关闭数据库连接
+        conn.close()
+        months = []
+        weeks = []
+        days = []
+
+        for row in defect_data:
+            parts = row[0].split(',')
+            timestamp = parts[1].strip()
+            info = parts[0].strip()
+            # 假设时间戳的格式是'YYYY-MM-DD HH:MM:SS'
+            date = timestamp.split(' ')[0]
+            year, month, day = map(int, date.split('-'))
+            if day <=2:
+                days.append(info)
+            if day>2 and day<=7:
+                weeks.append(info)
+            if day >7:
+                months.append(info)
+        self.create_pie_chart(days,'days.png')
+        self.create_pie_chart(weeks, 'weeks.png')
+        self.create_pie_chart(months,'months.png')
+
+
+        # 创建并保存饼图
     def __init__(self):
+        self.get_fleet()
         def download_as_PDF():
             print('download as PDF')
 
@@ -90,22 +154,26 @@ class management:
         buttonProfile.place(x=1400, y=20)
 
         # Fleet day
-        FleetdayPath = r"../image_components/manager-test-piechart.png"
-        FleetdayPath = PhotoImage(file=FleetdayPath)
+        image1 = Image.open("days.png")
+        image1 = image1.resize((240, 180), Image.ANTIALIAS)
+        FleetdayPath = ImageTk.PhotoImage(image1)
         FleetdayPathLabel = Label(image=FleetdayPath, background='#FFFFFF')
-        FleetdayPathLabel.place(x=224, y=140)
-
+        FleetdayPathLabel.place(x=180, y=135)
         # Fleet Week
-        FleetWeekPath = r"../image_components/manager-test-piechart.png"
-        FleetWeekPath = PhotoImage(file=FleetWeekPath)
+        image2 = Image.open("weeks.png")
+        image2 = image2.resize((240, 180), Image.ANTIALIAS)
+        FleetWeekPath = ImageTk.PhotoImage(image2)
         FleetWeekPathLabel = Label(image=FleetWeekPath, background='#FFFFFF')
-        FleetWeekPathLabel.place(x=711, y=140)
+        FleetWeekPathLabel.place(x=667, y=135)
 
         # Fleet Month
-        FleetMonthPath = r"../image_components/manager-test-piechart.png"
-        FleetMonthPath = PhotoImage(file=FleetMonthPath)
+        image3 = Image.open("months.png")
+        image3 = image3.resize((240, 180), Image.ANTIALIAS)
+        FleetMonthPath = ImageTk.PhotoImage(image3)
         FleetMonthPathLabel = Label(image=FleetMonthPath, background='#FFFFFF')
-        FleetMonthPathLabel.place(x=1193, y=140)
+        FleetMonthPathLabel.place(x=1138, y=135)
+      
+    
 
         # Total car info
         CarNumber = Label(text='30,200', font=('inter', 25, 'bold'),
