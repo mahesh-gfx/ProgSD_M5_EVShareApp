@@ -187,3 +187,4 @@ class defect_page(tk.Frame):
             self.buttonReportLabel4 = Button(self,
                 image=self.photoSelect_F, compound=TOP, command=self.press_bt4, borderwidth=0, background='#F0F0F0')
             self.buttonReportLabel4.place(x=420, y=260)
+

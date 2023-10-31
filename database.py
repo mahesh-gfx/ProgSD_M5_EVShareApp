@@ -48,17 +48,61 @@ class db():
 
         self.c.execute('''
                 CREATE TABLE IF NOT EXISTS orders
-                ([orderid] integer PRIMARY KEY,
+                ([orderid] INTEGER PRIMARY KEY,
                 [username] TEXT,
                 [startTime] TEXT,
                 [endTime] TEXT,
                 [income] TEXT)
+                ''')
+        self.c.execute('''
+                CREATE TABLE IF NOT EXISTS payments
+                ([email] TEXT PRIMARY KEY,
+                [cardnum] TEXT,
+                [cardname] TEXT,
+                [expire] TEXT,
+                [CVV] TEXT,
+                [credits] INTEGER);
+                ''')
+        self.c.execute('''
+                CREATE TABLE IF NOT EXISTS discounts
+                ([code] TEXT PRIMARY KEY,
+                [amount] INTEGER);
                 ''')
 
         self.conn.commit()
         if self.validate_new_db() == True:
             print("Db is empty")
             self.populate_mock_data()
+    
+    def insert_payments(self, email, cardnum, cardname, expire, CVV, credits):
+        print("Insert "+str(email) + "payment inform...")
+        self.c.execute("SELECT * FROM payments WHERE email = ?", (email,))
+        payment = self.c.fetchone()
+        if payment:
+            current_credits = payment[5]+credits
+            cardnums = payment[1].split()
+            if cardnum not in cardnums:
+                current_cardnum = payment[1]+(" "+str(cardnum))
+                current_cardname = payment[2]+(" "+str(cardname))
+                current_expire = payment[3]+(" "+str(expire))
+                current_CVV = payment[4]+(" "+str(CVV))
+            self.c.execute('''UPDATE payments
+                          SET cardnum = ?, cardname = ?, expire = ?, CVV = ?, credits = ?
+                          WHERE email = ?''', (current_cardnum,current_cardname,current_expire,current_CVV,current_credits, email))
+        else:
+            self.c.execute('''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
+                             VALUES (?, ?, ?, ?, ?, ?)''', [email, cardnum, cardname, expire, CVV, credits])
+        self.conn.commit()
+
+    def insert_discount(self):
+        print("Insert 3 discounts...")
+        code = ['FALL2023','WINTER2023','NEWAPP']
+        amount = [5,6,10]
+        for i in range(len(code)):
+            self.c.execute('''INSERT INTO discounts (code, amount)
+                             VALUES (?, ?)''', [code[i],amount[i]])
+        self.conn.commit()
+        
 
     def insert_tesla_vehicles(self, num_vehicles=3100):
         import random
@@ -250,3 +294,9 @@ class db():
         df = pd.DataFrame(vehicles.fetchall(), columns=[
                           'vehicle_id', 'type'])
         # print("All vehicles: ", df)
+
+if __name__ == '__main__':
+    db = db()
+    db.insert_discount()
+    db.insert_payments('mahesh@zevo.com', "","","","",1000)
+    db.insert_payments('mahesh@zevo.com', "11111","1","111","1",10)
