@@ -7,16 +7,14 @@ class login_page(tk.Frame):
     def handle_login(self):
         self.email = self.email_entry.get()
         self.password = self.password_entry.get()
+        controller1.login(username=self.email,secret=self.password)
 
-        if(self.email == '' or self.password == ''):
-            tkinter.messagebox.showerror("Empty Input", "You should enter email and password")
-        else:
-            print("email: ", self.email)
-            print("password: ", self.password)
 
 
     def __init__(self, container, controller):
         tk.Frame.__init__(self, container)
+        global controller1
+        controller1= controller
         # Login Layout
         self.layout = PhotoImage(file=r"./image_components/login_layout.png")
         self.layout_label = Label(self,image=self.layout)
@@ -42,6 +40,6 @@ class login_page(tk.Frame):
         # Login button
         self.LoginBtnPath = r"./image_components/button-grey.png"
         self.LoginBtnPath = PhotoImage(file=self.LoginBtnPath)
-        self.buttonLogin = Button(self,image=self.LoginBtnPath, compound=TOP, command=lambda: controller.change_frame('vehiclesView'), borderwidth=0,background='white', activebackground="#FFFFFF")
+        self.buttonLogin = Button(self,image=self.LoginBtnPath, compound=TOP, command=self.handle_login, borderwidth=0,background='white', activebackground="#FFFFFF")
         self.buttonLogin.place(x=79, y=673)
 

@@ -68,7 +68,7 @@ class Vehicle:
     range = ""
     doors = ""
     seatingCapacity = ""
-    horsepower = ""
+    horsePower = ""
     maxSpeed = ""
 
     # Status
@@ -90,7 +90,7 @@ class Vehicle:
                  range="50",
                  doors="0",
                  seatingCapacity="1",
-                 horsepower="1",
+                 horsePower="1",
                  maxSpeed="25",
                  inUse=False,
                  atSite=True,
@@ -105,7 +105,7 @@ class Vehicle:
         self.range = range
         self.doors = doors
         self.seatingCapacity = seatingCapacity
-        self.horsepower = horsepower
+        self.horsePower = horsePower
         self.maxSpeed = maxSpeed
         self.inUse = inUse
         self.atSite = atSite

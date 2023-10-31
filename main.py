@@ -1,4 +1,5 @@
 import tkinter as tk
+import pandas as pd
 from database import db
 from screens.welcome import Welcome
 from screens.vehiclesView import VehiclesView
@@ -49,7 +50,7 @@ class App(tk.Tk):
             "range": "550",
             "doors": "5",
             "seatingCapacity": "7",
-            "horsepower": "200",
+            "horsePower": "200",
             "maxSpeed": "310",
             "inUse": False,
             "atSite": True,
@@ -77,12 +78,24 @@ class App(tk.Tk):
             frame = self.allFrames[key](self.container, controller=self)
             self.activeFrames[key] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-
+        self.get_all_vehicles()
         self.change_frame('welcome')
+
+        # ini Users
+        # import random
+        # import string
+        # for i in range(100):
+        #     name = ''.join(random.choice(string.ascii_letters) for _ in range(8))  # 生成随机名字
+        #     email = f"{name}@example.com"  # 生成随机邮箱
+        #     password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))  # 生成随机密码
+        #     self.signUpAndLogin(username=name,secret=password,email=email)
 
     def change_frame(self, pageName):
         frame = self.activeFrames[pageName]
         frame.tkraise()
+        # frame.update()
+        if (pageName == 'vehicleDetails'):
+            frame.refresh_data()
         print('Changed Frame to ', pageName)
 
     # Getters
@@ -91,61 +104,72 @@ class App(tk.Tk):
 
     # Setters
     def set_selected_vehicle(self, vehicle):
-        print("Changing selected vehicle details...", vehicle)
+        # print("Changing selected vehicle details...", vehicle)
         self._selectedVehicle = vehicle
 
-    def signUpAndLogin(self):
-        # get username and secret from login pageas paramaters for this method
-        username = "Taleh"
-        secret = "xyz123"
-        email = "taleh@zevo"
-
+    def signUpAndLogin(self, username, secret, email):
+        # get username and secret from login page as paramaters for this method
         print("Signing up...")
-
+        # print(username)
+        # print(secret)
+        # print(email)
         response = self.database.run_query(
             '''INSERT INTO users (username, email, secret, usertype)
             VALUES
             (?, ?, ?, 'user');
-            ''', username, secret, email)
+            ''', parameters=(username, email, secret))
         self.database.conn.commit()
 
         # self.login()
 
-    def login(self):
+    def login(self, username, secret):
         # get username and secret from login pageas paramaters for this method
-        username = "Mahesh"
-        secret = "xyz123"
-
         print("Logging in...")
-
+        # print(username)
+        # print(secret)
         self.database.run_query(
             '''SELECT * FROM users
                 WHERE username = ? AND secret = ?
                 LIMIT 1;
-            ''', (username, secret))
+            ''', parameters=(username, secret))
         result = self.database.c.fetchone()
+        print(result)
 
-        if (str(result) != 'none'):
-            if (str(result[5]) == 'user'):
-                self.username = str(result[2])
-                self.loggedInUserType = str(result[5])
-                self.userEmail = str(result[3])
+        if (result != None):
+            if (str(result[4]) == 'user'):
+                self.username = str(result[1])
+                self.loggedInUserType = str(result[4])
+                self.userEmail = str(result[2])
                 self.change_frame('vehiclesView')
                 print("A User logged in..")
-            if (str(result[5]) == 'manager'):
-                self.username = str(result[2])
-                self.loggedInUserType = str(result[5])
-                self.userEmail = str(result[3])
+            if (str(result[4]) == 'manager'):
+                self.username = str(result[1])
+                self.loggedInUserType = str(result[4])
+                self.userEmail = str(result[2])
                 # self.change_frame('manager')
-                # self.geometry("1080x1960")
+                # self.geometry("1600x976")
                 print("A Manager logged in..")
-            if (str(result[5]) == 'operator'):
-                self.username = str(result[2])
-                self.loggedInUserType = str(result[5])
-                self.userEmail = str(result[3])
+            if (str(result[4]) == 'operator'):
+                self.username = str(result[1])
+                self.loggedInUserType = str(result[4])
+                self.userEmail = str(result[2])
                 # self.geometry("1080x1960")
                 # self.change_frame('operator')
                 print("An Operator logged in..")
+        else:
+            tk.messagebox.showinfo("Zevo | EV Rental", "Invalid Credentials!")
+
+    def get_all_vehicles(self):
+        self.database.run_query(
+            '''SELECT * FROM vehicles''')
+        response = self.database.c.fetchall()
+        print("response: ", response)
+        response = pd.DataFrame(response, columns=["type", "vehicleClass", "make", "model", "licensePlateNumber", "ratePerWeek", "ratePerDay",
+                                                   "ratePerHour", "batteryCapacity", "range", "doors", "seatingCapacity", "horsePower", "maxSpeed",
+                                                   "inUse", "atSite", "history", "defects", "image", "bg", "fg", "location", "hasDefects"])
+
+        self.vehicles = response.to_dict(orient='records')
+        return self.vehicles
 
 
 if __name__ == "__main__":

@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import *
 class register_page(tk.Frame):
 
+
+
     def handle_signup(self):
         self.email = self.email_entry.get()
         self.name = self.name_entry.get()
@@ -21,11 +23,16 @@ class register_page(tk.Frame):
         elif(self.email=='' or self.phone=='' or self.name==''):
             messagebox.showerror("All fields should be filled")
             return
+        else:
+            print()
+            controller1.signUpAndLogin(username=self.name,secret=self.password,email=self.email)
+            controller1.change_frame('login')
 
-        print("HEY MAN!")
 
     def __init__(self, container, controller):
         tk.Frame.__init__(self, container)
+        global controller1
+        controller1 = controller
         # Signup Layout
         self.layout = PhotoImage(file=r"./image_components/sign-up-layout.png")
         self.layout_label = Label(self,image=self.layout)
@@ -61,6 +68,6 @@ class register_page(tk.Frame):
 
         self.SignupBtnPath = r"./image_components/register-btn.png"
         self.SignupBtnPath = PhotoImage(file=self.SignupBtnPath)
-        self.buttonSignup = Button(self,image=self.SignupBtnPath, compound=TOP, command=lambda: controller.change_frame('login'), borderwidth=0, background='white',
+        self.buttonSignup = Button(self,image=self.SignupBtnPath, compound=TOP, command=self.handle_signup, borderwidth=0, background='white',
                              activebackground="#FFFFFF")
         self.buttonSignup.place(x=81, y=654)
