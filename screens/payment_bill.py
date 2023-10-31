@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter.ttk
-from classes import vehicleHistory
+#from classes import vehicleHistory
 #from classes import Vehicle
 
 class pay_bill_Screen(ttk.Frame):
@@ -24,11 +24,6 @@ class pay_bill_Screen(ttk.Frame):
         """
         print('refresh the discount')
 
-    def get_membership(self):
-        global val
-        name_membership = val.get()
-        print(name_membership)
-
     # def turnto_payaccess(self):
     #     self.destroy()
     #     payment_access = pa.pay_access_Screen()
@@ -47,12 +42,12 @@ class pay_bill_Screen(ttk.Frame):
                                      image=self.backButtonArrow, command=lambda: controller.change_frame('vehicleDetails'))
         self.backButton.place(x=10, y=10)
 
-        
-        self.photoConsult = "./image_components/defect-consult.png"
-        self.photoConsult = PhotoImage(file=self.photoConsult)
-        self.buttonConsult = Button(self, image=self.photoConsult, compound=TOP,
+        #reportdefect
+        self.photoDefect = "./image_components/report_defect.png"
+        self.photoDefect = PhotoImage(file=self.photoDefect)
+        self.buttonDefect = Button(self, image=self.photoDefect, compound=TOP,
                                     command=lambda: controller.change_frame('reportDefect'), borderwidth=0, background='#F0F0F0')
-        self.buttonConsult.place(x=440, y=20)
+        self.buttonDefect.place(x=440, y=20)
 
         # 4 block
         self.payblock1_file = r"./image_components/payblock1.png"
@@ -67,100 +62,57 @@ class pay_bill_Screen(ttk.Frame):
         self.block4.place(x=40, y=535)
 
         # text 1: tatal time + distance
-        self.label1_left = Label(self, text="total time:\ntotal distance:", font=(
+        self.label1_left = Label(self, text="Start Location:\nStart Location:", font=(
             font_name, 14), background='#D9D9D9', anchor="w")
         self.label1_left.place(x=60, y=177, width=180)
         self.label1_left["justify"] = "left"
 
         #from classes get using time and distance
-
-        startTime = vehicleHistory.startTime
-        endTime = vehicleHistory.endTime
-        distance = vehicleHistory.distance
-        string = str(startTime) + " - " +str(endTime) + "\n" + str(distance)
-        
-        self.label1_right = Label(self, text=string, font=(
+        loc_str = "G4 0AS\nG10 5ED"
+        self.label1_right = Label(self, text=loc_str, font=(
             font_name, 14), background='#D9D9D9', anchor="e")
         self.label1_right.place(x=240, y=177, width=180)
         self.label1_right["justify"] = "right"
 
-        # text 2: fee + discount
-        self.label2_left = Label(self, text="amount:\nservice fee:\ndiscount:", font=(
+        # text 2: usage time
+        self.label2_left = Label(self, text="Start Time:\nEnd Time:\nUsage Time:", font=(
             font_name, 14), background='#D9D9D9', anchor="w")
         self.label2_left.place(x=60, y=290, width=180)
         self.label2_left["justify"] = "left"
-        # if startTime[0:2] == endTime[0:2]:
-        #     time_amount = int(endTime[:-2])-int(startTime[-2])
-       
-        """
-        amount = get_amount()
-        servicefee=get_service_fee()
-        discount=get_discount()
-        str_fee=str(a+"\n"+s+"\n"+d)
-        """
-        str_fee = str("50\n3\n0")
+        #time data
+        str_fee = str("11\n16\n5")
         self.label2_right = Label(self, text=str_fee, font=(
             font_name, 14), background='#D9D9D9', anchor="e")
         self.label2_right.place(x=240, y=290, width=180)
         self.label2_right["justify"] = "right"
 
-        # text 3: discount choice
-        self.label3 = Label(self, text="Discount:", font=(
+        # text 3:caculate the vehicle fee
+        self.label3_left = Label(self, text="Price(h/day/week):\nVehicle fee:\nDiscount:", font=(
             font_name, 14), background='#D9D9D9', anchor="w")
-        self.label3.place(x=60, y=410)
-        self.label3["justify"] = "left"
-        # enter dicount number
+        self.label3_left.place(x=60, y=422, width=180)
+        self.label3_left["justify"] = "left"
+        #amount
+        str_fee = str("50\n3\n0")
+        self.label3_right = Label(self, text=str_fee, font=(
+            font_name, 14), background='#D9D9D9', anchor="e")
+        self.label3_right.place(x=240, y=422, width=180)
+        self.label3_right["justify"] = "right"
+
+        # text 4: discount
+        self.label4 = Label(self, text="Discount:", font=(
+            font_name, 14), background='#D9D9D9', anchor="w")
+        self.label4.place(x=60, y=542)
+        self.label4["justify"] = "left"
+        #enter dicount code
         self.disountlabel = Entry(self, text="", font=(
             font_name, 14), background="#D9D9D9", relief="solid")
-        self.disountlabel.place(x=65, y=446, width=280, height=40)
+        self.disountlabel.place(x=65, y=578, width=280, height=40)
         self.enter_discount_image = r"./image_components/paybill_enter.png"
         self.enter_discount = PhotoImage(file=self.enter_discount_image)
         self.button_enterdiscount = Button(self,
                                            image=self.enter_discount, command=self.get_discount, borderwidth=0, background="#D9D9D9")
-        self.button_enterdiscount.place(x=360, y=446)
+        self.button_enterdiscount.place(x=360, y=578)
 
-        # text 4: membership
-        self.label4 = Label(self, text="Membership:", font=(
-            font_name, 14), background='#D9D9D9', anchor="w")
-        self.label4.place(x=60, y=542)
-        self.label4["justify"] = "left"
-        # choose membership
-        membership = ["No"]
-        # membership append from db
-        membership.append("Month for bike")
-        membership.append("Year for car")
-        self.val = StringVar()
-        self.val.set(membership[0])
-        self.membership_roller = tkinter.ttk.Combobox(self, textvariable=self.val, values=membership, state="readonly",
-                                                      font=(font_name, 14), style="CustomStyles.TCombobox")
-        self.option_add("*TCombobox*Listbox*Font", (font_name, 14))
-        self.option_add("*TCombobox*Listbox*Background", "white")
-        self.membership_roller.place(x=65, y=578, width=280, height=40)
-        '''
-        self.styled.configure('CustomStyles.TCombobox',
-                              foreground='black',
-                              selectforeground='black',
-                              selectbackground='#D9D9D9',
-                              fieldbackground='#D9D9D9')
-        '''
-        # self.styled.theme_create('combostyle', parent='alt',
-        #                         settings={'TCombobox':
-        #                                   {'configure':
-        #                                    {
-        #                                        'foreground': 'black',
-        #                                        'selectforeground': 'black',
-        #                                        'selectbackground': '#D9D9D9',
-        #                                        'fieldbackground': '#D9D9D9',
-        #                                    }}}
-        #                         )
-        # self.styled.theme_use('combostyle')
-        # enter membership button
-
-        self.enter_membership_image = r"./image_components/paybill_enter.png"
-        self.enter_membership = PhotoImage(file=self.enter_membership_image)
-        self.button_entermembership = Button(self,
-                                             image=self.enter_membership, command=self.get_membership, borderwidth=0, background="#D9D9D9")
-        self.button_entermembership.place(x=360, y=578)
         # Ground part
         self.paybill_groundblock_file = r"./image_components/paybill_groundblock.png"
         self.paybill_groundblock = PhotoImage(

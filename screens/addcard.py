@@ -1,14 +1,12 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter.ttk
-#import payment_access as pa
+# import payment_access as pa
 
 
 class add_card_Screen(ttk.Frame):
     def to_consult_page(self):
         print('to consult page')
-
-
 
     def save(self):
         self.destroy()
@@ -58,12 +56,6 @@ class add_card_Screen(ttk.Frame):
     def __init__(self, container, controller):
         super().__init__(container)
         font_name = 'Mako'
-
-        self.photoConsult = r"./image_components/defect-consult.png"
-        self.photoConsult = PhotoImage(file=self.photoConsult)
-        self.buttonConsult = Button(self, image=self.photoConsult, compound=TOP,
-                                    command=self.to_consult_page, borderwidth=0, background='#F0F0F0')
-        self.buttonConsult.place(x=440, y=20)
         # back button
         self.backButtonArrow = PhotoImage(
             file="./image_components/arrow_alt_left.png")
@@ -74,36 +66,36 @@ class add_card_Screen(ttk.Frame):
         # Tittle
         self.tittlefile = r"./image_components/Your Card Details.png"
         self.tittlephoto = PhotoImage(file=self.tittlefile)
-        self.tittle = Label(self,image=self.tittlephoto,
+        self.tittle = Label(self, image=self.tittlephoto,
                             borderwidth=0, background="#F0F0F0")
         self.tittle.place(x=38, y=102)
         # mainblock
         self.mainblockfile = r"./image_components/addcard_main.png"
         self.mainblock = PhotoImage(file=self.mainblockfile)
-        self.mainlabel = Label(self,image=self.mainblock,
+        self.mainlabel = Label(self, image=self.mainblock,
                                borderwidth=0, background="#F0F0F0")
         self.mainlabel.place(x=40, y=210)
         # 4 text for details
         # card number
-        self.enternumber = Entry(self,font=(font_name, 14),
+        self.enternumber = Entry(self, font=(font_name, 14),
                                  background="#E8E9E7", borderwidth=0)
         self.enternumber.place(x=129, y=286, width=270)
         self.enternumber.insert(0, "card number")
         numclick = self.enternumber.bind('<Button-1>', self.numclear)
         # host name
-        self.entername = Entry(self,font=(font_name, 14),
+        self.entername = Entry(self, font=(font_name, 14),
                                background="#E8E9E7", borderwidth=0)
         self.entername.place(x=129, y=350, width=270)
         self.entername.insert(0, "name on card")
         nameclick = self.entername.bind('<Button-1>', self.nameclear)
         # expires end
-        self.enterend = Entry(self,font=(font_name, 14),
+        self.enterend = Entry(self, font=(font_name, 14),
                               background="#E8E9E7", borderwidth=0)
         self.enterend.place(x=129, y=414, width=270)
         self.enterend.insert(0, "expires end: DD/MM/YYYY")
         endclick = self.enterend.bind('<Button-1>', self.endclear)
         # cvv
-        self.entercvv = Entry(self,font=(font_name, 14),
+        self.entercvv = Entry(self, font=(font_name, 14),
                               background="#E8E9E7", borderwidth=0)
         self.entercvv.place(x=129, y=486, width=270)
         self.entercvv.insert(0, "CVV")
@@ -113,7 +105,7 @@ class add_card_Screen(ttk.Frame):
         self.filesave = r"./image_components/cardsave.png"
         self.photosave = PhotoImage(file=self.filesave)
         self.save_button = Button(self,
-            image=self.photosave, background='#F0F0F0', borderwidth=0, compound=TOP, command=lambda: controller.change_frame('paymentAccess'))
+                                  image=self.photosave, background='#F0F0F0', borderwidth=0, compound=TOP, command=lambda: controller.change_frame('paymentAccess'))
         self.save_button.place(x=20, y=720)
 
 
