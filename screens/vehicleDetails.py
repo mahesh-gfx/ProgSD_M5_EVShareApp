@@ -102,6 +102,34 @@ class VehicleDetails(ttk.Frame):
             self, text='Book now', compound="left", command=lambda: controller.change_frame('paymentBill'))
         self.lets_go_button.place(x=310, y=250, height=52, width=150)
 
+        # Navigation bar
+        self.homeIcon = tk.PhotoImage(
+            file="./image_components/home_light.png")
+        self.historyIcon = tk.PhotoImage(
+            file="./image_components/time_progress_light.png")
+        self.signOutIcon = tk.PhotoImage(
+            file="./image_components/sign_out_circle_light.png")
+        self.navigation = tk.Frame(self, background='#FFFFFF')
+        button1 = ttk.Button(
+            self.navigation, image=self.homeIcon, command=lambda: self.controller.change_frame('vehiclesView'))
+        button2 = ttk.Button(
+            self.navigation, image=self.historyIcon, command=lambda: self.controller.change_frame('purchaseHistory'))
+        button3 = ttk.Button(
+            self.navigation, image=self.signOutIcon, command=lambda: self.controller.change_frame('welcome'))
+        self.navigation.grid_columnconfigure(0, weight=1)
+        self.navigation.grid_columnconfigure(1, weight=1)
+        self.navigation.grid_columnconfigure(2, weight=1)
+        navLabel1 = tk.Label(self.navigation, text='Home')
+        navLabel2 = tk.Label(self.navigation, text='History')
+        navLabel3 = tk.Label(self.navigation, text='Log Out')
+        button1.grid(row=0, column=0, padx=5, pady=20)
+        button2.grid(row=0, column=1, padx=5, pady=20)
+        button3.grid(row=0, column=2, padx=5, pady=20)
+        navLabel1.grid(row=1, column=0, padx=5, sticky='N')
+        navLabel2.grid(row=1, column=1, padx=5, sticky='N')
+        navLabel3.grid(row=1, column=2, padx=5, sticky='N')
+        self.navigation.place(x=0, y=700, height=100, width=480)
+
         # self.bind("<Enter>", lambda event, frame=self: frame.refresh_data)
 
     def refresh_data(self):

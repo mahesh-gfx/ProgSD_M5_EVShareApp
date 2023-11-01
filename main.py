@@ -12,6 +12,7 @@ from screens.login import login_page
 from screens.register import register_page
 from screens.management import management
 from screens.operator import Operator
+from screens.purchaseHistory import PurchaseHistory
 
 
 class App(tk.Tk):
@@ -23,7 +24,7 @@ class App(tk.Tk):
     usertype = ''
     username = ''
     loggedInUserType = ''
-    userEmail = ''
+    userEmail = 'none'
     # Constructors
 
     def __init__(self):
@@ -74,7 +75,8 @@ class App(tk.Tk):
                           'login': login_page,
                           'register': register_page,
                           'manager': management,
-                          'operator': Operator
+                          'operator': Operator,
+                          'purchaseHistory': PurchaseHistory
                           }
 
         for key in self.allFrames:
@@ -98,7 +100,7 @@ class App(tk.Tk):
         frame = self.activeFrames[pageName]
         frame.tkraise()
         # frame.update()
-        if (pageName == 'vehicleDetails'):
+        if (pageName == 'vehicleDetails' or pageName == 'purchaseHistory'):
             frame.refresh_data()
         print('Changed Frame to ', pageName)
 
@@ -182,6 +184,8 @@ class App(tk.Tk):
             messagebox.showinfo("Tips", "Please sign up your information")
 
             tk.messagebox.showinfo("Zevo | EV Rental", "Invalid Credentials!")
+            print("Emailll")
+            print(self.userEmail)
 
     def log_out(self):
         self.change_frame('welcome')
@@ -196,6 +200,26 @@ class App(tk.Tk):
 
         self.vehicles = response.to_dict(orient='records')
         return self.vehicles
+
+    def get_user_history(self):
+        query = '''
+            SELECT v.make, v.model, v.licensePlateNumber, v.bg, v.fg, v.image, o.startTime, o.endTime
+            FROM orders AS o
+            JOIN vehicles AS v ON o.carID = v.vehicle_id
+            WHERE o.email = ?
+        '''
+        print("Email: ")
+        print(self.userEmail)
+        self.database.run_query(query, parameters=[self.userEmail])
+        response = self.database.c.fetchall()
+        print('User History: ')
+        # print(response)
+        response = pd.DataFrame(response, columns=[
+                                "make", "model", "licensePlateNumber", "bg", "fg", "image", "startTime", "endTime"])
+
+        history = response.to_dict(orient='records')
+        print(history)
+        return history
 
 
 if __name__ == "__main__":

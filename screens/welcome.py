@@ -35,7 +35,7 @@ class Welcome(tk.Frame):
         self.knowMoreButtonImage = PhotoImage(
             file=r"./image_components/know-more-button.png")
         self.knowMoreButton = tk.Button(self, image=self.knowMoreButtonImage,
-                                        command=lambda: self.operator(controller), default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
+                                        default="normal", compound=TOP, borderwidth=0, border=0, background='#FFF')
         self.knowMoreButton.place(x=78, y=678, height=68, width=320)
 
     def operator(self, controller):

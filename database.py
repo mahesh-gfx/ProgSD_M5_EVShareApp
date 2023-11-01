@@ -252,6 +252,8 @@ class db():
 
     # Function to Execute Database Queries
     def run_query(self, query, parameters=()):
+        print("Parameters")
+        print(parameters)
         result = self.c.execute(query, parameters)
         self.conn.commit()
         return result
