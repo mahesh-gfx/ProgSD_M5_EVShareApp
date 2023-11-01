@@ -1,5 +1,6 @@
 import datetime
 import tkinter as tk
+from tkinter import messagebox
 import pandas as pd
 from database import db
 from screens.welcome import Welcome
@@ -26,9 +27,11 @@ class App(tk.Tk):
     usertype = ''
     username = ''
     loggedInUserType = ''
-    userEmail = 'none'
     selectedOrder = {}
     amount = 0
+    userEmail = ''
+    cards = []
+    credits = 0
     # Constructors
 
     def __init__(self):
@@ -89,7 +92,7 @@ class App(tk.Tk):
             frame = self.allFrames[key](self.container, controller=self)
             self.activeFrames[key] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-        self.get_all_vehicles()
+        # self.get_all_vehicles()
         self.change_frame('welcome')
 
         # #ini Users
@@ -109,6 +112,8 @@ class App(tk.Tk):
                 'purchaseHistory', 'paymentAccess']
         if pageName in list:
             frame.refresh_data()
+        if (pageName == 'paymentAccess'):
+            frame.refresh_cards()
         print('Changed Frame to ', pageName)
 
     # Getters
@@ -153,12 +158,18 @@ class App(tk.Tk):
                 "This email is already assigned to existing account")
             return
         print("Must be error here")
-        response = self.database.run_query(
+        response1 = self.database.run_query(
             '''INSERT INTO users (name, email, secret, phone, usertype)
             VALUES
             (?, ?, ?, ?, 'user');
             ''', parameters=(name, email, secret, phone))
+        response2 = self.database.run_query(
+            '''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
+            VALUES
+            (?, '', '', '', 0);
+            ''', parameters=(email))
         self.database.conn.commit()
+        response = [response1, response2]
         return response
         # self.login()
 
@@ -219,6 +230,58 @@ class App(tk.Tk):
 
         self.vehicles = response.to_dict(orient='records')
         return self.vehicles
+
+    def add_card(self, cardnum, cardname, expire, CVV):
+        self.database.run_query(
+            '''SELECT * FROM payments where email = ?''', parameters=[self.userEmail,])
+        payment = self.database.c.fetchone()
+
+        if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV) == 3:
+            if expire[:2].isdigit() and expire[2] == '/' and expire[-2:].isdigit() and "-" not in cardname:
+                cardnums = payment[1].lstrip().split()
+                if cardnum not in cardnums:
+                    current_cardnum = payment[1]+(" "+str(cardnum))
+                    current_cardname = payment[2]+("-"+str(cardname))
+                    current_expire = payment[3]+(" "+str(expire))
+                    current_CVV = payment[4]+(" "+str(CVV))
+                    self.database.run_query('''UPDATE payments
+                            SET cardnum = ?, cardname = ?, expire = ?, CVV = ?
+                            WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, self.userEmail))
+                    self.get_card()
+                    self.change_frame('paymentAccess')
+                else:
+                    messagebox.showwarning(
+                        "Zevo | EV Rental", "CARD HAS BEEN ADDED!")
+            else:
+                messagebox.showwarning("Zevo | EV Rental", "WRONG INFORM!")
+        else:
+            messagebox.showwarning("Zevo | EV Rental", "WRONG INFORM!")
+
+    def get_card(self):
+        self.database.run_query(
+            '''SELECT * FROM payments where email = ?''', parameters=[self.userEmail,])
+        payment = self.database.c.fetchone()
+        if payment:
+            self.cards = payment[1].lstrip().split()
+
+    def change_credit(self, credits):
+        self.database.insert_payments(self.userEmail, "", "", "", "", credits)
+
+    def get_credit(self):
+        self.database.run_query(
+            '''SELECT * FROM payments where email = ?''', parameters=[self.userEmail,])
+        payment = self.database.c.fetchone()
+        if payment:
+            self.credits += payment[5]
+
+    def get_discount(self, code):
+        self.database.run_query(
+            '''SELECT * FROM discounts where code = ?''', parameters=[code,])
+        discount = self.database.c.fetchone()
+        if discount != None:
+            return discount[1]
+        else:
+            return -1
 
     def get_user_history(self):
         query = '''
@@ -306,6 +369,6 @@ class App(tk.Tk):
             return False
 
 
-# if __name__ == "__main__":
-#     app = App()
-#     app.mainloop()
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()

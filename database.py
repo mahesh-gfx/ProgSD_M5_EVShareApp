@@ -78,25 +78,38 @@ class db():
             self.populate_mock_data()
             self.insert_vehicles()
             self.creat_history()
+            self.insert_discount()
+            self.insert_payments('mahesh@zevo.com', "", "", "", "", 1000)
 
     def insert_payments(self, email, cardnum, cardname, expire, CVV, credits):
         print("Insert "+str(email) + "payment inform...")
         self.c.execute("SELECT * FROM payments WHERE email = ?", (email,))
         payment = self.c.fetchone()
-        if payment:
-            current_credits = payment[5]+credits
-            cardnums = payment[1].split()
-            if cardnum not in cardnums:
-                current_cardnum = payment[1]+(" "+str(cardnum))
-                current_cardname = payment[2]+(" "+str(cardname))
-                current_expire = payment[3]+(" "+str(expire))
-                current_CVV = payment[4]+(" "+str(CVV))
-            self.c.execute('''UPDATE payments
-                          SET cardnum = ?, cardname = ?, expire = ?, CVV = ?, credits = ?
-                          WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, current_credits, email))
-        else:
+        if payment == None:
             self.c.execute('''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
-                             VALUES (?, ?, ?, ?, ?, ?)''', [email, cardnum, cardname, expire, CVV, credits])
+                            VALUES (?, ?, ?, ?, ?, ?)''', [email, cardnum, cardname, expire, CVV, credits])
+        else:
+            if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV) == 3:
+                if expire[:2].isdigit() and expire[2] == '/' and expire[-2:].isdigit() and "-" not in cardname:
+                    cardnums = payment[1].lstrip().split()
+                    current_credits = payment[5]+credits
+                    cardnums = payment[1].lstrip().split()
+                    if cardnum not in cardnums:
+                        current_cardnum = payment[1]+(" "+str(cardnum))
+                        current_cardname = payment[2]+("-"+str(cardname))
+                        current_expire = payment[3]+(" "+str(expire))
+                        current_CVV = payment[4]+(" "+str(CVV))
+                        self.c.execute('''UPDATE payments
+                                SET cardnum = ?, cardname = ?, expire = ?, CVV = ?, credits = ?
+                                WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, current_credits, email))
+            if cardnum == "" and cardname == "" and expire == "" and CVV == "":
+                if payment:
+                    current_credits = payment[5]+credits
+                    self.c.execute('''UPDATE payments
+                                SET credits = ? WHERE email = ?''', (current_credits, email))
+                else:
+                    self.c.execute('''UPDATE payments
+                                SET credits = ? WHERE email = ?''', (credits, email))
         self.conn.commit()
 
     def insert_discount(self):
@@ -150,7 +163,7 @@ class db():
 
         return switch.get(item, {'bg': 'default_bg_color', 'fg': 'default_fg_color'})
 
-    def insert_vehicles(self, num_vehicles=50):
+    def insert_vehicles(self, num_vehicles=100):
         print('insert_fake_vehicles')
         import random
         import datetime
@@ -160,12 +173,12 @@ class db():
         one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
 
         # 车辆类型选择列表，包括电动车和电动自行车
-        vehicleClass = ['Car','Bike']
+        self.vehicleClass = ['Car', 'Bike']
 
         for _ in range(num_vehicles):
             # 随机生成一些示例数据，可以根据需要进行修改
-            vehicleClass = random.choice(vehicleClass)  # 随机选择车辆类型
-            if _< num_vehicles*0.7:
+            vehicleClass = 'Car'
+            if _ % 2 == 0:
                 make = 'Tesla'  # 制造商
                 model = random.choice(
                     ['Model 3', 'Model S', 'Model X', 'Model Y'])  # 随机选择特斯拉的车型
@@ -186,6 +199,7 @@ class db():
                 location = random.choice(
                     ['Havannah St.', 'Bath St.', 'Hannover St.', 'Argyle St.', 'Helen St.', 'Govan Road', '5 Morefield Rd'])
                 hasDefects = random.randint(0, 1)
+                vehicleClass = "Car"
             else:
                 make = 'Gient'
                 model = 'Zevo E-Bike'
@@ -205,6 +219,7 @@ class db():
                 location = random.choice(
                     ['Havannah St.', 'Bath St.', 'Hannover St.', 'Argyle St.', 'Helen St.', 'Govan Road', '5 Morefield Rd'])
                 hasDefects = random.randint(0, 1)
+                vehicleClass = "Bike"
 
             licensePlateNumber = ''.join(random.choices(
                 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', k=7))  # 随机生成车牌号
@@ -215,18 +230,17 @@ class db():
             defect_time = (one_month_ago + datetime.timedelta(days=random.randint(1, 30))).strftime(
                 "%Y-%m-%d %H:%M:%S")
             defect = random.choice(defects) + ',' + defect_time
-
+            print("VEHICLE CLASS: ")
+            print(vehicleClass)
             # 使用参数化查询将数据插入到数据库中
             self.c.execute("""
                     INSERT INTO vehicles (vehicleClass, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defects, image, bg, fg, location, hasDefects)
                     VALUES
                     (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                """, (
-                vehicleClass, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range1, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defect, image, bg, fg, location, hasDefects))
+                """, (vehicleClass, make, model, licensePlateNumber, ratePerWeek, ratePerDay, ratePerHour, batteryCapacity, range1, doors, seatingCapacity, horsePower, maxSpeed, inUse, atSite, history, defect, image, bg, fg, location, hasDefects))
             self.conn.commit()
 
     # Methods
-
 
     def populate_mock_data(self):
         print("populating mock data in the database...")

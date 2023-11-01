@@ -1,28 +1,28 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 import tkinter.ttk
-#from classes import vehicleHistory
-#from classes import Vehicle
+# from classes import vehicleHistory
+# from classes import Vehicle
+
 
 class pay_bill_Screen(ttk.Frame):
 
-    def to_profile_page(self):
-        print('to profile page')
-
-    def to_consult_page(self):
-        print('to consult page')
-
     def get_discount(self):
-        """
-        check dicount lib
-        if True:
-            global percent = ...
-            global discount = amount*percent
-            refresh the label2
-        if Fales:
-            discountlabel["text"]="Please check your discount number"
-        """
-        print('refresh the discount')
+        code = self.disountlabel.get()
+        discount_fee = localController.get_discount(code)
+        if discount_fee == -1:
+            messagebox.showerror("Zevo | EV Rental", "Wrong Code")
+            discount_fee = 0
+        else:
+            save_string = "You have a ￡"+str(discount_fee)+" discount!"
+            messagebox.showinfo("Zevo | EV Rental", save_string)
+            str_fee = "50\n3\n"+str(discount_fee)
+            self.label3_right = Label(self, text=str_fee, font=(
+                font_name, 14), background='#D9D9D9', anchor="e")
+            self.label3_right.place(x=240, y=422, width=180)
+            self.label3_right["justify"] = "right"
+            print('refresh the discount')
 
     # def turnto_payaccess(self):
     #     self.destroy()
@@ -31,7 +31,10 @@ class pay_bill_Screen(ttk.Frame):
 
     def __init__(self, container, controller):
         super().__init__(container)
+        global localController
+        localController = controller
         # local variable
+        global font_name
         font_name = 'Mako'
         self.styled = tkinter.ttk.Style()
         self.styled.configure("Custom.TFrame", background="white")
@@ -42,11 +45,11 @@ class pay_bill_Screen(ttk.Frame):
                                      image=self.backButtonArrow, command=lambda: controller.change_frame('vehicleDetails'))
         self.backButton.place(x=10, y=10)
 
-        #reportdefect
+        # reportdefect
         self.photoDefect = "./image_components/report_defect.png"
         self.photoDefect = PhotoImage(file=self.photoDefect)
         self.buttonDefect = Button(self, image=self.photoDefect, compound=TOP,
-                                    command=lambda: controller.change_frame('reportDefect'), borderwidth=0, background='#F0F0F0')
+                                   command=lambda: controller.change_frame('reportDefect'), borderwidth=0, background='#F0F0F0')
         self.buttonDefect.place(x=440, y=20)
 
         # 4 block
@@ -67,7 +70,7 @@ class pay_bill_Screen(ttk.Frame):
         self.label1_left.place(x=60, y=177, width=180)
         self.label1_left["justify"] = "left"
 
-        #from classes get using time and distance
+        # from classes get using time and distance
         loc_str = "G4 0AS\nG10 5ED"
         self.label1_right = Label(self, text=loc_str, font=(
             font_name, 14), background='#D9D9D9', anchor="e")
@@ -79,7 +82,7 @@ class pay_bill_Screen(ttk.Frame):
             font_name, 14), background='#D9D9D9', anchor="w")
         self.label2_left.place(x=60, y=290, width=180)
         self.label2_left["justify"] = "left"
-        #time data
+        # time data
         str_fee = str("11\n16\n5")
         self.label2_right = Label(self, text=str_fee, font=(
             font_name, 14), background='#D9D9D9', anchor="e")
@@ -91,8 +94,10 @@ class pay_bill_Screen(ttk.Frame):
             font_name, 14), background='#D9D9D9', anchor="w")
         self.label3_left.place(x=60, y=422, width=180)
         self.label3_left["justify"] = "left"
-        #amount
-        str_fee = str("50\n3\n0")
+        # amount
+        global discount_fee
+        discount_fee = 0
+        str_fee = "50\n3\n"+str(discount_fee)
         self.label3_right = Label(self, text=str_fee, font=(
             font_name, 14), background='#D9D9D9', anchor="e")
         self.label3_right.place(x=240, y=422, width=180)
@@ -103,7 +108,7 @@ class pay_bill_Screen(ttk.Frame):
             font_name, 14), background='#D9D9D9', anchor="w")
         self.label4.place(x=60, y=542)
         self.label4["justify"] = "left"
-        #enter dicount code
+        # enter dicount code
         self.disountlabel = Entry(self, text="", font=(
             font_name, 14), background="#D9D9D9", relief="solid")
         self.disountlabel.place(x=65, y=578, width=280, height=40)
@@ -135,9 +140,10 @@ class pay_bill_Screen(ttk.Frame):
         # pay button
         self.filepay = r"./image_components/pay_big.png"
         self.photopay = PhotoImage(file=self.filepay)
-        self.rent_button = Button(self, image=self.photopay, background='#D9D9D9',
-                                 borderwidth=0, compound=TOP, command=controller.rent)
-        self.rent_button.place(x=20, y=720)
+
+        self.pay_button = Button(self, image=self.photopay, background='#D9D9D9',
+                                 borderwidth=0, compound=TOP, command=lambda: controller.change_frame('paymentAccess'))
+        self.pay_button.place(x=20, y=720)
 
         # top photo
         # select photo according to former page
