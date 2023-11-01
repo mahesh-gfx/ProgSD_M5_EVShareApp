@@ -135,6 +135,7 @@ class pay_bill_Screen(ttk.Frame):
         # pay button
         self.filepay = r"./image_components/pay_big.png"
         self.photopay = PhotoImage(file=self.filepay)
+        
         self.pay_button = Button(self, image=self.photopay, background='#D9D9D9',
                                  borderwidth=0, compound=TOP, command=lambda:controller.change_frame('paymentAccess'))
         self.pay_button.place(x=20, y=720)

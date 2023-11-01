@@ -77,25 +77,29 @@ class db():
             self.populate_mock_data()
             self.insert_vehicles()
             self.creat_history()
+            self.insert_discount()
+            self.insert_payments('mahesh@zevo.com', "", "", "", "", 1000)
 
     def insert_payments(self, email, cardnum, cardname, expire, CVV, credits):
         print("Insert "+str(email) + "payment inform...")
         self.c.execute("SELECT * FROM payments WHERE email = ?", (email,))
         payment = self.c.fetchone()
-        if payment:
-            current_credits = payment[5]+credits
-            cardnums = payment[1].split()
-            if cardnum not in cardnums:
-                current_cardnum = payment[1]+(" "+str(cardnum))
-                current_cardname = payment[2]+(" "+str(cardname))
-                current_expire = payment[3]+(" "+str(expire))
-                current_CVV = payment[4]+(" "+str(CVV))
-            self.c.execute('''UPDATE payments
-                          SET cardnum = ?, cardname = ?, expire = ?, CVV = ?, credits = ?
-                          WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, current_credits, email))
-        else:
-            self.c.execute('''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
-                             VALUES (?, ?, ?, ?, ?, ?)''', [email, cardnum, cardname, expire, CVV, credits])
+        if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV)==3:
+            if expire[:2].isdigit() and expire[2]=='/' and expire[-2:].isdigit() and "-" not in cardname:
+                cardnums = payment[1].lstrip().split()
+                current_credits = payment[5]+credits
+                cardnums = payment[1].lstrip().split()
+                if cardnum not in cardnums:
+                    current_cardnum = payment[1]+(" "+str(cardnum))
+                    current_cardname = payment[2]+("-"+str(cardname))
+                    current_expire = payment[3]+(" "+str(expire))
+                    current_CVV = payment[4]+(" "+str(CVV))
+                    self.c.execute('''UPDATE payments
+                            SET cardnum = ?, cardname = ?, expire = ?, CVV = ?, credits = ?
+                            WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, current_credits, email))
+                else:
+                    self.c.execute('''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
+                            VALUES (?, ?, ?, ?, ?, ?)''', [email, cardnum, cardname, expire, CVV, credits])
         self.conn.commit()
 
     def insert_discount(self):

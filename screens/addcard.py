@@ -19,7 +19,7 @@ class add_card_Screen(ttk.Frame):
         if self.entername.get() == "":
             self.entername.insert(0, "name on card")
         if self.enterend.get() == "":
-            self.enterend.insert(0, "expires end: DD/MM/YYYY")
+            self.enterend.insert(0, "expires end(YY/DD)")
         if self.entercvv.get() == "":
             self.entercvv.insert(0, "cvv")
 
@@ -29,12 +29,12 @@ class add_card_Screen(ttk.Frame):
         if self.enternumber.get() == "":
             self.enternumber.insert(0, "card number")
         if self.enterend.get() == "":
-            self.enterend.insert(0, "expires end: DD/MM/YYYY")
+            self.enterend.insert(0, "expires end(YY/DD)")
         if self.entercvv.get() == "":
             self.entercvv.insert(0, "cvv")
 
     def endclear(self, event):
-        if self.enterend.get() == "expires end: DD/MM/YYYY":
+        if self.enterend.get() == "expires end(YY/DD)":
             self.enterend.delete(0, END)
         if self.enternumber.get() == "":
             self.enternumber.insert(0, "card number")
@@ -51,7 +51,7 @@ class add_card_Screen(ttk.Frame):
         if self.entername.get() == "":
             self.entername.insert(0, "name on card")
         if self.enterend.get() == "":
-            self.enterend.insert(0, "expires end: DD/MM/YYYY")
+            self.enterend.insert(0, "expires end(YY/DD)")
 
     def __init__(self, container, controller):
         super().__init__(container)
@@ -92,7 +92,7 @@ class add_card_Screen(ttk.Frame):
         self.enterend = Entry(self, font=(font_name, 14),
                               background="#E8E9E7", borderwidth=0)
         self.enterend.place(x=129, y=414, width=270)
-        self.enterend.insert(0, "expires end: DD/MM/YYYY")
+        self.enterend.insert(0, "expires end(YY/DD)")
         endclick = self.enterend.bind('<Button-1>', self.endclear)
         # cvv
         self.entercvv = Entry(self, font=(font_name, 14),
@@ -101,11 +101,21 @@ class add_card_Screen(ttk.Frame):
         self.entercvv.insert(0, "CVV")
         cvvclick = self.entercvv.bind('<Button-1>', self.cvvclear)
 
+        def save():
+            cardnum = self.enternumber.get()
+            cardname = self.entername.get()
+            expire = self.enterend.get()
+            CVV = self.entercvv.get()
+            print(expire[:2])
+            print(expire[-2:])
+            print(expire[3])
+            controller.add_card(cardnum, cardname, expire, CVV)
+
         # save button
         self.filesave = r"./image_components/cardsave.png"
         self.photosave = PhotoImage(file=self.filesave)
         self.save_button = Button(self,
-                                  image=self.photosave, background='#F0F0F0', borderwidth=0, compound=TOP, command=lambda: controller.change_frame('paymentAccess'))
+                                  image=self.photosave, background='#F0F0F0', borderwidth=0, compound=TOP, command=save)
         self.save_button.place(x=20, y=720)
 
 
