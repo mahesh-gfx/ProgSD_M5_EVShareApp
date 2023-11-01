@@ -237,6 +237,10 @@ class App(tk.Tk):
         payment = self.database.c.fetchone()
         if payment:
             self.cards = payment[1].lstrip().split()
+
+    def change_credit(self,credits):
+        self.database.insert_payments(self.userEmail,"","","","",credits)
+        
     def get_credit(self):
         self.database.run_query('''SELECT * FROM payments where email = ?''',parameters=[self.userEmail,])
         payment = self.database.c.fetchone()

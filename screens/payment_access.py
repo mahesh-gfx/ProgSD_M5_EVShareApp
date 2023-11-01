@@ -141,7 +141,7 @@ class pay_access_Screen(ttk.Frame):
         self.total_left["justify"] = "left"
         # total_bill = amount+service_fee-discount
         global total_bill
-        total_bill = 47
+        total_bill = 1
         self.total_right = Label(self, text=str(total_bill), font=(
             font_name, 20, "bold"), background='#D9D9D9', anchor="e")
         self.total_right.place(x=240, y=160, width=180)
@@ -183,11 +183,13 @@ class pay_access_Screen(ttk.Frame):
         if self.localController.credits >= credit_use:
             self.strcreditlabel = Label(self, text=credit_str, font=(
                 font_name, 14), background='#F0F0F0', anchor="e", fg='#33AF4E')
+            self.strcreditlabel.config(anchor="w")
             self.isenough = True
         else:
             self.strcreditlabel = Label(self, text=credit_str+"(Not enough)", font=(
                 font_name, 14), background='#F0F0F0', anchor="e", fg='red')
-        self.strcreditlabel.place(x=75, y=340)
+            self.strcreditlabel.config(anchor="w")
+        self.strcreditlabel.place(x=75, y=340,width=300)
 
         self.button_credit_choose = Button(self,
                                            image=self.photoSelect_F, compound=TOP, command=self.use_credits, borderwidth=0, background='#F0F0F0')
@@ -234,22 +236,28 @@ class pay_access_Screen(ttk.Frame):
                     messagebox.showerror("Zevo | EV Rental", "No Enough Credits")
                 else:
                     messagebox.showinfo("Zevo | EV Rental", "Pay by Credits Successfully")
+                    controller.credits -= total_bill*100
+                    controller.change_credit(-total_bill*100)
                     controller.change_frame('vehiclesView')
             if self.have_choose == 2:
                 if self.card_roller.get() == "":
                     messagebox.showwarning("Zevo | EV Rental", "Select a card")
                 else:
                     messagebox.showinfo("Zevo | EV Rental", "Pay by Crad Successfully")
+                    controller.credits += total_bill
+                    controller.change_credit(total_bill)
                     controller.change_frame('vehiclesView')
             if self.have_choose == 3:
                 messagebox.showinfo("Zevo | EV Rental", "Pay by ApplePay Successfully")
+                controller.credits += total_bill
+                controller.change_credit(total_bill)
                 controller.change_frame('vehiclesView')
-            if self.have_choose == 3:
+            if self.have_choose == 4:
                 messagebox.showinfo("Zevo | EV Rental", "Pay by PayPal Successfully")
+                controller.credits += total_bill
+                controller.change_credit(total_bill)
                 controller.change_frame('vehiclesView')
             
-            
-
         self.filepay = r"./image_components/pay_big.png"
         self.photopay = PhotoImage(file=self.filepay)
         self.pay_button = Button(self, image=self.photopay, background='#F0F0F0',
@@ -276,9 +284,12 @@ class pay_access_Screen(ttk.Frame):
         if self.localController.credits >= credit_use:
             self.strcreditlabel = Label(self, text=credit_str, font=(
                 font_name, 14), background='#F0F0F0', anchor="e", fg='#33AF4E')
+            self.strcreditlabel.config(anchor="w")
             self.isenough = True
         else:
             self.strcreditlabel = Label(self, text=credit_str+"(Not enough)", font=(
                 font_name, 14), background='#F0F0F0', anchor="e", fg='red')
-        self.strcreditlabel.place(x=75, y=340)
+            self.strcreditlabel.config(anchor="w")
+        self.strcreditlabel.place(x=75, y=340,width=300)
+        
 

@@ -100,6 +100,10 @@ class db():
                 else:
                     self.c.execute('''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
                             VALUES (?, ?, ?, ?, ?, ?)''', [email, cardnum, cardname, expire, CVV, credits])
+        if cardnum == "" and cardname == "" and expire == "" and CVV == "":
+            current_credits = payment[5]+credits
+            self.c.execute('''UPDATE payments
+                            SET credits = ? WHERE email = ?''', (current_credits, email))
         self.conn.commit()
 
     def insert_discount(self):
