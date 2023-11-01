@@ -89,6 +89,7 @@ class PurchaseHistory(ttk.Frame):
         self.navigation.place(x=0, y=700, height=100, width=480)
 
         self.index = 1
+        print("HSTR: ", self.history)
         for car in self.history:
             scrollable_frame = tk.Frame(self.carsContainer)
             car_image = tk.PhotoImage(
@@ -122,3 +123,8 @@ class PurchaseHistory(ttk.Frame):
     def handle_click_on_vehicle(self, controller, car, index):
         # print("Clicked on label..." + str(index), car)
         print("clicked on card")
+        print("Car: ", car)
+        if car['endTime'] is None:
+
+            controller.set_selected_order(order=car)
+            self.controller.change_frame("returnAndPay")

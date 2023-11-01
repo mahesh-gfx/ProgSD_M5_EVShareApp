@@ -27,13 +27,16 @@ class management(ttk.Frame):
 
         # 遍历数据并按月份进行求和
         for item in data:
-            income = int(item[0])
-            start_time = datetime.strptime(item[1], '%Y-%m-%d %H:%M:%S')
-            month_key = start_time.strftime('%Y-%m')
-            if month_key in monthly_income:
-                monthly_income[month_key] += income
-            else:
-                monthly_income[month_key] = income
+            try:
+                income = int(item[0])
+                start_time = datetime.strptime(item[1], '%Y-%m-%d %H:%M:%S')
+                month_key = start_time.strftime('%Y-%m')
+                if month_key in monthly_income:
+                    monthly_income[month_key] += income
+                else:
+                    monthly_income[month_key] = income
+            except:
+                pass
 
         # 提取月份和总和数据
         months = list(monthly_income.keys())
@@ -68,12 +71,15 @@ class management(ttk.Frame):
 
         # 遍历 startTime 数据并按月份进行求和
         for start_time in start_times:
-            start_time = datetime.strptime(start_time[0], '%Y-%m-%d %H:%M:%S')
-            month_key = start_time.strftime('%Y-%m')
-            if month_key in monthly_sum:
-                monthly_sum[month_key] += 1
-            else:
-                monthly_sum[month_key] = 1
+            try:
+                start_time = datetime.strptime(start_time[0], '%Y-%m-%d %H:%M:%S')
+                month_key = start_time.strftime('%Y-%m')
+                if month_key in monthly_sum:
+                    monthly_sum[month_key] += 1
+                else:
+                    monthly_sum[month_key] = 1
+            except:
+                pass
 
         # 提取月份和总和数据
         months = list(monthly_sum.keys())

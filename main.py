@@ -1,3 +1,4 @@
+import datetime
 import tkinter as tk
 import pandas as pd
 from database import db
@@ -13,6 +14,7 @@ from screens.register import register_page
 from screens.management import management
 from screens.operator import Operator
 from screens.purchaseHistory import PurchaseHistory
+from screens.return_and_pay import ReturnAndPay
 
 
 class App(tk.Tk):
@@ -25,6 +27,8 @@ class App(tk.Tk):
     username = ''
     loggedInUserType = ''
     userEmail = 'none'
+    selectedOrder = {}
+    amount = 0
     # Constructors
 
     def __init__(self):
@@ -76,7 +80,8 @@ class App(tk.Tk):
                           'register': register_page,
                           'manager': management,
                           'operator': Operator,
-                          'purchaseHistory': PurchaseHistory
+                          'purchaseHistory': PurchaseHistory,
+                          'returnAndPay': ReturnAndPay
                           }
 
         for key in self.allFrames:
@@ -100,7 +105,8 @@ class App(tk.Tk):
         frame = self.activeFrames[pageName]
         frame.tkraise()
         # frame.update()
-        if (pageName == 'vehicleDetails' or pageName == 'purchaseHistory'):
+        list = ['returnAndPay', 'vehicleDetails', 'purchaseHistory', 'paymentAccess']
+        if pageName in list:
             frame.refresh_data()
         print('Changed Frame to ', pageName)
 
@@ -108,10 +114,22 @@ class App(tk.Tk):
     def get_selected_vehicle(self):
         return self._selectedVehicle
 
+    def get_selected_order(self):
+        return self.selectedOrder
+
+    def get_amount(self):
+        return self.amount
+
     # Setters
     def set_selected_vehicle(self, vehicle):
         # print("Changing selected vehicle details...", vehicle)
         self._selectedVehicle = vehicle
+
+    def set_selected_order(self, order):
+        self.selectedOrder = order
+
+    def set_amount(self, amount):
+        self.amount = amount
 
     def signUpAndLogin(self, name, secret, email, phone):
         # get username and secret from login page as paramaters for this method
@@ -192,7 +210,7 @@ class App(tk.Tk):
 
     def get_all_vehicles(self):
         self.database.run_query(
-            '''SELECT * FROM vehicles''')
+            '''SELECT * FROM vehicles WHERE inUse = 0''')
         response = self.database.c.fetchall()
         response = pd.DataFrame(response, columns=["vehicle_id", "vehicleClass", "make", "model", "licensePlateNumber", "ratePerWeek", "ratePerDay",
                                                    "ratePerHour", "batteryCapacity", "range", "doors", "seatingCapacity", "horsePower", "maxSpeed",
@@ -203,23 +221,69 @@ class App(tk.Tk):
 
     def get_user_history(self):
         query = '''
-            SELECT v.make, v.model, v.licensePlateNumber, v.bg, v.fg, v.image, o.startTime, o.endTime
+            SELECT v.make, v.model, v.licensePlateNumber, v.bg, v.fg, v.image, o.startTime, o.endTime, o.income
             FROM orders AS o
-            JOIN vehicles AS v ON o.carID = v.vehicle_id
+            JOIN vehicles AS v ON o.vehicle_id = v.vehicle_id
             WHERE o.email = ?
         '''
-        print("Email: ")
+        print("Emailkk: ")
         print(self.userEmail)
         self.database.run_query(query, parameters=[self.userEmail])
         response = self.database.c.fetchall()
         print('User History: ')
         # print(response)
         response = pd.DataFrame(response, columns=[
-                                "make", "model", "licensePlateNumber", "bg", "fg", "image", "startTime", "endTime"])
+                        "make", "model", "licensePlateNumber", "bg", "fg", "image", "startTime", "endTime", "income"])
 
         history = response.to_dict(orient='records')
+        print("Historykkk")
         print(history)
         return history
+
+    def rent(self):
+        vehicle = self.get_selected_vehicle()
+        print("Vehicle: ", vehicle)
+        # print("vehicle: ", vehicle)
+        # print("vehicle_id: ", vehicle['vehicle_id'])
+        # return
+        # vehicle['inUse'] = 0
+        if vehicle['inUse']:
+            tk.messagebox.showerror("UNAVAILABLE", "The vehicle is not available at the moment.")
+            return False
+        # update vehicle availability
+        self.database.run_query('UPDATE vehicles SET inUse = ? WHERE vehicle_id = ?', (1, vehicle['vehicle_id']))
+        # create order (rent)
+        order_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        order_query = '''INSERT INTO 
+                    orders (email, vehicle_id, startTime, endTime, income )
+                    VALUES (?, ?, ?, ?, ?)'''
+        order_params = (self.userEmail, vehicle['vehicle_id'], order_date, None, vehicle['ratePerDay'])
+        self.database.run_query(order_query, order_params)
+        tk.messagebox.showinfo("Booking Successful", "You had booked this car successfully")
+        self.change_frame('vehiclesView')
+
+    def return_vehicle(self):
+        vehicle_query = '''INSERT INTO 
+                vehicles (location, inUse)
+                VALUES (?, ?);'''
+        vehicle_params = (self.selectedOrder['returnLocation'], 0)
+        print("BEFORE RUN QUERY SELECTED ORDER: ", self.selectedOrder['endTime'])
+        self.database.run_query(vehicle_query, vehicle_params)
+        self.database.conn.commit()
+
+        order_query = '''INSERT INTO
+                orders (endTime, returnLocation)
+                VALUES (?, ?);'''
+        order_params = (self.selectedOrder['endTime'], self.selectedOrder['returnLocation'])
+        print("order params: ")
+        print(order_params)
+        self.database.run_query(order_query, order_params)
+        self.database.conn.commit()
+        self.database.run_query('''SELECT * from vehicles''')
+        vehicle = self.database.c.fetchone()
+        print("AFTER RUN QUERY: ", vehicle)
+
+        # self.change_frame('vehiclesView')
 
 
 if __name__ == "__main__":
