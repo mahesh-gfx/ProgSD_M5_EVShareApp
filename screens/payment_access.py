@@ -243,7 +243,7 @@ class pay_access_Screen(ttk.Frame):
                     messagebox.showwarning("Zevo | EV Rental", "Select a card")
                 else:
                     messagebox.showinfo("Zevo | EV Rental",
-                                        "Pay by Crad Successfully")
+                                        "Pay by card Successfully")
                     controller.credits += total_bill
                     controller.change_credit(total_bill)
                     controller.change_frame('vehiclesView')

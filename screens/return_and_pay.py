@@ -27,6 +27,13 @@ class ReturnAndPay(ttk.Frame):
             file=r"./image_components/return_and_pay_layout.png")
         self.layout_label = tk.Label(self, image=self.layout)
         self.layout_label.place(relx=0, rely=0)
+
+        self.backButtonArrow = tk.PhotoImage(
+            file="./image_components/arrow_alt_left.png")
+        self.backButton = ttk.Button(self,
+                                     image=self.backButtonArrow, command=lambda: controller.change_frame('purchaseHistory'))
+        self.backButton.place(x=10, y=10)
+        self.backButton.lift()
         # self.refresh_data()
 
     def refresh_data(self):
@@ -70,7 +77,8 @@ class ReturnAndPay(ttk.Frame):
                              bg="#D9D9D9", font=('Helvetica', 15))
         self.name.place(relx=0.6, rely=0.26)
 
-        self.locations = ["Bath St.", "Havannah St.", "Hannover St."]
+        self.locations = ['Havannah St.', 'Bath St.', 'Hannover St.',
+                          'Argyle St.', 'Helen St.', 'Govan Road', '5 Morefield Rd']
         self.val = tk.StringVar()
         self.val.set(self.locations[0])
         self.locations_drop_down = ttk.Combobox(self, textvariable=self.val, values=self.locations, state="readonly",

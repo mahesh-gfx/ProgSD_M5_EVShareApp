@@ -45,6 +45,12 @@ class pay_bill_Screen(ttk.Frame):
                                      image=self.backButtonArrow, command=lambda: controller.change_frame('vehicleDetails'))
         self.backButton.place(x=10, y=10)
 
+        self.backButtonArrow = PhotoImage(
+            file="./image_components/arrow_alt_left.png")
+        self.backButton = ttk.Button(self,
+                                     image=self.backButtonArrow, command=lambda: controller.change_frame('vehiclesView'))
+        self.backButton.place(x=10, y=10)
+
         # reportdefect
         self.photoDefect = "./image_components/report_defect.png"
         self.photoDefect = PhotoImage(file=self.photoDefect)

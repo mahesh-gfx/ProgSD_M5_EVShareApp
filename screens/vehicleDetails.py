@@ -50,7 +50,7 @@ class VehicleDetails(ttk.Frame):
         self.label_distance_icon.grid(
             row=0, column=0, sticky='nw', padx=75, pady=270)
 
-        text=controller.get_selected_vehicle()["location"]
+        text = controller.get_selected_vehicle()["location"]
         self.label_distance = tk.Label(
             self, text=text, bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
                 'Helvetica', 12), anchor='w', justify='left')
@@ -99,7 +99,7 @@ class VehicleDetails(ttk.Frame):
             row=0, column=0, sticky='nw', padx=275, pady=480)
 
         self.lets_go_button = ttk.Button(
-            self, text='Book now', compound="left", command=lambda: controller.change_frame('paymentBill'))
+            self, text='Rent now', compound="left", command=controller.rent)
         self.lets_go_button.place(x=310, y=250, height=52, width=150)
 
         # Navigation bar
@@ -149,7 +149,7 @@ class VehicleDetails(ttk.Frame):
             self.label_distance_icon.configure(
                 image=self.mapIconLight, bg=self.localController.get_selected_vehicle()["bg"])
 
-        text=self.localController.get_selected_vehicle()["location"]
+        text = self.localController.get_selected_vehicle()["location"]
         self.label_distance.config(text=text, bg=self.localController.get_selected_vehicle()[
                                    "bg"], fg=self.localController.get_selected_vehicle()["fg"])
 

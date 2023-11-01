@@ -298,8 +298,8 @@ class App(tk.Tk):
         # print(response)
         response = pd.DataFrame(response, columns=[
             "orderid", "make", "model", "licensePlateNumber", "bg", "fg", "image", "startTime", "endTime", "income"])
-        response = response.sort_values(by="startTime")
         history = response.to_dict(orient='records')
+        history = sorted(history, key=lambda x: x["startTime"], reverse=True)
         print("Historykkk")
         print(history)
         return history
@@ -327,7 +327,7 @@ class App(tk.Tk):
             self.userEmail, vehicle['vehicle_id'], order_date, None, vehicle['ratePerDay'])
         self.database.run_query(order_query, order_params)
         tk.messagebox.showinfo("Booking Successful",
-                               "You had booked this car successfully")
+                               "You have booked this car successfully")
         self.change_frame('vehiclesView')
 
     def return_vehicle(self):

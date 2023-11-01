@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from datetime import datetime
 
 
 class PurchaseHistory(ttk.Frame):
-
-    # cars = []
 
     def __init__(self, container, controller):
         super().__init__(container)
@@ -104,12 +103,29 @@ class PurchaseHistory(ttk.Frame):
                     'Helvetica', 18, "bold"), anchor='w', justify='left')
             label_make.grid(row=0, column=0, sticky='nw', padx=30, pady=30)
 
-            # car["distance"]
             label_license = tk.Label(
                 scrollable_frame, text=car['licensePlateNumber'], bg=car["bg"], fg=car["fg"], font=(
                     'Helvetica', 12), anchor='w', justify='left')
             label_license.grid(row=0, column=0, sticky='nw',
                                padx=30, pady=62)
+
+            label_date = tk.Label(
+                scrollable_frame, text="| "+str(self.format_datetime(car['startTime'])), bg=car["bg"], fg=car["fg"], font=(
+                    'Helvetica', 10, 'bold'), anchor='w', justify='left')
+            label_date.grid(row=0, column=0, sticky='nw',
+                            padx=110, pady=62)
+
+            returnText = ''
+            if (car['endTime']):
+                returnText = str(car['income'])+'£'
+            else:
+                returnText = "Return Vehicle"
+
+            label_return = tk.Label(
+                scrollable_frame, text=returnText, bg=car["bg"], fg=car["fg"], font=(
+                    'Helvetica', 14, 'bold'), anchor='w', justify='left')
+            label_return.grid(row=0, column=0, sticky='nw',
+                              padx=30, pady=82)
 
             label_image.bind(
                 "<Button-1>", lambda event, car=car, index=self.index: self.handle_click_on_vehicle(self.controller, car, index))
@@ -128,3 +144,12 @@ class PurchaseHistory(ttk.Frame):
 
             controller.set_selected_order(order=car)
             self.controller.change_frame("returnAndPay")
+
+    def format_datetime(self, datetime_str):
+        # Convert the datetime string to a datetime object
+        dt = datetime.strptime(datetime_str, "%Y-%m-%d %H:%M:%S")
+
+        # Format the datetime as "22 Sep 2023"
+        formatted_date = dt.strftime("%d %b %Y")
+
+        return formatted_date
