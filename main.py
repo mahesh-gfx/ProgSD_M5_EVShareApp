@@ -61,7 +61,7 @@ class App(tk.Tk):
             "image": "blue-tesla",
             "bg": "#04317D",
             "fg": "#FFFFFF",
-            "distance": "0.2",
+            "location": "information",
         }
         self.activeFrames = {}
         self.allFrames = {'welcome': Welcome,

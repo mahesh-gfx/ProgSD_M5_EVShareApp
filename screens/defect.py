@@ -114,7 +114,15 @@ class defect_page(tk.Frame):
             self.submit_but.place(x=21, y=672)
 
     def jump_page(self):
-        print('jump')
+        import datetime
+        data = self.defect_report_dict
+        info = ''
+        for key in data:
+            if data[key] == True:
+                info = info + " and " + key
+
+        info = info + ',' + datetime.datetime.now()
+
 
     def upload_photo(self):
         print('upload photo')

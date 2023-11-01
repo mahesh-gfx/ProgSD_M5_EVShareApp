@@ -50,9 +50,9 @@ class VehicleDetails(ttk.Frame):
         self.label_distance_icon.grid(
             row=0, column=0, sticky='nw', padx=75, pady=270)
 
-        # text=controller.get_selected_vehicle()["distance"]
+        text=controller.get_selected_vehicle()["location"]
         self.label_distance = tk.Label(
-            self, text="10"+" miles away", bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
+            self, text=text, bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
                 'Helvetica', 12), anchor='w', justify='left')
         self.label_distance.grid(
             row=0, column=0, sticky='nw', padx=106, pady=271)
@@ -82,7 +82,7 @@ class VehicleDetails(ttk.Frame):
         self.label_hp.grid(row=0, column=0, sticky='nw', padx=275, pady=400)
 
         self.label_battery_capacity = tk.Label(
-            self, text=controller.get_selected_vehicle()["batteryCapacity"], bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
+            self, text=str(controller.get_selected_vehicle()["batteryCapacity"])+"%", bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
                 'Helvetica', 12), anchor='w', justify='left')
         self.label_battery_capacity.grid(
             row=0, column=0, sticky='nw', padx=75, pady=480)
@@ -101,6 +101,34 @@ class VehicleDetails(ttk.Frame):
         self.lets_go_button = ttk.Button(
             self, text='Book now', compound="left", command=lambda: controller.change_frame('paymentBill'))
         self.lets_go_button.place(x=310, y=250, height=52, width=150)
+
+        # Navigation bar
+        self.homeIcon = tk.PhotoImage(
+            file="./image_components/home_light.png")
+        self.historyIcon = tk.PhotoImage(
+            file="./image_components/time_progress_light.png")
+        self.signOutIcon = tk.PhotoImage(
+            file="./image_components/sign_out_circle_light.png")
+        self.navigation = tk.Frame(self, background='#FFFFFF')
+        button1 = ttk.Button(
+            self.navigation, image=self.homeIcon, command=lambda: self.controller.change_frame('vehiclesView'))
+        button2 = ttk.Button(
+            self.navigation, image=self.historyIcon, command=lambda: self.controller.change_frame('purchaseHistory'))
+        button3 = ttk.Button(
+            self.navigation, image=self.signOutIcon, command=lambda: self.controller.change_frame('welcome'))
+        self.navigation.grid_columnconfigure(0, weight=1)
+        self.navigation.grid_columnconfigure(1, weight=1)
+        self.navigation.grid_columnconfigure(2, weight=1)
+        navLabel1 = tk.Label(self.navigation, text='Home')
+        navLabel2 = tk.Label(self.navigation, text='History')
+        navLabel3 = tk.Label(self.navigation, text='Log Out')
+        button1.grid(row=0, column=0, padx=5, pady=20)
+        button2.grid(row=0, column=1, padx=5, pady=20)
+        button3.grid(row=0, column=2, padx=5, pady=20)
+        navLabel1.grid(row=1, column=0, padx=5, sticky='N')
+        navLabel2.grid(row=1, column=1, padx=5, sticky='N')
+        navLabel3.grid(row=1, column=2, padx=5, sticky='N')
+        self.navigation.place(x=0, y=700, height=100, width=480)
 
         # self.bind("<Enter>", lambda event, frame=self: frame.refresh_data)
 
@@ -121,8 +149,8 @@ class VehicleDetails(ttk.Frame):
             self.label_distance_icon.configure(
                 image=self.mapIconLight, bg=self.localController.get_selected_vehicle()["bg"])
 
-        # text=self.localController.get_selected_vehicle()["distance"]
-        self.label_distance.config(text='10'+" miles away", bg=self.localController.get_selected_vehicle()[
+        text=self.localController.get_selected_vehicle()["location"]
+        self.label_distance.config(text=text, bg=self.localController.get_selected_vehicle()[
                                    "bg"], fg=self.localController.get_selected_vehicle()["fg"])
 
         self.label_rate.configure(text="£"+str(self.localController.get_selected_vehicle()[
@@ -140,8 +168,8 @@ class VehicleDetails(ttk.Frame):
         self.label_hp.configure(text=str(self.localController.get_selected_vehicle()[
                                 "horsePower"]) + " BHP", bg=self.localController.get_selected_vehicle()["bg"], fg=self.localController.get_selected_vehicle()["fg"])
 
-        self.label_battery_capacity.configure(text=self.localController.get_selected_vehicle(
-        )["batteryCapacity"], bg=self.localController.get_selected_vehicle()["bg"], fg=self.localController.get_selected_vehicle()["fg"])
+        self.label_battery_capacity.configure(text=str(self.localController.get_selected_vehicle(
+        )["batteryCapacity"])+"%", bg=self.localController.get_selected_vehicle()["bg"], fg=self.localController.get_selected_vehicle()["fg"])
 
         self.label_range.configure(text=str(self.localController.get_selected_vehicle()[
                                    "range"])+" miles", bg=self.localController.get_selected_vehicle()["bg"], fg=self.localController.get_selected_vehicle()["fg"])
