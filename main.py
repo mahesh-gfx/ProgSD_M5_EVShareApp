@@ -94,15 +94,6 @@ class App(tk.Tk):
         # self.get_all_vehicles()
         self.change_frame('welcome')
 
-        # #ini Users
-        # import random
-        # import string
-        # for i in range(100):
-        #     name = ''.join(random.choice(string.ascii_letters) for _ in range(8))  # 生成随机名字
-        #     email = f"{name}@example.com"  # 生成随机邮箱
-        #     password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))  # 生成随机密码
-        #     self.signUpAndLogin(username=name,secret=password,email=email)
-
     def change_frame(self, pageName):
         frame = self.activeFrames[pageName]
         frame.tkraise()
