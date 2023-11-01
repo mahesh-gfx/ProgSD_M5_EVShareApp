@@ -1,28 +1,28 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 import tkinter.ttk
 #from classes import vehicleHistory
 #from classes import Vehicle
 
 class pay_bill_Screen(ttk.Frame):
 
-    def to_profile_page(self):
-        print('to profile page')
-
-    def to_consult_page(self):
-        print('to consult page')
-
     def get_discount(self):
-        """
-        check dicount lib
-        if True:
-            global percent = ...
-            global discount = amount*percent
-            refresh the label2
-        if Fales:
-            discountlabel["text"]="Please check your discount number"
-        """
-        print('refresh the discount')
+        code = self.disountlabel.get()
+        discount_fee = localController.get_discount(code)
+        if discount_fee == -1:
+            messagebox.showerror("Zevo | EV Rental", "Wrong Code")
+            discount_fee = 0
+        else:
+            save_string = "You have a ￡"+str(discount_fee)+" discount!"
+            messagebox.showinfo("Zevo | EV Rental", save_string)
+            str_fee = "50\n3\n"+str(discount_fee)
+            self.label3_right = Label(self, text=str_fee, font=(
+                font_name, 14), background='#D9D9D9', anchor="e")
+            self.label3_right.place(x=240, y=422, width=180)
+            self.label3_right["justify"] = "right"
+            print('refresh the discount')
+        
 
     # def turnto_payaccess(self):
     #     self.destroy()
@@ -31,7 +31,10 @@ class pay_bill_Screen(ttk.Frame):
 
     def __init__(self, container, controller):
         super().__init__(container)
+        global localController 
+        localController = controller
         # local variable
+        global font_name
         font_name = 'Mako'
         self.styled = tkinter.ttk.Style()
         self.styled.configure("Custom.TFrame", background="white")
@@ -92,7 +95,9 @@ class pay_bill_Screen(ttk.Frame):
         self.label3_left.place(x=60, y=422, width=180)
         self.label3_left["justify"] = "left"
         #amount
-        str_fee = str("50\n3\n0")
+        global discount_fee
+        discount_fee = 0
+        str_fee = "50\n3\n"+str(discount_fee)
         self.label3_right = Label(self, text=str_fee, font=(
             font_name, 14), background='#D9D9D9', anchor="e")
         self.label3_right.place(x=240, y=422, width=180)

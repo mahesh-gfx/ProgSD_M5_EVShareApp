@@ -246,6 +246,15 @@ class App(tk.Tk):
         payment = self.database.c.fetchone()
         if payment:
             self.credits += payment[5]
+    
+    def get_discount(self, code):
+        self.database.run_query('''SELECT * FROM discounts where code = ?''',parameters=[code,])
+        discount = self.database.c.fetchone()
+        if discount != None:
+            return discount[1]
+        else:
+            return -1
+
 
 
 if __name__ == "__main__":
