@@ -100,7 +100,7 @@ class App(tk.Tk):
         frame = self.activeFrames[pageName]
         frame.tkraise()
         # frame.update()
-        if (pageName == 'vehicleDetails' or pageName == 'purchaseHistory'):
+        if (pageName == 'vehicleDetails' or pageName == 'purchaseHistory' or pageName == ''):
             frame.refresh_data()
         print('Changed Frame to ', pageName)
 
@@ -220,6 +220,21 @@ class App(tk.Tk):
         history = response.to_dict(orient='records')
         print(history)
         return history
+
+    def move_vehicle(self, vehicleId, newLocation):
+        query = '''
+        UPDATE vehicles
+        SET location = ?
+        WHERE vehicle_id = ?;
+
+        '''
+        self.database.run_query(
+            query, parameters=(newLocation, vehicleId))
+        self.database.conn.commit()
+        if self.database.c.rowcount > 0:
+            return True
+        else:
+            return False
 
 
 if __name__ == "__main__":
