@@ -105,7 +105,8 @@ class App(tk.Tk):
         frame = self.activeFrames[pageName]
         frame.tkraise()
         # frame.update()
-        list = ['returnAndPay', 'vehicleDetails', 'purchaseHistory', 'paymentAccess']
+        list = ['returnAndPay', 'vehicleDetails',
+                'purchaseHistory', 'paymentAccess']
         if pageName in list:
             frame.refresh_data()
         print('Changed Frame to ', pageName)
@@ -221,7 +222,7 @@ class App(tk.Tk):
 
     def get_user_history(self):
         query = '''
-            SELECT v.make, v.model, v.licensePlateNumber, v.bg, v.fg, v.image, o.startTime, o.endTime, o.income
+            SELECT o.orderid, v.make, v.model, v.licensePlateNumber, v.bg, v.fg, v.image, o.startTime, o.endTime, o.income
             FROM orders AS o
             JOIN vehicles AS v ON o.vehicle_id = v.vehicle_id
             WHERE o.email = ?
@@ -233,8 +234,8 @@ class App(tk.Tk):
         print('User History: ')
         # print(response)
         response = pd.DataFrame(response, columns=[
-                        "make", "model", "licensePlateNumber", "bg", "fg", "image", "startTime", "endTime", "income"])
-
+            "orderid", "make", "model", "licensePlateNumber", "bg", "fg", "image", "startTime", "endTime", "income"])
+        response = response.sort_values(by="startTime")
         history = response.to_dict(orient='records')
         print("Historykkk")
         print(history)
@@ -248,18 +249,22 @@ class App(tk.Tk):
         # return
         # vehicle['inUse'] = 0
         if vehicle['inUse']:
-            tk.messagebox.showerror("UNAVAILABLE", "The vehicle is not available at the moment.")
+            tk.messagebox.showerror(
+                "UNAVAILABLE", "The vehicle is not available at the moment.")
             return False
         # update vehicle availability
-        self.database.run_query('UPDATE vehicles SET inUse = ? WHERE vehicle_id = ?', (1, vehicle['vehicle_id']))
+        self.database.run_query(
+            'UPDATE vehicles SET inUse = ? WHERE vehicle_id = ?', (1, vehicle['vehicle_id']))
         # create order (rent)
         order_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         order_query = '''INSERT INTO 
                     orders (email, vehicle_id, startTime, endTime, income )
                     VALUES (?, ?, ?, ?, ?)'''
-        order_params = (self.userEmail, vehicle['vehicle_id'], order_date, None, vehicle['ratePerDay'])
+        order_params = (
+            self.userEmail, vehicle['vehicle_id'], order_date, None, vehicle['ratePerDay'])
         self.database.run_query(order_query, order_params)
-        tk.messagebox.showinfo("Booking Successful", "You had booked this car successfully")
+        tk.messagebox.showinfo("Booking Successful",
+                               "You had booked this car successfully")
         self.change_frame('vehiclesView')
 
     def return_vehicle(self):
@@ -267,15 +272,16 @@ class App(tk.Tk):
                 vehicles (location, inUse)
                 VALUES (?, ?);'''
         vehicle_params = (self.selectedOrder['returnLocation'], 0)
-        print("BEFORE RUN QUERY SELECTED ORDER: ", self.selectedOrder['endTime'])
+        print("BEFORE RUN QUERY SELECTED ORDER: ",
+              self.selectedOrder['endTime'])
         self.database.run_query(vehicle_query, vehicle_params)
         self.database.conn.commit()
 
-        order_query = '''INSERT INTO
-                orders (endTime, returnLocation)
-                VALUES (?, ?);'''
-        order_params = (self.selectedOrder['endTime'], self.selectedOrder['returnLocation'])
-        print("order params: ")
+        order_query = '''UPDATE orders 
+                SET endTime=?, returnLocation=?
+                WHERE orderid=?'''
+        order_params = (
+            self.selectedOrder['endTime'], self.selectedOrder['returnLocation'], self.selectedOrder['orderid'])
         print(order_params)
         self.database.run_query(order_query, order_params)
         self.database.conn.commit()

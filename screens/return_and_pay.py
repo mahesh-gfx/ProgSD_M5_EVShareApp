@@ -31,7 +31,6 @@ class ReturnAndPay(ttk.Frame):
 
     def refresh_data(self):
 
-
         self.order = self.controller.get_selected_order()
         print("Order: ", self.order)
 
@@ -39,17 +38,20 @@ class ReturnAndPay(ttk.Frame):
         self.endTime = datetime.strptime(self.endTimeStr, "%Y-%m-%d %H:%M:%S")
         self.order['endTime'] = self.endTimeStr
         self.controller.set_selected_order(order=self.order)
-        self.startTime = datetime.strptime(self.order['startTime'], "%Y-%m-%d %H:%M:%S")
+        self.startTime = datetime.strptime(
+            self.order['startTime'], "%Y-%m-%d %H:%M:%S")
         # print("dates: ", type(self.startTime), type(self.endTime))
         # self.dateDifference = (self.endTime - self.startTime)
-        self.duration = math.ceil((self.endTime - self.startTime).total_seconds() / 3600)
+        self.duration = math.ceil(
+            (self.endTime - self.startTime).total_seconds() / 3600)
 
         # print(self.order["income"], type(self.order["income"]))
         if isinstance(self.order["income"], str):
             self.rateByDay = int(self.order["income"])
             self.amount = self.duration * self.rateByDay
         else:
-            tk.messagebox.showerror("SERVER ERROR", "SERVER ERROR OCCURED, PLEASE TRY AGAIN LATER")
+            tk.messagebox.showerror(
+                "SERVER ERROR", "SERVER ERROR OCCURED, PLEASE TRY AGAIN LATER")
             return
 
         print("Amount: ", self.amount, "Duration: ", self.duration)
@@ -77,7 +79,8 @@ class ReturnAndPay(ttk.Frame):
             relx=0.15, rely=0.32, height=42, width=360)
         self.locations_drop_down.bind("<<ComboboxSelected>>", self.on_select)
 
-        self.order['returnLocation'] = self.val.get()  # add default return location
+        # add default return location
+        self.order['returnLocation'] = self.val.get()
 
         self.total_amount_label = tk.Label(
             self, text="Amount: ", bg="#D9D9D9", font=('Helvetica', 15))
