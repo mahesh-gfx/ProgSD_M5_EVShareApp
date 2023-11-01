@@ -165,7 +165,7 @@ class VehiclesView(ttk.Frame):
 
             # car["distance"]
             label_distance = tk.Label(
-                scrollable_frame, text='10'+" miles away", bg=car["bg"], fg=car["fg"], font=(
+                scrollable_frame, text=car["location"], bg=car["bg"], fg=car["fg"], font=(
                     'Helvetica', 12), anchor='w', justify='left')
             label_distance.grid(row=0, column=0, sticky='nw', padx=62, pady=62)
 

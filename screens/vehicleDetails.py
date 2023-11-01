@@ -50,9 +50,9 @@ class VehicleDetails(ttk.Frame):
         self.label_distance_icon.grid(
             row=0, column=0, sticky='nw', padx=75, pady=270)
 
-        # text=controller.get_selected_vehicle()["distance"]
+        text=controller.get_selected_vehicle()["location"]
         self.label_distance = tk.Label(
-            self, text="10"+" miles away", bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
+            self, text=text, bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
                 'Helvetica', 12), anchor='w', justify='left')
         self.label_distance.grid(
             row=0, column=0, sticky='nw', padx=106, pady=271)
@@ -82,7 +82,7 @@ class VehicleDetails(ttk.Frame):
         self.label_hp.grid(row=0, column=0, sticky='nw', padx=275, pady=400)
 
         self.label_battery_capacity = tk.Label(
-            self, text=controller.get_selected_vehicle()["batteryCapacity"], bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
+            self, text=str(controller.get_selected_vehicle()["batteryCapacity"])+"%", bg=controller.get_selected_vehicle()["bg"], fg=controller.get_selected_vehicle()["fg"], font=(
                 'Helvetica', 12), anchor='w', justify='left')
         self.label_battery_capacity.grid(
             row=0, column=0, sticky='nw', padx=75, pady=480)
@@ -149,8 +149,8 @@ class VehicleDetails(ttk.Frame):
             self.label_distance_icon.configure(
                 image=self.mapIconLight, bg=self.localController.get_selected_vehicle()["bg"])
 
-        # text=self.localController.get_selected_vehicle()["distance"]
-        self.label_distance.config(text='10'+" miles away", bg=self.localController.get_selected_vehicle()[
+        text=self.localController.get_selected_vehicle()["location"]
+        self.label_distance.config(text=text, bg=self.localController.get_selected_vehicle()[
                                    "bg"], fg=self.localController.get_selected_vehicle()["fg"])
 
         self.label_rate.configure(text="£"+str(self.localController.get_selected_vehicle()[
@@ -168,8 +168,8 @@ class VehicleDetails(ttk.Frame):
         self.label_hp.configure(text=str(self.localController.get_selected_vehicle()[
                                 "horsePower"]) + " BHP", bg=self.localController.get_selected_vehicle()["bg"], fg=self.localController.get_selected_vehicle()["fg"])
 
-        self.label_battery_capacity.configure(text=self.localController.get_selected_vehicle(
-        )["batteryCapacity"], bg=self.localController.get_selected_vehicle()["bg"], fg=self.localController.get_selected_vehicle()["fg"])
+        self.label_battery_capacity.configure(text=str(self.localController.get_selected_vehicle(
+        )["batteryCapacity"])+"%", bg=self.localController.get_selected_vehicle()["bg"], fg=self.localController.get_selected_vehicle()["fg"])
 
         self.label_range.configure(text=str(self.localController.get_selected_vehicle()[
                                    "range"])+" miles", bg=self.localController.get_selected_vehicle()["bg"], fg=self.localController.get_selected_vehicle()["fg"])

@@ -62,7 +62,7 @@ class App(tk.Tk):
             "image": "blue-tesla",
             "bg": "#04317D",
             "fg": "#FFFFFF",
-            "distance": "0.2",
+            "location": "information",
         }
         self.activeFrames = {}
         self.allFrames = {'welcome': Welcome,
@@ -181,7 +181,7 @@ class App(tk.Tk):
         else:
 
             from tkinter import messagebox
-            messagebox.showinfo("Tips", "Please sign up your information")
+            messagebox.showinfo("Info", "Please sign up your information")
 
             tk.messagebox.showinfo("Zevo | EV Rental", "Invalid Credentials!")
             print("Emailll")

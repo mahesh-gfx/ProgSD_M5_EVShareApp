@@ -159,12 +159,12 @@ class db():
         one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
 
         # 车辆类型选择列表，包括电动车和电动自行车
-        vehicleClass = ['Car']
+        vehicleClass = ['Car','Bike']
 
         for _ in range(num_vehicles):
             # 随机生成一些示例数据，可以根据需要进行修改
-            vehicleClass = 'Car'  # 随机选择车辆类型
-            if vehicleClass == 'Car':
+            vehicleClass = random.choice(vehicleClass)  # 随机选择车辆类型
+            if _< num_vehicles*0.7:
                 make = 'Tesla'  # 制造商
                 model = random.choice(
                     ['Model 3', 'Model S', 'Model X', 'Model Y'])  # 随机选择特斯拉的车型
@@ -176,33 +176,33 @@ class db():
                 ratePerWeek = random.randint(100, 300)  # 随机生成每周租金费用
                 ratePerDay = random.randint(20, 60)  # 随机生成每日租金费用
                 ratePerHour = random.randint(5, 20)  # 随机生成每小时租金费用
-                batteryCapacity = random.randint(50000, 80000)  # 随机生成电池容量
+                batteryCapacity = random.randint(20, 100)  # 随机生成电池容量
                 range1 = random.randint(300, 500)  # 随机生成续航里程
-                doors = random.randint(2, 5)  # 随机生成门数
-                seatingCapacity = random.randint(2, 7)  # 随机生成座位容量
+                doors = 4  # 随机生成门数
+                seatingCapacity = random.randint(2, 5)  # 随机生成座位容量
                 horsePower = random.randint(100, 400)  # 随机生成马力
                 maxSpeed = random.randint(100, 200)  # 随机生成最高速度
                 location = random.choice(
                     ['Havannah St.', 'Bath St.', 'Hannover St.', 'Argyle St.', 'Helen St.', 'Govan Road', '5 Morefield Rd'])
                 hasDefects = random.randint(0, 1)
             else:
-                make = 'Gient'  # 制造商
-                model = random.choice(
-                    ['E-Bike Model A', 'E-Bike Model B', 'E-Bike Model C'])  # 电动自行车的车型
+                make = 'Gient'
+                model = 'Zevo E-Bike'
                 # 电动自行车特殊处理
                 ratePerWeek = random.randint(20, 60)  # 80% 减少租金费用
                 ratePerDay = random.randint(4, 12)  # 80% 减少租金费用
                 ratePerHour = random.randint(1, 4)  # 80% 减少租金费用
-                batteryCapacity = random.randint(0, 10000)  # 0 到 10000 电池容量
+                batteryCapacity = random.randint(0, 100)  # 0 到 10000 电池容量
                 range1 = random.randint(10, 30)  # 10 到 30 续航里程
                 doors = 0  # 电动自行车没有门
                 seatingCapacity = 1  # 电动自行车的座位容量
                 horsePower = 0  # 电动自行车没有马力
                 maxSpeed = random.randint(10, 15)  # 1 到 15 最高速度
                 image = 'bike'
-                bg = random.choice(["#04317D", "#D22739", "#ECEDED"])
-                fg = bg
-                location = random.randint(1, 4)
+                bg = '#FFFFFF'
+                fg = '#000000'
+                location = random.choice(
+                    ['Havannah St.', 'Bath St.', 'Hannover St.', 'Argyle St.', 'Helen St.', 'Govan Road', '5 Morefield Rd'])
                 hasDefects = random.randint(0, 1)
 
             licensePlateNumber = ''.join(random.choices(
@@ -225,6 +225,7 @@ class db():
             self.conn.commit()
 
     # Methods
+
 
     def populate_mock_data(self):
         print("populating mock data in the database...")

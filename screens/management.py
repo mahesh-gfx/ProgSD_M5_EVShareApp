@@ -5,7 +5,6 @@ from collections import Counter
 from matplotlib.lines import Line2D
 from datetime import datetime
 from PIL import Image, ImageTk
-import tkinter.ttk
 from tkinter import ttk
 
 
@@ -48,7 +47,6 @@ class management(ttk.Frame):
         # 保存图表为PNG文件
         plt.savefig('image_components/income_trend.png',
                     dpi=100)  # 设置dpi以控制输出图像的分辨率
-
         # 关闭连接
         conn.close()
 
@@ -94,15 +92,11 @@ class management(ttk.Frame):
     def create_pie_chart(self, data, filename):
         count = Counter(data)
         labels, values = zip(*count.items())
-
-        # 创建饼图
         fig, ax = plt.subplots(figsize=(8, 6), dpi=80)
         [wedges, texts, autotexts] = ax.pie(
             values, autopct='%1.1f%%', startangle=140)
         for autotext in autotexts:
             autotext.set_fontsize(20)
-
-        # 设置饼图部分的颜色
         colors = plt.cm.tab20.colors
         for i, (label, color) in enumerate(zip(labels, colors)):
             wedges[i].set_facecolor(color)
@@ -121,8 +115,6 @@ class management(ttk.Frame):
         # 连接到数据库
         conn = sqlite3.connect('zevo-dev.db')
         c = conn.cursor()
-
-        # 查询数据库以获取符合条件的数据
         defect_data = c.execute("SELECT defects FROM vehicles ").fetchall()
         # 关闭数据库连接
         conn.close()
@@ -148,32 +140,104 @@ class management(ttk.Frame):
                     defect = defect+1
             except:
                 pass
-        self.create_pie_chart(days, 'image_components/days.png')
-        self.create_pie_chart(weeks, 'image_components/weeks.png')
-        self.create_pie_chart(months, 'image_components/months.png')
+        self.create_pie_chart(days, r'image_components/days.png')
+        self.create_pie_chart(weeks, r'image_components/weeks.png')
+        self.create_pie_chart(months, r'image_components/months.png')
         return len(defect_data), defect
 
     def get_income(self):
-        # 连接到数据库
         conn = sqlite3.connect('zevo-dev.db')
         cursor = conn.cursor()
-
-        # 使用 SQL 查询来计算 income 列的总和
         cursor.execute("SELECT SUM(income) FROM orders")
-
-        # 获取总和值
         total_income = cursor.fetchone()[0]
         return total_income
 
     def get_Userinfo(self):
         conn = sqlite3.connect('zevo-dev.db')
         c = conn.cursor()
-        # 查询数据库以获取符合条件的数据
         User_data = c.execute("SELECT * FROM users ").fetchall()
         return len(User_data)
 
     def download_as_PDF(self):
-        print('download as PDF')
+        from reportlab.lib.pagesizes import letter
+        from reportlab.lib import colors
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+        from reportlab.lib.styles import getSampleStyleSheet
+        pdf_filename = "Management.pdf"
+        doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
+        story = []
+
+        # 添加标题
+        styles = getSampleStyleSheet()
+        title = "Management Information"
+        title_text = Paragraph(title, styles["Title"])
+        story.append(title_text)
+
+        story.append(Spacer(1, 12))
+        text = "Fleet days :"
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+
+        story.append(Spacer(1, 12))
+        # 添加图像
+        image_filename = r"image_components/days.png"
+        image = Image(image_filename, width=400, height=300)
+        story.append(image)
+
+        story.append(Spacer(1, 12))
+        text = "Fleet weeks :"
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+        image_filename = r"image_components/weeks.png"
+        image = Image(image_filename, width=400, height=300)
+        story.append(image)
+
+        story.append(Spacer(1, 12))
+        text = "Fleet months :"
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+        image_filename = r"image_components/months.png"
+        image = Image(image_filename, width=400, height=300)
+        story.append(image)
+
+        story.append(Spacer(1, 12))
+        # 添加文本段落
+        text = "Total car : " + str(self.carNumber)
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+
+        text = "Total customers : " + str(self.UserNumber)
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+
+        text = "Total income : " + str(self.income) + " Pounds"
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+
+        text = "Total defect : " + str(self.defect)
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+
+        story.append(Spacer(1, 12))
+        text = "Active customers per month months :"
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+        image_filename =  r"image_components/active_month.png"
+        image = Image(image_filename, width=400, height=300)
+        story.append(image)
+
+        story.append(Spacer(1, 12))
+        text = "Income per year :"
+        text_paragraph = Paragraph(text, styles["Normal"])
+        story.append(text_paragraph)
+        image_filename =   r"image_components/income_trend.png"
+        image = Image(image_filename, width=400, height=300)
+        story.append(image)
+
+        doc.build(story)
+
+        from tkinter import messagebox
+        messagebox.showinfo("Info", "PDF has been created")
 
     def to_profile_page(self):
         print('to profile page')
@@ -265,14 +329,14 @@ class management(ttk.Frame):
         self.buttonProfile.place(x=1400, y=20)
 
         # Fleet day
-        self.image1 = Image.open("image_components/days.png")
+        self.image1 = Image.open(r"image_components/days.png")
         self.image1 = self.image1.resize((240, 180))
         self.FleetdayPath = ImageTk.PhotoImage(self.image1)
         self.FleetdayPathLabel = Label(
             self, image=self.FleetdayPath, background='#FFFFFF')
         self.FleetdayPathLabel.place(x=180, y=135)
         # Fleet Week
-        self.image2 = Image.open("image_components/weeks.png")
+        self.image2 = Image.open(r"image_components/weeks.png")
         self.image2 = self.image2.resize((240, 180))
         self.FleetWeekPath = ImageTk.PhotoImage(self.image2)
         self.FleetWeekPathLabel = Label(
@@ -280,7 +344,7 @@ class management(ttk.Frame):
         self.FleetWeekPathLabel.place(x=667, y=135)
 
         # Fleet Month
-        self.image3 = Image.open("image_components/months.png")
+        self.image3 = Image.open(r"image_components/months.png")
         self.image3 = self.image3.resize((240, 180))
         self.FleetMonthPath = ImageTk.PhotoImage(self.image3)
         self.FleetMonthPathLabel = Label(
