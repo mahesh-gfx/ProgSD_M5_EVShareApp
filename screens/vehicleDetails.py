@@ -8,7 +8,7 @@ class VehicleDetails(ttk.Frame):
     def __init__(self, container, controller):
         super().__init__(container)
         print("Constructing Vehicle Details frame...")
-
+        self.controller = controller
         self.localController = controller
         self.styled = ttk.Style()
         self.styled.configure("TButton", font=("Helvetica", 16))

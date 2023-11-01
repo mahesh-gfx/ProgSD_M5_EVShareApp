@@ -98,6 +98,7 @@ class pay_access_Screen(ttk.Frame):
 
     def __init__(self, container, controller):
         super().__init__(container)
+        self.controller = controller
         # local variable
         font_name = 'Mako'
 
@@ -106,7 +107,7 @@ class pay_access_Screen(ttk.Frame):
             file="./image_components/arrow_alt_left.png")
         self.backButton = ttk.Button(self,
                                      image=self.backButtonArrow,
-                                     command=lambda: controller.change_frame('paymentBill'))
+                                     command=lambda: controller.change_frame('returnAndPay'))
         self.backButton.place(x=10, y=10)
 
         # report button
@@ -143,13 +144,13 @@ class pay_access_Screen(ttk.Frame):
         self.total_left.place(x=60, y=160, width=180)
         self.total_left["justify"] = "left"
         # total_bill = amount+service_fee-discount
-        total_bill = 47
-        self.total_right = Label(self, text=str(total_bill), font=(
+        self.total_bill = 47
+        self.total_right = Label(self, text=str(self.total_bill), font=(
             font_name, 20, "bold"), background='#D9D9D9', anchor="e")
         self.total_right.place(x=240, y=160, width=180)
         self.total_right["justify"] = "right"
         #gain credits mention
-        gain_credits = str(total_bill)+" credits"
+        gain_credits = str(self.total_bill)+" credits"
         self.credit_mention = Label(self, text = "you can gain "+gain_credits, font=(
         font_name, 10, "bold"),background='#D9D9D9', anchor="e")
         self.credit_mention["justify"] = "right"
@@ -179,7 +180,7 @@ class pay_access_Screen(ttk.Frame):
         self.explainlabel.place(x=75, y=315, rely=0)
         '''get current credits from db'''
         self.credit_current = 10000
-        self.credit_use = int(100*total_bill)
+        self.credit_use = int(100*self.total_bill)
         self.credit_str = "credits:" + \
             str(self.credit_use)+"/"+str(self.credit_current)
         if self.credit_current >= self.credit_use:
@@ -235,6 +236,7 @@ class pay_access_Screen(ttk.Frame):
 
         def turnto_payresult():
             messagebox.showinfo("Zevo | EV Rental", "Pay Successfully")
+            controller.return_vehicle()
             controller.change_frame('vehiclesView')
 
         self.filepay = r"./image_components/pay_big.png"
@@ -242,3 +244,10 @@ class pay_access_Screen(ttk.Frame):
         self.pay_button = Button(self, image=self.photopay, background='#F0F0F0',
                                  borderwidth=0, compound=TOP, command=turnto_payresult)
         self.pay_button.place(x=20, y=720)
+
+    def refresh_data(self):
+        self.amount = self.controller.get_amount()
+        self.total_right.config(text=self.amount)
+        self.bill_right.config(text=self.amount)
+        self.credit_mention.config(text=self.amount)
+

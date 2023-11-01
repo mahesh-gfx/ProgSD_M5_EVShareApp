@@ -51,9 +51,10 @@ class db():
                 CREATE TABLE IF NOT EXISTS orders
                 ([orderid] INTEGER PRIMARY KEY,
                 [email] TEXT,
-                [carID] TEXT,
+                [vehicle_id] TEXT,
                 [startTime] TEXT,
                 [endTime] TEXT,
+                [returnLocation] TEXT,
                 [income] TEXT)
                 ''')
         self.c.execute('''
@@ -133,7 +134,7 @@ class db():
             income = str(random.randint(10, 100))
 
             # 插入数据到orders表
-            cursor.execute("INSERT INTO orders (email, carID, startTime, endTime, income) VALUES (?, ?, ?, ?, ?)",
+            cursor.execute("INSERT INTO orders (email, vehicle_id, startTime, endTime, income) VALUES (?, ?, ?, ?, ?)",
                            (email, vehicle_id, start_time.strftime('%Y-%m-%d %H:%M:%S'),
                             end_time.strftime('%Y-%m-%d %H:%M:%S'), income))
 
