@@ -48,12 +48,12 @@ class Operator(ttk.Frame):
 
         self.map_widget = tkintermapview.TkinterMapView(
             self, width=400, height=600, corner_radius=0)
-        self.map_widget.place(x=1050, y=150)
+        self.map_widget.place(x=1070, y=150)
         self.map_widget.set_position(55.859015320462596, -
                                      4.234950142328189)
 
         self.canvas = tk.Canvas(self)
-        self.canvas.place(x=25, y=150, height=600, width=1000)
+        self.canvas.place(x=25, y=150, height=600, width=1050)
 
         self.carsContainer = tk.Frame(self.canvas)
         self.canvas.create_window(
