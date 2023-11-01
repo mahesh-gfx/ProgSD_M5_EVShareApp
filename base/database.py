@@ -145,7 +145,7 @@ class database:
         self.get_products()
 
 
-if __name__ == '__main__':
-    window = Tk()
-    application = Product(window)
-    window.mainloop()
+# if __name__ == '__main__':
+#     window = Tk()
+#     application = Product(window)
+#     window.mainloop()

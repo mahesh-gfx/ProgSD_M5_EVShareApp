@@ -290,8 +290,22 @@ class App(tk.Tk):
         print("AFTER RUN QUERY: ", vehicle)
 
         # self.change_frame('vehiclesView')
+    def move_vehicle(self, vehicleId, newLocation):
+        query = '''
+        UPDATE vehicles
+        SET location = ?
+        WHERE vehicle_id = ?;
+
+        '''
+        self.database.run_query(
+            query, parameters=(newLocation, vehicleId))
+        self.database.conn.commit()
+        if self.database.c.rowcount > 0:
+            return True
+        else:
+            return False
 
 
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+# if __name__ == "__main__":
+#     app = App()
+#     app.mainloop()
