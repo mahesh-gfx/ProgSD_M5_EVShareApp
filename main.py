@@ -6,7 +6,6 @@ from database import db
 from screens.welcome import Welcome
 from screens.vehiclesView import VehiclesView
 from screens.vehicleDetails import VehicleDetails
-from screens.payment_bill import pay_bill_Screen
 from screens.payment_access import pay_access_Screen
 from screens.defect import defect_page
 from screens.addcard import add_card_Screen
@@ -29,6 +28,7 @@ class App(tk.Tk):
     loggedInUserType = ''
     selectedOrder = {}
     amount = 0
+    discount =0
     userEmail = ''
     cards = []
     credits = 0
@@ -75,7 +75,6 @@ class App(tk.Tk):
         self.allFrames = {'welcome': Welcome,
                           'vehiclesView': VehiclesView,
                           'paymentAccess': pay_access_Screen,
-                          'paymentBill': pay_bill_Screen,
                           'reportDefect': defect_page,
                           'vehicleDetails': VehicleDetails,
                           'addCard': add_card_Screen,
