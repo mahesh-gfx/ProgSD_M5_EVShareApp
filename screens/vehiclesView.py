@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 class VehiclesView(ttk.Frame):
 
     cars = []
@@ -10,6 +11,12 @@ class VehiclesView(ttk.Frame):
         self.controller = controller
         print("Constructing Vehicles View self.navigation...")
         self.cars = controller.get_all_vehicles()
+
+        self.mapIconDark = tk.PhotoImage(
+            file="./image_components/map_duotone_dark.png")
+
+        self.mapIconLight = tk.PhotoImage(
+            file="./image_components/map_duotone_light.png")
 
         self.styled = ttk.Style()
         self.styled.configure("TButton", font=("Helvetica", 16))
@@ -22,13 +29,16 @@ class VehiclesView(ttk.Frame):
         self.selected_vehicle.set(self.options[0])
 
         # locations drop down
-        self.locations = ["Bath St.", "Havannah St.", "Hannover St."]
+        self.locations = ['Havannah St.', 'Bath St.', 'Hannover St.',
+                          'Argyle St.', 'Helen St.', 'Govan Road', '5 Morefield Rd']
+
         self.val = tk.StringVar()
         self.val.set(self.locations[0])
         self.locations_drop_down = ttk.Combobox(self, textvariable=self.val, values=self.locations, state="readonly",
-                                                      font=('Mako', 14), style="CustomStyles.TCombobox")
+                                                font=('Mako', 14), style="CustomStyles.TCombobox")
         self.locations_drop_down.place(x=200, y=45, height=42, width=260)
-
+        self.locations_drop_down.bind(
+            "<<ComboboxSelected>>", self.on_combobox_select)
 
         self.label = tk.Label(self, text="I want to rent a",
                               font=("Helvetica", 20))
@@ -41,6 +51,7 @@ class VehiclesView(ttk.Frame):
         self.dropdown = ttk.OptionMenu(
             self, self.selected_vehicle, *self.options)
         self.dropdown.place(x=35, y=164, height=40, width=150)
+        self.selected_vehicle.trace("w", self.on_combobox_select)
 
         self.styled = ttk.Style()
         self.styled.configure('TMenubutton', font=(
@@ -48,26 +59,53 @@ class VehiclesView(ttk.Frame):
 
         self.label.lift()
         self.dropdown.lift()
-        self.render_view(container)
 
-    def render_view(self, controller):
-        canvas = tk.Canvas(self)
-        canvas.place(x=25, y=230, height=480, width=480)
+        self.canvas = tk.Canvas(self)
+        self.canvas.place(x=25, y=230, height=480, width=480)
 
-        self.carsContainer = tk.Frame(canvas)
-        canvas.create_window((0, 0), window=self.carsContainer, anchor="nw")
+        self.carsContainer = tk.Frame(self.canvas)
+        self.canvas.create_window(
+            (0, 0), window=self.carsContainer, anchor="nw")
 
-        scrollbar = tk.Scrollbar(self, orient="vertical", command=canvas.yview)
+        scrollbar = tk.Scrollbar(
+            self, orient="vertical", command=self.canvas.yview)
         scrollbar.pack(side="right", fill="y")
-        canvas.config(yscrollcommand=scrollbar.set)
+        self.canvas.config(yscrollcommand=scrollbar.set)
 
-        self.mapIconDark = tk.PhotoImage(
-            file="./image_components/map_duotone_dark.png")
+        self.vehiclesToDisplay = self.get_vehicles_to_display(
+            self.options[0], self.locations[0])
 
-        self.mapIconLight = tk.PhotoImage(
-            file="./image_components/map_duotone_light.png")
+        self.render_view()
+        # controller.update_idletasks()
+        self.carsContainer.update_idletasks()
+        self.canvas.config(scrollregion=self.canvas.bbox("all"))
 
+    def delete_child_frames(self, container_frame):
+        for widget in container_frame.winfo_children():
+            if isinstance(widget, tk.Frame):
+                widget.destroy()
+
+    def on_combobox_select(self, event, *args):
+        print("Combo box value changed...")
+        self.vehiclesToDisplay = self.get_vehicles_to_display(
+            self.selected_vehicle.get(), self.val.get())
+        print(self.vehiclesToDisplay)
+        self.after(50, lambda: self.render_view())
+
+    def get_vehicles_to_display(self, selected_vehicle, location):
+        print(selected_vehicle)
+        print(location)
+        filtered_list = [vehicle for vehicle in self.cars if vehicle['vehicleClass']
+                         == selected_vehicle and vehicle['location'] == location]
+        print("Filtered...")
+        print(filtered_list)
+        return filtered_list
+
+    def render_view(self):
+        # self.canvas.delete("all")
         # Navigation bar
+        self.delete_child_frames(self.carsContainer)
+        self.carsContainer.update_idletasks()
         self.homeIcon = tk.PhotoImage(
             file="./image_components/home_light.png")
         self.historyIcon = tk.PhotoImage(
@@ -94,8 +132,8 @@ class VehiclesView(ttk.Frame):
         self.navigation.place(x=0, y=700, height=100, width=480)
 
         self.index = 1
-        for car in self.cars:
-            scrollable_frame = tk.Frame(self.carsContainer, )
+        for car in self.vehiclesToDisplay:
+            scrollable_frame = tk.Frame(self.carsContainer)
             car_image = tk.PhotoImage(
                 file=f"./image_components/{car['image']}.png")
             label_image = tk.Label(
@@ -142,7 +180,8 @@ class VehiclesView(ttk.Frame):
             self.index += 1
 
         self.carsContainer.update_idletasks()
-        canvas.config(scrollregion=canvas.bbox("all"))
+        self.canvas.config(scrollregion=self.canvas.bbox("all"))
+        self.update_idletasks()
 
     def getLocation(self):
         self.locationButton.config(
@@ -154,32 +193,3 @@ class VehiclesView(ttk.Frame):
         # print("Clicked on label..." + str(index), car)
         controller.set_selected_vehicle(car)
         controller.change_frame('vehicleDetails')
-
-
-# # single screen development
-# class App(tk.Tk):
-#     # Attributes
-#     vehicles = []
-#     db_name = 'zevo-dev.db'
-#     # Constructors
-
-#     def __init__(self):
-#         super().__init__()
-#         self.geometry("480x800")
-#         self.title("Zevo | EV Rental")
-#         self.resizable(False, True)
-#         print("Constructing App...")
-
-#         container = tk.Frame(self)
-#         container.pack(side="top", fill="both", expand=True)
-#         container.grid_rowconfigure(0, weight=1)
-#         container.grid_columnconfigure(0, weight=1)
-#         vehiclesViewFrame = VehiclesView(container, controller=self)
-#         vehiclesViewFrame.grid(row=0, column=0, sticky="nsew")
-
-#         vehiclesViewFrame.tkraise()
-
-
-# if __name__ == "__main__":
-#     app = App()
-#     app.mainloop()

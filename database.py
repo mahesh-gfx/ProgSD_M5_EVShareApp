@@ -149,7 +149,7 @@ class db():
 
         return switch.get(item, {'bg': 'default_bg_color', 'fg': 'default_fg_color'})
 
-    def insert_vehicles(self, num_vehicles=300):
+    def insert_vehicles(self, num_vehicles=50):
         print('insert_fake_vehicles')
         import random
         import datetime

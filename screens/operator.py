@@ -31,6 +31,7 @@ class Operator(ttk.Frame):
         self.style = "Custom.TFrame"
 
         self.cars = controller.get_all_vehicles()
+        # print(self.cars)
 
         self.styled = ttk.Style()
         self.styled.configure('TMenubutton', font=(
@@ -38,11 +39,11 @@ class Operator(ttk.Frame):
 
         self.button1 = ttk.Button(self, text="All Vehicles")
 
-        map_widget = tkintermapview.TkinterMapView(
+        self.map_widget = tkintermapview.TkinterMapView(
             self, width=400, height=400, corner_radius=0)
-        map_widget.place(x=950, y=150)
-        map_widget.set_position(55.859015320462596, -
-                                4.234950142328189, marker=True)
+        self.map_widget.place(x=950, y=150)
+        self.map_widget.set_position(55.859015320462596, -
+                                     4.234950142328189)
 
         canvas = tk.Canvas(self)
         canvas.place(x=25, y=150, height=600, width=900)
@@ -93,7 +94,7 @@ class Operator(ttk.Frame):
                     'Helvetica', 14, 'bold'), anchor='w', justify='left')
             label_in_use.grid(row=0, column=3, padx=30)
 
-            # command=lambda event, car=car: self.handle_track(car)
+            # command=lambda event, car=car: self.handle_track(location = car["location"])
             track = ttk.Button(scrollable_frame, text="Track", width=7)
             charge = ttk.Button(scrollable_frame, text="Charge", width=7)
             move = ttk.Button(scrollable_frame, text="Move", width=7)
@@ -107,11 +108,11 @@ class Operator(ttk.Frame):
         self.carsContainer.update_idletasks()
         canvas.config(scrollregion=canvas.bbox("all"))
 
-    def handle_track(self, car):
-        print("Clicked on vehicle..")
-        location = car["location"]
+    def handle_track(self, location):
         print(location)
-        print(self.get_coordinates(car["location"]))
+        print(self.get_coordinates(location))
+        lat, long = self.get_coordinates(location)
+        self.map_widget.set_position(lat, long, marker=True)
 
     def get_coordinates(self, location):
         for item in self.coordinates:
