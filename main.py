@@ -179,7 +179,7 @@ class App(tk.Tk):
         else:
 
             from tkinter import messagebox
-            messagebox.showinfo("Tips", "Please sign up your information")
+            messagebox.showinfo("Info", "Please sign up your information")
 
             tk.messagebox.showinfo("Zevo | EV Rental", "Invalid Credentials!")
 
