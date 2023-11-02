@@ -6,11 +6,11 @@ authors = ["Mahesh Adhikari <62585493+mahesh-gfx@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-pandas = "^2.1.1"
-pillow = "^10.0.1"
+python = "^3.11"
+pandas = "^2.0.3"
+pillow = "^9.4.0"
 tkintermapview = "^1.28"
-matplotlib = "^3.8.0"
+matplotlib = "^3.7.2"
 
 [build-system]
 requires = ["poetry-core"]
