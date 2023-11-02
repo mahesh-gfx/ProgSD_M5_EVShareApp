@@ -1,6 +1,8 @@
 # ZEVO Rental Application User Guide
 
-Welcome to ZEVO, the electric vehicle rental application! Whether you are a customer, operator, or manager, this user guide will help you get the most out of our platform. ZEVO offers a convenient and eco-friendly solution for renting electric vehicles, including e-bikes and e-cars. Let's get started:
+Welcome to ZEVO, the electric vehicle rental application! Whether you are a customer, operator, or manager, this user guide will help you get the most out of our platform. ZEVO offers a convenient and eco-friendly solution for renting electric vehicles, including e-bikes and e-cars. ZEVO stands for Zero(Z-O) Emission Electric Vehicles(EV) 
+
+Let's get started:
 
 ## Table of Contents
 
@@ -8,6 +10,7 @@ Welcome to ZEVO, the electric vehicle rental application! Whether you are a cust
   - [Table of Contents](#table-of-contents)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
+    - [Development](#development)
     - [Creating an Account](#creating-an-account)
     - [Logging In](#logging-in)
   - [Features](#features)
@@ -27,23 +30,29 @@ Welcome to ZEVO, the electric vehicle rental application! Whether you are a cust
 
 Before you start using ZEVO, make sure you have the following:
 
-- A compatible mobile device or computer with internet access.
+- A compatible computer with internet access.
 - A ZEVO user account (customer, operator, or manager).
 - The ZEVO mobile app or access to the web-based application.
+
+### Development
+- Requirements:
+  - Python 3.10+
+  - Any code editor, eg. VSCode, Atom
+  - Pip 22.0+ (Run ```py -m ensurepip --upgrade``` to install pip)
+  - Poetry 1.6.0+ (Run ```pip install poetry```)
+
+- Setup steps
+  - After the requirements are satisfied, open a terminal on the project root directory.
+  - Run ```poetry install``` to install the project dependencies
+  
+- Running the application
+  - Run ```python main.py``` or ```py -m main.py``` to run the project
 
 ### Creating an Account
 
 If you're new to ZEVO, you'll need to create an account:
 
-1. *Download the ZEVO App*: You can find the ZEVO mobile app on your device's app store. Alternatively, visit our website.
-
-2. *Sign Up*: Open the app and select "Sign Up" to create a new account.
-
-3. *Provide Information*: Follow the registration process by entering your details, such as name, email address, and password.
-
-4. *Verification*: Verify your email address through the link sent to your email. 
-
-5. *Log In*: After verification, log in to your ZEVO account.
+1. *Sign up on the App*: Fill in the details on the signup page and the hit register, log back in with the credentials you typed in
 
 ### Logging In
 
@@ -69,11 +78,11 @@ As a customer, you can enjoy the following features:
 
 - *Searching for Vehicles by Locations:* Customers can easily search for electric cars and e-bikes located near them, making it convenient to find the perfect vehicle for their needs.
 
-- *View Vehicle Information:* Customers can access vital information about available vehicles, including details such as range, price, gearbox type, current energy (battery charge), number of doors, model, brand, color, number of seats, and more. This feature ensures that customers have all the necessary information to make an informed choice.
+- *View Vehicle Information:* Customers can access vital information about available vehicles, including details such as range, price, current energy (battery charge), number of doors, model, brand, color, number of seats, and more. This feature ensures that customers have all the necessary information to make an informed choice.
 
-- *Renting a Vehicle:* Customers can rent an available vehicle and use it for a specified duration, providing them with flexibility and freedom to travel as they desire.
+- *Renting a Vehicle:* Customers can rent an available vehicle and use it for a duration, providing them with flexibility and freedom to travel as they desire.
 
-- *Returning a Vehicle:* When customers are done with their rental, they can return the vehicle to any of our office locations and pay for the total service amount, ensuring a hassle-free and straightforward process.
+- *Returning a Vehicle:* When customers are done with their rental, they can return the vehicle to any of our drop locations and pay for the total service amount, ensuring a hassle-free and straightforward process.
 
 - *Reporting Vehicle Issues:* In the event a customer encounters a malfunctioning or damaged vehicle, they can easily report the issue through the application, helping us maintain the quality and safety of our fleet.
 
@@ -81,17 +90,17 @@ As a customer, you can enjoy the following features:
 
 Operators have access to features designed to manage and maintain the ZEVO fleet:
 
-- *Track Vehicle Locations:* Monitor the real-time locations of all ZEVO vehicles in the city.
+- *Track Vehicle Locations:* Monitor the locations of all ZEVO vehicles in the city.
 
 - *Charge Depleted Vehicles:* Initiate the charging process when a vehicle's battery is depleted.
 
-- *Repair Defective Vehicles:* Request repair services for malfunctioning vehicles.
+- *Repair Defective Vehicles:* Request repair services for malfunctioning vehicles or reported defects.
 
 - *Relocate Vehicles:* Move vehicles to different locations in the city as needed.
 
 ### For Managers
 
-Managers have advanced reporting and data visualization tools to optimize the service:
+Managers have reporting and data visualization tools to optimize the service:
 
 - *Generate Reports:* Create detailed reports showing all vehicle activities over a specified time period, using data visualization techniques to make informed decisions.
 
@@ -101,19 +110,18 @@ Managers have advanced reporting and data visualization tools to optimize the se
 
 ZEVO's user-friendly interface makes navigation easy:
 
-- *Dashboard:* The main screen displays your role-specific dashboard.
+- *Welcome:* This is the first screen on the application and leads the user to the login and Sign up.
 
-- *Menu:* Access additional features and settings from the app's menu.
-
-- *Search:* Find available vehicles by location, type, and other criteria.
-
-- *Profile:* View and edit your user profile, including account details and preferences.
+- *User groups* There are three user groups in the app, 'user', 'manager' and 'operator'. Based on the user role, the pages load. For example, if an operator logs in, it opens the 'Operator dashboard'.
+  
+- *Navigation Bar* A navigation bar appears on the Vehicles List (Home) page and 'Purchase history' pages. Using this bar, the user can navigate between Home Page, Purchase History page or Log out of the application.
+- *Back arrow* Users can return to the previous page by clicking on the back arrow button on relevant pages
 
 ### Customer Features
 
 For customers, ZEVO offers the following features:
 
-- *Locate Vehicles:* Use the search function to find vehicles near you.
+- *Locate Vehicles:* Use the location selector function to find vehicles near your preferred location.
 
 - *View Details:* Click on a vehicle to access information like range, price, and more.
 
