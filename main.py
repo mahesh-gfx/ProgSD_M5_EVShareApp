@@ -28,7 +28,7 @@ class App(tk.Tk):
     loggedInUserType = ''
     selectedOrder = {}
     amount = 0
-    discount =0
+    discount = 0
     userEmail = ''
     cards = []
     credits = 0
@@ -228,7 +228,7 @@ class App(tk.Tk):
 
         if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV) == 3 and len(cardnum) == 16:
             if expire[:2].isdigit() and expire[2] == '/' and expire[-2:].isdigit() and "-" not in cardname:
-                if 1<=int(expire[:2])<=12 and int(expire[-2:]) >= 23:
+                if 1 <= int(expire[:2]) <= 12 and int(expire[-2:]) >= 23:
                     cardnums = payment[1].lstrip().split()
                     if cardnum not in cardnums:
                         current_cardnum = payment[1]+(" "+str(cardnum))
@@ -244,7 +244,8 @@ class App(tk.Tk):
                         messagebox.showwarning(
                             "Zevo | EV Rental", "CARD HAS BEEN ADDED!")
                 else:
-                    messagebox.showwarning("Zevo | EV Rental", "INVALID INFORM!")
+                    messagebox.showwarning(
+                        "Zevo | EV Rental", "INVALID INFORM!")
             else:
                 messagebox.showwarning("Zevo | EV Rental", "INVALID INFORM!")
         else:
@@ -324,14 +325,14 @@ class App(tk.Tk):
         self.change_frame('vehiclesView')
 
     def return_vehicle(self):
-        vehicle_query = '''INSERT INTO 
-                vehicles (location, inUse)
-                VALUES (?, ?);'''
-        vehicle_params = (self.selectedOrder['returnLocation'], 0)
-        print("BEFORE RUN QUERY SELECTED ORDER: ",
-              self.selectedOrder['endTime'])
-        self.database.run_query(vehicle_query, vehicle_params)
-        self.database.conn.commit()
+        # vehicle_query = '''UPDATE vehicles
+        #          SET location=?, inUse=?
+        #          WHERE vehicle_id=?'''
+        # vehicle_params = (self.selectedOrder['returnLocation'], 0, )
+        # print("BEFORE RUN QUERY SELECTED ORDER: ",
+        #       self.selectedOrder['endTime'])
+        # self.database.run_query(vehicle_query, vehicle_params)
+        # self.database.conn.commit()commit
 
         order_query = '''UPDATE orders 
                 SET endTime=?, returnLocation=?
@@ -339,6 +340,8 @@ class App(tk.Tk):
         order_params = (
             self.selectedOrder['endTime'], self.selectedOrder['returnLocation'], self.selectedOrder['orderid'])
         print(order_params)
+        print("WHYYY ", self.selectedOrder['endTime'],
+              self.selectedOrder['returnLocation'], self.selectedOrder['orderid'])
         self.database.run_query(order_query, order_params)
         self.database.conn.commit()
         self.database.run_query('''SELECT * from vehicles''')
