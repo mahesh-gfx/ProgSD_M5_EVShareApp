@@ -6,7 +6,6 @@ from database import db
 from screens.welcome import Welcome
 from screens.vehiclesView import VehiclesView
 from screens.vehicleDetails import VehicleDetails
-from screens.payment_bill import pay_bill_Screen
 from screens.payment_access import pay_access_Screen
 from screens.defect import defect_page
 from screens.addcard import add_card_Screen
@@ -29,6 +28,7 @@ class App(tk.Tk):
     loggedInUserType = ''
     selectedOrder = {}
     amount = 0
+    discount =0
     userEmail = ''
     cards = []
     credits = 0
@@ -75,7 +75,6 @@ class App(tk.Tk):
         self.allFrames = {'welcome': Welcome,
                           'vehiclesView': VehiclesView,
                           'paymentAccess': pay_access_Screen,
-                          'paymentBill': pay_bill_Screen,
                           'reportDefect': defect_page,
                           'vehicleDetails': VehicleDetails,
                           'addCard': add_card_Screen,
@@ -94,15 +93,6 @@ class App(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
         # self.get_all_vehicles()
         self.change_frame('welcome')
-
-        # #ini Users
-        # import random
-        # import string
-        # for i in range(100):
-        #     name = ''.join(random.choice(string.ascii_letters) for _ in range(8))  # 生成随机名字
-        #     email = f"{name}@example.com"  # 生成随机邮箱
-        #     password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))  # 生成随机密码
-        #     self.signUpAndLogin(username=name,secret=password,email=email)
 
     def change_frame(self, pageName):
         frame = self.activeFrames[pageName]
@@ -166,8 +156,8 @@ class App(tk.Tk):
         response2 = self.database.run_query(
             '''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
             VALUES
-            (?, '', '', '', 0);
-            ''', parameters=(email))
+            (?, '', '', '', '', 0);
+            ''', parameters=(email,))
         self.database.conn.commit()
         response = [response1, response2]
         return response
@@ -236,26 +226,29 @@ class App(tk.Tk):
             '''SELECT * FROM payments where email = ?''', parameters=[self.userEmail,])
         payment = self.database.c.fetchone()
 
-        if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV) == 3:
+        if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV) == 3 and len(cardnum) == 16:
             if expire[:2].isdigit() and expire[2] == '/' and expire[-2:].isdigit() and "-" not in cardname:
-                cardnums = payment[1].lstrip().split()
-                if cardnum not in cardnums:
-                    current_cardnum = payment[1]+(" "+str(cardnum))
-                    current_cardname = payment[2]+("-"+str(cardname))
-                    current_expire = payment[3]+(" "+str(expire))
-                    current_CVV = payment[4]+(" "+str(CVV))
-                    self.database.run_query('''UPDATE payments
-                            SET cardnum = ?, cardname = ?, expire = ?, CVV = ?
-                            WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, self.userEmail))
-                    self.get_card()
-                    self.change_frame('paymentAccess')
+                if 1<=int(expire[:2])<=12 and int(expire[-2:]) >= 23:
+                    cardnums = payment[1].lstrip().split()
+                    if cardnum not in cardnums:
+                        current_cardnum = payment[1]+(" "+str(cardnum))
+                        current_cardname = payment[2]+("-"+str(cardname))
+                        current_expire = payment[3]+(" "+str(expire))
+                        current_CVV = payment[4]+(" "+str(CVV))
+                        self.database.run_query('''UPDATE payments
+                                SET cardnum = ?, cardname = ?, expire = ?, CVV = ?
+                                WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, self.userEmail))
+                        self.get_card()
+                        self.change_frame('paymentAccess')
+                    else:
+                        messagebox.showwarning(
+                            "Zevo | EV Rental", "CARD HAS BEEN ADDED!")
                 else:
-                    messagebox.showwarning(
-                        "Zevo | EV Rental", "CARD HAS BEEN ADDED!")
+                    messagebox.showwarning("Zevo | EV Rental", "INVALID INFORM!")
             else:
-                messagebox.showwarning("Zevo | EV Rental", "WRONG INFORM!")
+                messagebox.showwarning("Zevo | EV Rental", "INVALID INFORM!")
         else:
-            messagebox.showwarning("Zevo | EV Rental", "WRONG INFORM!")
+            messagebox.showwarning("Zevo | EV Rental", "INVALID INFORM!")
 
     def get_card(self):
         self.database.run_query(
@@ -272,7 +265,7 @@ class App(tk.Tk):
             '''SELECT * FROM payments where email = ?''', parameters=[self.userEmail,])
         payment = self.database.c.fetchone()
         if payment:
-            self.credits += payment[5]
+            self.credits = payment[5]
 
     def get_discount(self, code):
         self.database.run_query(

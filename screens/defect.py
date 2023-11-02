@@ -17,7 +17,7 @@ class defect_page(tk.Frame):
             self.photoProf = r"./image_components/arrow_alt_left.png"
             self.photoProf = PhotoImage(file=self.photoProf)
             self.buttonProf = Button(self,image=self.photoProf, compound=TOP,
-                                command=lambda:controller.change_frame('paymentBill'), borderwidth=0, background='#F0F0F0')
+                                command=lambda:controller.change_frame('returnAndPay'), borderwidth=0, background='#F0F0F0')
             self.buttonProf.place(x=10, y=20)
 
 
@@ -110,7 +110,7 @@ class defect_page(tk.Frame):
             self.photoSubmit = r"./image_components/defect-submit.png"
             self.photoSubmit = PhotoImage(file=self.photoSubmit)
             self.submit_but = Button(self,image=self.photoSubmit, background='#F0F0F0',
-                                borderwidth=0, compound=TOP, command=self.jump_page)
+                                borderwidth=0, compound=TOP, command=lambda:controller.change_frame('returnAndPay'))
             self.submit_but.place(x=21, y=672)
 
     def jump_page(self):

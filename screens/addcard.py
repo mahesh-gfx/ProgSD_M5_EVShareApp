@@ -19,7 +19,7 @@ class add_card_Screen(ttk.Frame):
         if self.entername.get() == "":
             self.entername.insert(0, "name on card")
         if self.enterend.get() == "":
-            self.enterend.insert(0, "expires end(YY/DD)")
+            self.enterend.insert(0, "expires end(MM/YY)")
         if self.entercvv.get() == "":
             self.entercvv.insert(0, "cvv")
 
@@ -29,12 +29,12 @@ class add_card_Screen(ttk.Frame):
         if self.enternumber.get() == "":
             self.enternumber.insert(0, "card number")
         if self.enterend.get() == "":
-            self.enterend.insert(0, "expires end(YY/DD)")
+            self.enterend.insert(0, "expires end(MM/YY)")
         if self.entercvv.get() == "":
             self.entercvv.insert(0, "cvv")
 
     def endclear(self, event):
-        if self.enterend.get() == "expires end(YY/DD)":
+        if self.enterend.get() == "expires end(MM/YY)":
             self.enterend.delete(0, END)
         if self.enternumber.get() == "":
             self.enternumber.insert(0, "card number")
@@ -51,7 +51,7 @@ class add_card_Screen(ttk.Frame):
         if self.entername.get() == "":
             self.entername.insert(0, "name on card")
         if self.enterend.get() == "":
-            self.enterend.insert(0, "expires end(YY/DD)")
+            self.enterend.insert(0, "expires end(MM/YY)")
 
     def __init__(self, container, controller):
         super().__init__(container)
@@ -92,7 +92,7 @@ class add_card_Screen(ttk.Frame):
         self.enterend = Entry(self, font=(font_name, 14),
                               background="#E8E9E7", borderwidth=0)
         self.enterend.place(x=129, y=414, width=270)
-        self.enterend.insert(0, "expires end(YY/DD)")
+        self.enterend.insert(0, "expires end(MM/YY)")
         endclick = self.enterend.bind('<Button-1>', self.endclear)
         # cvv
         self.entercvv = Entry(self, font=(font_name, 14),

@@ -2,6 +2,7 @@ import math
 import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
+from tkinter import messagebox
 
 
 class ReturnAndPay(ttk.Frame):
@@ -15,13 +16,31 @@ class ReturnAndPay(ttk.Frame):
         print("Hey Man: ", self.val.get())
         self.order['returnLocation'] = self.val.get()
         print("Updated Order: ", self.order)
+    
+    def get_discount(self):
+        code = self.disountlabel.get()
+        ifdiscount = localController.get_discount(code)
+        if ifdiscount == -1:
+            messagebox.showerror("Zevo | EV Rental", "Wrong Code")
+            localController.discount = 0
+        else:
+            save_string = "You have a ￡"+str(ifdiscount)+" discount!"
+            messagebox.showinfo("Zevo | EV Rental", save_string)
+            localController.discount = ifdiscount
+            self.total_discount = tk.Label(
+            self, text="£" + str(localController.discount), bg="#D9D9D9", font=('Helvetica', 15))
+            self.total_discount.place(relx=0.6, rely=0.44)
+            localController.discount = ifdiscount
+            print('refresh the discount')
 
     def __init__(self, container, controller):
         super().__init__(container)
         tk.Frame.__init__(self, container)
+        global localController
+        localController = controller
+        global font_name
+        font_name = 'Mako'
         self.controller = controller
-
-        # self.order = self.controller.get_selected_order()
 
         self.layout = tk.PhotoImage(
             file=r"./image_components/return_and_pay_layout.png")
@@ -34,7 +53,34 @@ class ReturnAndPay(ttk.Frame):
                                      image=self.backButtonArrow, command=lambda: controller.change_frame('purchaseHistory'))
         self.backButton.place(x=10, y=10)
         self.backButton.lift()
+         # report button
+        self.photoDefect = r"./image_components/report_defect.png"
+        self.photoDefect = tk.PhotoImage(file=self.photoDefect)
+        self.buttonDefect = tk.Button(self, image=self.photoDefect, compound=tk.TOP,
+                                   command=lambda: controller.change_frame('reportDefect'), borderwidth=0, background='#FFFFFF')
+        self.buttonDefect.place(x=440, y=10)
+        self.buttonDefect.lift()
+        # self.order = self.controller.get_selected_order()
         # self.refresh_data()
+        self.payblock1_file = r"./image_components/payblock1.png"
+        self.payblock1 = tk.PhotoImage(file=self.payblock1_file)
+        self.block_dis = tk.Label(self, image=self.payblock1, background='#FFFFFF')
+        self.block_dis.place(x=40, y=435)
+        # discount
+        self.label4 = tk.Label(self, text="Discount:", font=(
+            font_name, 14), background='#D9D9D9', anchor="w")
+        self.label4.place(x=60, y=442)
+        self.label4["justify"] = "left"
+        # enter dicount code
+        self.disountlabel = tk.Entry(self, text="", font=(
+            font_name, 14), background="#D9D9D9", relief="solid")
+        self.disountlabel.place(x=65, y=478, width=280, height=40)
+        self.enter_discount_image = r"./image_components/paybill_enter.png"
+        self.enter_discount = tk.PhotoImage(file=self.enter_discount_image)
+        self.button_enterdiscount = tk.Button(self,
+                                           image=self.enter_discount, command=self.get_discount, borderwidth=0, background="#D9D9D9")
+        self.button_enterdiscount.place(x=360, y=478)
+
 
     def refresh_data(self):
 
@@ -102,6 +148,14 @@ class ReturnAndPay(ttk.Frame):
         self.btn = tk.Button(self, image=self.btnImage, compound=tk.TOP, command=self.return_and_pay, borderwidth=0,
                              background='#D9D9D9', activebackground="#D9D9D9")
         self.btn.place(relx=0.04, rely=0.88)
+        self.discount_label = tk.Label(
+        self, text="Discount: ", bg="#D9D9D9", font=('Helvetica', 15))
+        self.discount_label.place(relx=0.15, rely=0.44)
+        self.total_discount = tk.Label(
+            self, text="£" + str(localController.discount), bg="#D9D9D9", font=('Helvetica', 15))
+        self.total_discount.place(relx=0.6, rely=0.44)
+
+
 # class App(tk.Tk):
 #     # Attributes
 #     vehicles = []
