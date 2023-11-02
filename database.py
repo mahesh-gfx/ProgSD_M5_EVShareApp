@@ -89,19 +89,21 @@ class db():
             self.c.execute('''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
                             VALUES (?, ?, ?, ?, ?, ?)''', [email, cardnum, cardname, expire, CVV, credits])
         else:
-            if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV) == 3:
+            if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV) == 3 and len(cardnum) == 16:
                 if expire[:2].isdigit() and expire[2] == '/' and expire[-2:].isdigit() and "-" not in cardname:
-                    cardnums = payment[1].lstrip().split()
-                    current_credits = payment[5]+credits
-                    cardnums = payment[1].lstrip().split()
-                    if cardnum not in cardnums:
-                        current_cardnum = payment[1]+(" "+str(cardnum))
-                        current_cardname = payment[2]+("-"+str(cardname))
-                        current_expire = payment[3]+(" "+str(expire))
-                        current_CVV = payment[4]+(" "+str(CVV))
-                        self.c.execute('''UPDATE payments
-                                SET cardnum = ?, cardname = ?, expire = ?, CVV = ?, credits = ?
-                                WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, current_credits, email))
+                    if 1<=int(expire[:2])<=12 and int(expire[-2:]) >= 23:
+                        cardnums = payment[1].lstrip().split()
+                        current_credits = payment[5]+credits
+                        cardnums = payment[1].lstrip().split()
+                        if cardnum not in cardnums:
+                            current_cardnum = payment[1]+(" "+str(cardnum))
+                            current_cardname = payment[2]+("-"+str(cardname))
+                            current_expire = payment[3]+(" "+str(expire))
+                            current_CVV = payment[4]+(" "+str(CVV))
+                            self.c.execute('''UPDATE payments
+                                    SET cardnum = ?, cardname = ?, expire = ?, CVV = ?, credits = ?
+                                    WHERE email = ?''', (current_cardnum, current_cardname, current_expire, current_CVV, current_credits, email))
+                            return
             if cardnum == "" and cardname == "" and expire == "" and CVV == "":
                 if payment:
                     current_credits = payment[5]+credits
