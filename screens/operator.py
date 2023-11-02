@@ -157,6 +157,7 @@ class Operator(ttk.Frame):
                     self.refresh_data()
                     messagebox.showinfo(
                         "Moved vehicle", "Successfully moved the vehicle!")
+                    popup.destroy()
 
                 else:
                     messagebox.showerror(
@@ -207,6 +208,7 @@ class Operator(ttk.Frame):
                     self.refresh_data()
                     messagebox.showinfo(
                         "Charging vehicle", "Charging the vehicle!")
+                    popup.destroy()
 
                 else:
                     messagebox.showerror(
@@ -221,6 +223,9 @@ class Operator(ttk.Frame):
             confirm_button.place(x=30, y=210)
 
     def refresh_data(self):
+        if self.carsContainer.winfo_children():
+            for child in self.carsContainer.winfo_children():
+                child.destroy()
         self.cars = self.controller.get_all_vehicles()
         index = 1
         self.bg = "lightblue"
@@ -346,6 +351,7 @@ class Operator(ttk.Frame):
                 self.refresh_data()
                 messagebox.showinfo(
                     "Repair vehicle", "Repairing the vehicle!")
+                popup.destroy()
 
             else:
                 messagebox.showerror(
