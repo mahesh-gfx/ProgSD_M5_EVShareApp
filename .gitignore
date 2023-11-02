@@ -165,3 +165,4 @@ cython_debug/
 examples
 .vscode
 .db
+zevo-dev.db

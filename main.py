@@ -99,11 +99,18 @@ class App(tk.Tk):
         frame.tkraise()
         # frame.update()
         list = ['returnAndPay', 'vehicleDetails',
-                'purchaseHistory', 'paymentAccess']
+                'purchaseHistory', 'paymentAccess', 'operator']
         if pageName in list:
             frame.refresh_data()
         if (pageName == 'paymentAccess'):
             frame.refresh_cards()
+
+        if (pageName == 'welcome'):
+            self.geometry("480x800")
+
+        if (pageName == 'operator'):
+            self.geometry("1536x864")
+
         print('Changed Frame to ', pageName)
 
     # Getters
@@ -358,6 +365,36 @@ class App(tk.Tk):
         '''
         self.database.run_query(
             query, parameters=(newLocation, vehicleId))
+        self.database.conn.commit()
+        if self.database.c.rowcount > 0:
+            return True
+        else:
+            return False
+
+    def charge_vehicle(self, vehicleId):
+        query = '''
+        UPDATE vehicles
+        SET batteryCapacity = ?
+        WHERE vehicle_id = ?;
+
+        '''
+        self.database.run_query(
+            query, parameters=(100, vehicleId))
+        self.database.conn.commit()
+        if self.database.c.rowcount > 0:
+            return True
+        else:
+            return False
+
+    def repair_vehicle(self, vehicleId):
+        query = '''
+        UPDATE vehicles
+        SET defects = ?
+        WHERE vehicle_id = ?;
+
+        '''
+        self.database.run_query(
+            query, parameters=("", vehicleId))
         self.database.conn.commit()
         if self.database.c.rowcount > 0:
             return True

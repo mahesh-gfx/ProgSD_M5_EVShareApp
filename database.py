@@ -91,7 +91,7 @@ class db():
         else:
             if cardnum.isdigit() and CVV.isdigit() and len(expire) == 5 and len(CVV) == 3 and len(cardnum) == 16:
                 if expire[:2].isdigit() and expire[2] == '/' and expire[-2:].isdigit() and "-" not in cardname:
-                    if 1<=int(expire[:2])<=12 and int(expire[-2:]) >= 23:
+                    if 1 <= int(expire[:2]) <= 12 and int(expire[-2:]) >= 23:
                         cardnums = payment[1].lstrip().split()
                         current_credits = payment[5]+credits
                         cardnums = payment[1].lstrip().split()
