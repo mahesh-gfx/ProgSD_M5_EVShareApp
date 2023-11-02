@@ -110,7 +110,7 @@ class defect_page(tk.Frame):
             self.photoSubmit = r"./image_components/defect-submit.png"
             self.photoSubmit = PhotoImage(file=self.photoSubmit)
             self.submit_but = Button(self,image=self.photoSubmit, background='#F0F0F0',
-                                borderwidth=0, compound=TOP, command=self.jump_page)
+                                borderwidth=0, compound=TOP, command=lambda:controller.change_frame('vehiclesView'))
             self.submit_but.place(x=21, y=672)
 
     def jump_page(self):

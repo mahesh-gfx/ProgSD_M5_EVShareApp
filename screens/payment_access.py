@@ -238,6 +238,7 @@ class pay_access_Screen(ttk.Frame):
                     controller.credits -= total_bill*100
                     controller.change_credit(-total_bill*100)
                     controller.change_frame('vehiclesView')
+                    self.controller.return_vehicle()
             if self.have_choose == 2:
                 if self.card_roller.get() == "":
                     messagebox.showwarning("Zevo | EV Rental", "Select a card")
@@ -247,18 +248,22 @@ class pay_access_Screen(ttk.Frame):
                     controller.credits += total_bill
                     controller.change_credit(total_bill)
                     controller.change_frame('vehiclesView')
+                    self.controller.return_vehicle()
             if self.have_choose == 3:
                 messagebox.showinfo("Zevo | EV Rental",
                                     "Pay by ApplePay Successfully")
                 controller.credits += total_bill
                 controller.change_credit(total_bill)
                 controller.change_frame('vehiclesView')
+                self.controller.return_vehicle()
             if self.have_choose == 4:
                 messagebox.showinfo("Zevo | EV Rental",
                                     "Pay by PayPal Successfully")
                 controller.credits += total_bill
                 controller.change_credit(total_bill)
                 controller.change_frame('vehiclesView')
+                self.controller.return_vehicle()
+
 
         self.filepay = r"./image_components/pay_big.png"
         self.photopay = PhotoImage(file=self.filepay)

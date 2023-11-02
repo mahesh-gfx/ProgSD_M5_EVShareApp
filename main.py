@@ -166,8 +166,8 @@ class App(tk.Tk):
         response2 = self.database.run_query(
             '''INSERT INTO payments (email, cardnum, cardname, expire, CVV, credits)
             VALUES
-            (?, '', '', '', 0);
-            ''', parameters=(email))
+            (?, '', '', '','', 0);
+            ''', parameters=([email]))
         self.database.conn.commit()
         response = [response1, response2]
         return response
@@ -331,14 +331,14 @@ class App(tk.Tk):
         self.change_frame('vehiclesView')
 
     def return_vehicle(self):
-        vehicle_query = '''INSERT INTO 
-                vehicles (location, inUse)
-                VALUES (?, ?);'''
-        vehicle_params = (self.selectedOrder['returnLocation'], 0)
-        print("BEFORE RUN QUERY SELECTED ORDER: ",
-              self.selectedOrder['endTime'])
-        self.database.run_query(vehicle_query, vehicle_params)
-        self.database.conn.commit()
+        # vehicle_query = '''UPDATE vehicles
+        #          SET location=?, inUse=?
+        #          WHERE vehicle_id=?'''
+        # vehicle_params = (self.selectedOrder['returnLocation'], 0, )
+        # print("BEFORE RUN QUERY SELECTED ORDER: ",
+        #       self.selectedOrder['endTime'])
+        # self.database.run_query(vehicle_query, vehicle_params)
+        # self.database.conn.commit()commit
 
         order_query = '''UPDATE orders 
                 SET endTime=?, returnLocation=?
@@ -346,6 +346,7 @@ class App(tk.Tk):
         order_params = (
             self.selectedOrder['endTime'], self.selectedOrder['returnLocation'], self.selectedOrder['orderid'])
         print(order_params)
+        print("WHYYY ", self.selectedOrder['endTime'], self.selectedOrder['returnLocation'], self.selectedOrder['orderid'])
         self.database.run_query(order_query, order_params)
         self.database.conn.commit()
         self.database.run_query('''SELECT * from vehicles''')

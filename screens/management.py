@@ -10,21 +10,14 @@ from tkinter import ttk
 
 class management(ttk.Frame):
     def get_incomefig(self):
-
-        # 连接到数据库
         conn = sqlite3.connect('zevo-dev.db')
         cursor = conn.cursor()
-
-        # 执行 SQL 查询以检索所有 income 和 startTime 数据
         cursor.execute("SELECT income, startTime FROM orders")
 
-        # 获取所有 income 和 startTime 数据
         data = cursor.fetchall()
 
-        # 初始化一个字典来存储每个月份的总和
         monthly_income = {}
 
-        # 遍历数据并按月份进行求和
         for item in data:
             try:
                 income = int(item[0])
@@ -37,37 +30,27 @@ class management(ttk.Frame):
             except:
                 pass
 
-        # 提取月份和总和数据
         months = list(monthly_income.keys())
         total_incomes = list(monthly_income.values())
 
-        # 转换月份字符串为日期格式
         months = [datetime.strptime(month, '%Y-%m') for month in months]
-        # 绘制折线图
         plt.figure(figsize=(431 / 100, 155 / 100))  # 设置图表大小为431x155像素
         plt.plot(total_incomes, marker='o', markersize=2, linestyle='-')
         plt.xticks([])
-        # 保存图表为PNG文件
         plt.savefig('image_components/income_trend.png',
-                    dpi=100)  # 设置dpi以控制输出图像的分辨率
-        # 关闭连接
+                    dpi=100)
         conn.close()
 
     def get_activefig(self):
-        # 连接到数据库
         conn = sqlite3.connect('zevo-dev.db')
         cursor = conn.cursor()
 
-        # 执行 SQL 查询以检索所有 startTime 列的数据
         cursor.execute("SELECT startTime FROM orders")
 
-        # 获取所有 startTime 数据
         start_times = cursor.fetchall()
 
-        # 初始化一个字典来存储每个月份的总和
         monthly_sum = {}
 
-        # 遍历 startTime 数据并按月份进行求和
         for start_time in start_times:
             try:
                 start_time = datetime.strptime(start_time[0], '%Y-%m-%d %H:%M:%S')
@@ -79,7 +62,6 @@ class management(ttk.Frame):
             except:
                 pass
 
-        # 提取月份和总和数据
         months = list(monthly_sum.keys())
         totals = list(monthly_sum.values())
 
