@@ -48,6 +48,18 @@ Before you start using ZEVO, make sure you have the following:
 - Running the application
   - Run ```python main.py``` or ```py -m main.py``` to run the project
 
+- Sample user credentials for different user groups
+  - User (Customer)
+      - email: mahesh@zevo.com
+      - password: xyz123
+  - Operator
+    - email: ju@zevo.com
+    - password: xyz123
+  - Manager
+    - email: li@zevo.com
+    - password: xyz123
+
+
 ### Creating an Account
 
 If you're new to ZEVO, you'll need to create an account:
